@@ -77,8 +77,7 @@
                     <a href="<c:url value="/login" />"><i class="fas fa-sign-in-alt"></i></a>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value="/admin/import/person" />" ><i class="fas fa-download"></i> Import Data</a>
-                    &nbsp; &nbsp; &nbsp; <a href="<c:url value="/" />" ><i class="fas fa-home"></i></a>
+                    <a href="<c:url value="/admin/import/person" />" ><i class="fas fa-download"></i></a>
                 </sec:authorize>
              </p>
             </div>
