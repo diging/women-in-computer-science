@@ -49,7 +49,7 @@
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Women in Computer Science
+              <h3 class="masthead-brand"><a href="<c:url value="/" />">Women in Computer Science</a>
               <br>
               <small>The giants on whose shoulders we stand on.</small>
               </h3>

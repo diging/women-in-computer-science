@@ -43,8 +43,20 @@ public class PersonController {
     @Autowired
     private IConceptpowerCache cache;
     
-    @Autowired
-    private ISourceUriPatternUtil patternUtil;
+    @Value("${general.node.color}")
+    private String generalNodeColor;
+    
+    @Value("${person.node.color}")
+    private String personNodeColor;
+    
+    @Value("${institution.node.color}")
+    private String institutionNodeColor;
+    
+    @Value("${concepts.type.person}")
+    private String personTypeId;
+    
+    @Value("${concepts.type.institution}")
+    private String institutionTypeId;
 
     @Value("${concepts.type.person}")
     private String personType;
@@ -69,6 +81,7 @@ public class PersonController {
         
         model.addAttribute("concept", concept);
         model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
+        model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personType));
         return "person/statements";
     }
     
@@ -86,13 +99,13 @@ public class PersonController {
             GraphElement sourceElem = elements.get(sourceNode.getConceptId());
             if (sourceElem == null) {
                 IConcept concept = cache.getConceptById(sourceNode.getConceptId());
-                sourceElem = new GraphElement(new Data(concept.getId(), sourceNode.getLabel()));
+                sourceElem = createElement(sourceNode, concept);
                 elements.put(sourceNode.getConceptId(), sourceElem);
             }
             GraphElement targetElem = elements.get(targetNode.getConceptId());
             if (targetElem == null) {
                 IConcept concept = cache.getConceptById(targetNode.getConceptId());
-                targetElem = new GraphElement(new Data(concept.getId(), targetNode.getLabel()));
+                targetElem = createElement(targetNode, concept);
                 elements.put(targetNode.getConceptId(), targetElem);
             }
             elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
@@ -114,5 +127,18 @@ public class PersonController {
         }
         
         return uniqueEdges;
+    }
+    
+    private GraphElement createElement(Node node, IConcept concept) {
+        GraphElement element = new GraphElement(new Data(concept.getId(), node.getLabel()));
+        element.getData().setType(concept.getTypeId());
+        if (concept.getTypeId().equals(personTypeId)) {
+            element.getData().setColor(personNodeColor);
+        } else if (concept.getTypeId().equals(institutionTypeId)) {
+            element.getData().setColor(institutionNodeColor);
+        } else {
+            element.getData().setColor(generalNodeColor);
+        }
+        return element;
     }
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import edu.asu.diging.wic.web.cytoscape.EdgeData;
 import edu.asu.diging.wic.web.cytoscape.GraphElement;
 
 @Controller
+@PropertySource("classpath:/config.properties")
 public class HomeController {
     
     @Autowired
@@ -35,6 +38,20 @@ public class HomeController {
     @Autowired
     private IConceptpowerCache conceptCache;
     
+    @Value("${general.node.color}")
+    private String generalNodeColor;
+    
+    @Value("${person.node.color}")
+    private String personNodeColor;
+    
+    @Value("${institution.node.color}")
+    private String institutionNodeColor;
+    
+    @Value("${concepts.type.person}")
+    private String personTypeId;
+    
+    @Value("${concepts.type.institution}")
+    private String institutionTypeId;
 
     @RequestMapping(value = "/")
     public String home(Model model) {
@@ -58,13 +75,13 @@ public class HomeController {
                     GraphElement sourceElem = elements.get(sourceNode.getConceptId());
                     if (sourceElem == null) {
                         IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
-                        sourceElem = new GraphElement(new Data(concept.getId(), sourceNode.getLabel()));
+                        sourceElem = createElement(sourceNode, concept);
                         elements.put(sourceNode.getConceptId(), sourceElem);
                     }
                     GraphElement targetElem = elements.get(targetNode.getConceptId());
                     if (targetElem == null) {
                         IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
-                        targetElem = new GraphElement(new Data(concept.getId(), targetNode.getLabel()));
+                        targetElem = createElement(targetNode, concept);
                         elements.put(targetNode.getConceptId(), targetElem);
                     }
                     elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
@@ -73,5 +90,18 @@ public class HomeController {
         }
         
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
+    }
+
+    private GraphElement createElement(Node node, IConcept concept) {
+        GraphElement element = new GraphElement(new Data(concept.getId(), node.getLabel()));
+        element.getData().setType(concept.getTypeId());
+        if (concept.getTypeId().equals(personTypeId)) {
+            element.getData().setColor(personNodeColor);
+        } else if (concept.getTypeId().equals(institutionTypeId)) {
+            element.getData().setColor(institutionNodeColor);
+        } else {
+            element.getData().setColor(generalNodeColor);
+        }
+        return element;
     }
 }

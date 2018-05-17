@@ -17,7 +17,7 @@ $(document).ready(function() {
                         {
                             selector: 'node',
                             style: {
-                                'background-color': '#7bafa6',
+                                'background-color': 'data(color)',
                                 'width': nodeSize,
                                 'height': nodeSize,
                                 'label': 'data(label)'
