@@ -104,7 +104,7 @@ public class GraphManager implements IGraphManager {
      * Starts a new thread that transforms all statements that contain the given URI according to
      * registered patterns.
      */
-    @Async
+   // @Async
     @Override
     public void transformGraph(String uri) throws IOException {
     		   		

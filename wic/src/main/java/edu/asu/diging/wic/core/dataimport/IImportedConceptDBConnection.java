@@ -10,4 +10,10 @@ public interface IImportedConceptDBConnection {
 
     List<IImportedConcept> list();
 
+    void updateImported(String id, String importer);
+
+    void remove(String id);
+
+    IImportedConcept get(String id);
+
 }

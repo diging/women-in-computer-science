@@ -1,5 +1,6 @@
 package edu.asu.diging.wic.core.dataimport.impl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,5 +37,23 @@ public class ImportedConceptDBConnection implements IImportedConceptDBConnection
     public List<IImportedConcept> list() {
         TypedQuery<ImportedConcept> query = sessionFactory.getCurrentSession().createQuery("SELECT c from ImportedConcept c", ImportedConcept.class);
         return new ArrayList<IImportedConcept>(query.getResultList());
+    }
+    
+    @Override
+    public void remove(String id) {
+        sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().find(ImportedConcept.class, id));
+    }
+    
+    @Override
+    public void updateImported(String id, String importer) {
+        ImportedConcept concept = sessionFactory.getCurrentSession().find(ImportedConcept.class, id);
+        concept.setImportedOn(OffsetDateTime.now());
+        concept.setImportedBy(importer);
+        sessionFactory.getCurrentSession().save(concept);
+    }
+    
+    @Override
+    public IImportedConcept get(String id) {
+        return sessionFactory.getCurrentSession().find(ImportedConcept.class, id);
     }
 }

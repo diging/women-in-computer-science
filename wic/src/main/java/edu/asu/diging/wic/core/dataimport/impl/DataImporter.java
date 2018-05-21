@@ -71,7 +71,13 @@ public class DataImporter implements IDataImporter {
             graphDbConnector.store(graph);
         }
         
-        IImportedConcept importedConcept = new ImportedConcept(conceptId, OffsetDateTime.now(), importer);
-        importedConceptDb.store(importedConcept);
+        
+        IImportedConcept importedConcept = importedConceptDb.get(conceptId);
+        if (importedConcept == null) {
+            importedConcept = new ImportedConcept(conceptId, OffsetDateTime.now(), importer);
+            importedConceptDb.store(importedConcept);
+        } else {
+            importedConceptDb.updateImported(conceptId, importer);
+        }
     }
 }

@@ -47,11 +47,17 @@ public class HomeController {
     @Value("${institution.node.color}")
     private String institutionNodeColor;
     
+    @Value("${location.node.color}")
+    private String locationNodeColor;
+    
     @Value("${concepts.type.person}")
     private String personTypeId;
     
     @Value("${concepts.type.institution}")
     private String institutionTypeId;
+    
+    @Value("${concepts.type.location}")
+    private String locationTypeId;
 
     @RequestMapping(value = "/")
     public String home(Model model) {
@@ -99,6 +105,8 @@ public class HomeController {
             element.getData().setColor(personNodeColor);
         } else if (concept.getTypeId().equals(institutionTypeId)) {
             element.getData().setColor(institutionNodeColor);
+        } else if (concept.getTypeId().equals(locationTypeId)) {
+            element.getData().setColor(locationNodeColor);
         } else {
             element.getData().setColor(generalNodeColor);
         }
