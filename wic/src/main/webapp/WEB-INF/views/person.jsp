@@ -9,6 +9,7 @@
 	});
 
 	function getGraph() {
+		<c:if test="${not empty concept.id}" >
 		$.ajax({
 			url : '<c:url value="/concept/${concept.id}/statements" />',
 			type : "GET",
@@ -23,11 +24,13 @@
 				}
 			}
 		});
+		</c:if>
 	}
 </script>
 
 <script src="<c:url value="/resources/js/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
+<c:if test="${not empty concept.id}" >
 <script type="text/javascript">
     var highlightSize = "20px";
     var nodeSize = "10px";
@@ -35,6 +38,7 @@
     var hrefLocation = '';
     var animate = false;
 </script>
+</c:if>
 <script src="<c:url value="/resources/js/graphDisplay.js" />"></script>
 
 <div class="clearfix">

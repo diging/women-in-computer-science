@@ -49,24 +49,29 @@ public class PersonController {
     @Value("${person.node.color}")
     private String personNodeColor;
     
+    @Value("${location.node.color}")
+    private String locationNodeColor;
+    
     @Value("${institution.node.color}")
     private String institutionNodeColor;
-    
-    @Value("${concepts.type.person}")
-    private String personTypeId;
     
     @Value("${concepts.type.institution}")
     private String institutionTypeId;
 
     @Value("${concepts.type.person}")
-    private String personType;
+    private String personTypeId;
+    
+    @Value("${concepts.type.location}")
+    private String locationTypeId;
     
     @RequestMapping(value = "/concept/{personId}", produces = MediaType.TEXT_HTML_VALUE)
     public String showPerson(@PathVariable("personId") String personId, Model model) throws IOException {
         
         IConcept concept = cache.getConceptById(personId);
         model.addAttribute("concept", concept);
-        model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
+        if (concept != null) {
+            model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
+        }
         
         return "person";
     }
@@ -81,7 +86,7 @@ public class PersonController {
         
         model.addAttribute("concept", concept);
         model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
-        model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personType));
+        model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personTypeId));
         return "person/statements";
     }
     
@@ -136,6 +141,8 @@ public class PersonController {
             element.getData().setColor(personNodeColor);
         } else if (concept.getTypeId().equals(institutionTypeId)) {
             element.getData().setColor(institutionNodeColor);
+        } else if (concept.getTypeId().equals(locationTypeId)) {
+            element.getData().setColor(locationNodeColor);
         } else {
             element.getData().setColor(generalNodeColor);
         }

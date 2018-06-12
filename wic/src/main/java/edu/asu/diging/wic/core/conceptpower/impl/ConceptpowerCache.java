@@ -1,5 +1,8 @@
 package edu.asu.diging.wic.core.conceptpower.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,7 @@ public class ConceptpowerCache implements IConceptpowerCache {
         if(concept != null) {
             conceptDB.createOrUpdate(concept);
         }
-        return concept;   
+        return conceptDB.getConcept(id);   
     }
     
     @Override

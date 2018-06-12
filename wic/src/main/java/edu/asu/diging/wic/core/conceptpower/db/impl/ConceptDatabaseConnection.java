@@ -1,6 +1,8 @@
 package edu.asu.diging.wic.core.conceptpower.db.impl;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -92,7 +94,7 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
     @Override
     public void createOrUpdate(IConcept concept) {
         Object objConcept = sessionFactory.getCurrentSession()
-                .get(Concept.class, concept.getId());
+                .get(Concept.class, concept.getUri());
         // if concept exists, let's update it
         if (objConcept == null || isDifferent(concept, (IConcept) objConcept)) {
             logger.debug((objConcept == null ? "Adding " : "Updating: ")
@@ -103,7 +105,7 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
                 sessionFactory.getCurrentSession().evict(objConcept);
             }
             sessionFactory.getCurrentSession().saveOrUpdate(concept);
-            deleteConcept(concept.getId());
+            //deleteConcept(concept.getId());
         }
 
         // update type if there is one
@@ -123,9 +125,9 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
     }
 
     @Override
-    public void deleteConcept(String id) {
+    public void deleteConcept(String uri) {
         Object concept = sessionFactory.getCurrentSession().get(Concept.class,
-                id);
+                uri);
         if (concept != null) {
             sessionFactory.getCurrentSession().delete(concept);
         }
@@ -142,8 +144,15 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
     }
 
     private boolean isDifferent(IConcept concept1, IConcept concept2) {
-        if (!concept1.getAlternativeUris()
-                .equals(concept2.getAlternativeUris())) {
+        if (concept1.getAlternativeUris().size()
+                 != concept2.getAlternativeUris().size()) {
+            return true;
+        }
+        List<String> altIds1 = new ArrayList<>(concept1.getAlternativeUris());
+        List<String> altIds2 = new ArrayList<>(concept2.getAlternativeUris());
+        Collections.sort(altIds1);
+        Collections.sort(altIds2);
+        if (!altIds1.equals(altIds2)) {
             return true;
         }
         if (!concept1.getConceptList().equals(concept2.getConceptList())) {
@@ -152,7 +161,15 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
         if (!concept1.getDescription().equals(concept2.getDescription())) {
             return true;
         }
-        if (!concept1.getEqualTo().equals(concept2.getEqualTo())) {
+        if (concept1.getEqualTo().size() !=concept2.getEqualTo().size()) {
+            return true;
+        }
+        
+        List<String> equalTo1 = new ArrayList<>(concept1.getEqualTo());
+        List<String> equalTo2 = new ArrayList<>(concept2.getEqualTo());
+        Collections.sort(equalTo1);
+        Collections.sort(equalTo2);
+        if (!equalTo1.equals(equalTo2)) {
             return true;
         }
         if (!concept1.getId().equals(concept2.getId())) {
@@ -170,7 +187,14 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
         if (!concept1.getWord().equals(concept2.getWord())) {
             return true;
         }
-        if (!concept1.getWordnetIds().equals(concept2.getWordnetIds())) {
+        if (concept1.getWordnetIds().size() !=concept2.getWordnetIds().size()) {
+            return true;
+        }
+        List<String> wordnetIds1 = new ArrayList<>(concept1.getWordnetIds());
+        List<String> wordnetIds2 = new ArrayList<>(concept2.getWordnetIds());
+        Collections.sort(wordnetIds1);
+        Collections.sort(wordnetIds2);
+        if (!wordnetIds1.equals(wordnetIds2)) {
             return true;
         }
         return false;
