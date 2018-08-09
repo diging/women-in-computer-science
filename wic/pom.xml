@@ -350,6 +350,16 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>${tomcat.manager.path}</url>
+                    <server>${tomcat.server.id}</server>
+                    <path>/${tomcat.appname}</path>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
