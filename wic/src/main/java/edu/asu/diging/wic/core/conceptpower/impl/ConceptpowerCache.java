@@ -37,7 +37,7 @@ public class ConceptpowerCache implements IConceptpowerCache {
         if(concept != null) {
             conceptDB.createOrUpdate(concept);
         }
-        return conceptDB.getConcept(id);   
+        return conceptDB.getConcept(concept.getId());   
     }
     
     @Override
