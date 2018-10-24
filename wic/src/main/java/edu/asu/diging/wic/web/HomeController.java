@@ -81,16 +81,22 @@ public class HomeController {
                     GraphElement sourceElem = elements.get(sourceNode.getConceptId());
                     if (sourceElem == null) {
                         IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
-                        sourceElem = createElement(sourceNode, concept);
-                        elements.put(sourceNode.getConceptId(), sourceElem);
+                        if (concept != null) {
+                            sourceElem = createElement(sourceNode, concept);
+                            elements.put(sourceNode.getConceptId(), sourceElem);
+                        }
                     }
                     GraphElement targetElem = elements.get(targetNode.getConceptId());
                     if (targetElem == null) {
                         IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
-                        targetElem = createElement(targetNode, concept);
-                        elements.put(targetNode.getConceptId(), targetElem);
+                        if (concept != null) {
+                            targetElem = createElement(targetNode, concept);
+                            elements.put(targetNode.getConceptId(), targetElem);
+                        }
                     }
-                    elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
+                    if (sourceElem != null && targetElem != null) {
+                        elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
+                    }
                 }
             }
         }
