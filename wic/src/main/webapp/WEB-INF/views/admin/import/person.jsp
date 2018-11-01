@@ -23,7 +23,7 @@
 <c:if test="${not empty importProgress}">
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Currently importing: ${concept.word} 
+    <h3 class="panel-title">Importing: ${concept.word} 
     <div class="pull-right">
     <c:choose>
         <c:when test="${importProgress.status == 'STARTED'}">
