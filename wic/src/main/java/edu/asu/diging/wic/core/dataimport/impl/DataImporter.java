@@ -2,6 +2,7 @@ package edu.asu.diging.wic.core.dataimport.impl;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -13,7 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.dataimport.IDataImporter;
+import edu.asu.diging.wic.core.dataimport.IImportPhaseManager;
 import edu.asu.diging.wic.core.dataimport.IImportedConceptDBConnection;
+import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
+import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
+import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
+import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.graphs.IGraphManager;
 import edu.asu.diging.wic.core.model.IConcept;
@@ -38,18 +44,22 @@ public class DataImporter implements IDataImporter {
     @Autowired
     private IImportedConceptDBConnection importedConceptDb;
     
+    @Autowired
+    private IImportPhaseManager phaseManager;
+    
+    
     /* (non-Javadoc)
      * @see edu.asu.diging.wic.core.dataimport.impl.IDataImporter#importPerson(java.lang.String, java.lang.String)
      */
     @Override
     @Async
     @Transactional
-    public void importPerson(String conceptId, String importer) {
+    public void importPerson(String conceptId, String importer, String progressId) {
         IConcept concept = conceptpower.getConceptById(conceptId);
         
         logger.info("Retrieving graph for " + concept.getUri());
         try {
-            graphManager.transformGraph(concept.getUri());
+            graphManager.transformGraph(concept.getUri(), progressId);
         } catch (IOException e1) {
             logger.error("Could not start transformation.", e1);
             return;
@@ -64,6 +74,10 @@ public class DataImporter implements IDataImporter {
             }
             graph = graphManager.getTransfomationResult(concept.getUri());
         }
+        
+        String phaseTitle = "Storing retrieved graph.";
+        phaseManager.addNewPhase(progressId, phaseTitle, ProgressStatus.STARTED);
+        
         // remove previously stored graphs before adding updated one
         graphDbConnector.removeGraphs(concept.getUri());
         if (graph != null) {
@@ -71,6 +85,7 @@ public class DataImporter implements IDataImporter {
             graphDbConnector.store(graph);
         }
         
+        phaseManager.updatePhase(progressId, phaseTitle, ProgressStatus.DONE);
         
         IImportedConcept importedConcept = importedConceptDb.get(conceptId);
         if (importedConcept == null) {
@@ -79,5 +94,7 @@ public class DataImporter implements IDataImporter {
         } else {
             importedConceptDb.updateImported(conceptId, importer);
         }
+        
+        phaseManager.updateProgress(progressId, ProgressStatus.DONE, ZonedDateTime.now());
     }
 }

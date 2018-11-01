@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
 import edu.asu.diging.wic.core.dataimport.IDataImporter;
+import edu.asu.diging.wic.core.dataimport.IImportManager;
 import edu.asu.diging.wic.core.model.IConcept;
 
 @Controller
@@ -23,7 +24,7 @@ public class ImportPersonController {
     private IConceptpowerConnector cpConnector;
     
     @Autowired
-    private IDataImporter dataImporter;
+    private IImportManager importManager;
 
     @RequestMapping(value="/admin/import/person", method=RequestMethod.GET)
     public String showImportPage() {
@@ -32,7 +33,7 @@ public class ImportPersonController {
     
     @RequestMapping(value="/admin/import/person", method=RequestMethod.POST)
     public String importPerson(@RequestParam(value="id") String conceptId, Principal principal, RedirectAttributes redirectAttrs) {
-        dataImporter.importPerson(conceptId, principal.getName());
+        importManager.startImport(conceptId, principal.getName());
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_msg", "Data import has been started.");

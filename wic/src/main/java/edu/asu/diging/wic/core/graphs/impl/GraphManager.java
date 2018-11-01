@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import edu.asu.diging.wic.core.dataimport.IImportPhaseManager;
+import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
+import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
+import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
+import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 import edu.asu.diging.wic.core.graphs.IGraphCloner;
 import edu.asu.diging.wic.core.graphs.IGraphManager;
 import edu.asu.diging.wic.core.graphs.IPredicateProcessor;
@@ -63,6 +69,9 @@ public class GraphManager implements IGraphManager {
     @Qualifier("ehcache")
     private CacheManager cacheManager;
     
+    @Autowired
+    private IImportPhaseManager phaseManager;
+    
     private List<String> transformationNames;
     private Cache cache;
     private File[] files;
@@ -106,7 +115,7 @@ public class GraphManager implements IGraphManager {
      */
    // @Async
     @Override
-    public void transformGraph(String uri) throws IOException {
+    public void transformGraph(String uri, String progressId) throws IOException {
     		   		
         // if there is already a transformation running or a result cached, let's not
         // start the transformation again
@@ -117,10 +126,19 @@ public class GraphManager implements IGraphManager {
         Map<String, String> props = new HashMap<>();
         props.put("${person_uri}", uri);
         
+//        ImportProgress progress = dbConnector.get(progressId);
+//        if (progress.getPhases() == null) {
+//            progress.setPhases(new ArrayList<>());
+//        }
+        
         // due to caching, we can't change the graph we get from the connector
         // so we need to clone it first, before we change it
         Map<String, Graph> graphs = new HashMap<>();
         for (String tName : transformationNames) {
+            String phaseTitle = "Transformation: " + tName;
+            phaseManager.addNewPhase(progressId, phaseTitle, ProgressStatus.STARTED);
+            
+            
             Graph retrievedGraph = null;
             // TODO: eventually we want to do this in parallel but for now let's not overwhelm Quadriga
             TransformationResponse response = quadrigaConnector.getTransformedNetworks(tName, props);
@@ -135,6 +153,8 @@ public class GraphManager implements IGraphManager {
                 // if more than 4 requests for the same resource fail, let's give up
                 if (resourceErrors >= 5) {
                     logger.warn("Could not retrieve results for " + tName + ". Giving up.");
+                    // update progress
+                    phaseManager.updatePhaseAndProgress(progressId, phaseTitle, ProgressStatus.FAILED);
                     return;
                 }
                 if (!response.getStatus().equals("IN_PROGRESS")) {
@@ -151,6 +171,9 @@ public class GraphManager implements IGraphManager {
                 Graph graph = graphCloner.clone(retrievedGraph);
                 graphs.put(tName, graph);
             }
+            
+            // update progress
+            phaseManager.updatePhaseAndProgress(progressId, phaseTitle, ProgressStatus.DONE);
         }
         
         Graph compoundGraph = new Graph();
