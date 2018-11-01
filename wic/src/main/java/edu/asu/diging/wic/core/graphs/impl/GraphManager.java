@@ -113,7 +113,6 @@ public class GraphManager implements IGraphManager {
      * Starts a new thread that transforms all statements that contain the given URI according to
      * registered patterns.
      */
-   // @Async
     @Override
     public void transformGraph(String uri, String progressId) throws IOException {
     		   		
@@ -125,11 +124,6 @@ public class GraphManager implements IGraphManager {
         cache.put(new Element(uri, null));
         Map<String, String> props = new HashMap<>();
         props.put("${person_uri}", uri);
-        
-//        ImportProgress progress = dbConnector.get(progressId);
-//        if (progress.getPhases() == null) {
-//            progress.setPhases(new ArrayList<>());
-//        }
         
         // due to caching, we can't change the graph we get from the connector
         // so we need to clone it first, before we change it
@@ -173,7 +167,7 @@ public class GraphManager implements IGraphManager {
             }
             
             // update progress
-            phaseManager.updatePhaseAndProgress(progressId, phaseTitle, ProgressStatus.DONE);
+            phaseManager.updatePhase(progressId, phaseTitle, ProgressStatus.DONE);
         }
         
         Graph compoundGraph = new Graph();

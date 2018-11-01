@@ -14,11 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.dataimport.IDataImporter;
-import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.IImportedConceptDBConnection;
-import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
-import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
-import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
+import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.graphs.IGraphManager;
@@ -62,6 +59,7 @@ public class DataImporter implements IDataImporter {
             graphManager.transformGraph(concept.getUri(), progressId);
         } catch (IOException e1) {
             logger.error("Could not start transformation.", e1);
+            phaseManager.updateProgress(progressId, ProgressStatus.FAILED, ZonedDateTime.now());
             return;
         }
         Graph graph = null;
@@ -95,6 +93,9 @@ public class DataImporter implements IDataImporter {
             importedConceptDb.updateImported(conceptId, importer);
         }
         
-        phaseManager.updateProgress(progressId, ProgressStatus.DONE, ZonedDateTime.now());
+        // FIXME: let transformGraph return status and use that instead
+        if (phaseManager.getProgress(progressId).getStatus() != ProgressStatus.FAILED) {
+            phaseManager.updateProgress(progressId, ProgressStatus.DONE, ZonedDateTime.now());
+        }
     }
 }
