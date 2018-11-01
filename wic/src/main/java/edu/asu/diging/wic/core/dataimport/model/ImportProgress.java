@@ -5,11 +5,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -21,6 +22,8 @@ public class ImportProgress {
     @GeneratedValue(generator = "import-id-generator")
     @GenericGenerator(name = "import-id-generator", parameters = @Parameter(name = "prefix", value = "IM"), strategy = "edu.asu.diging.wic.core.db.IdGenerator")
     private String id;
+    
+    @Enumerated(EnumType.STRING)
     private ProgressStatus status;
     private String conceptId;
     private ZonedDateTime startDate;

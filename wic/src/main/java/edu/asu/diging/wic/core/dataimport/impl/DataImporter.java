@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.dataimport.IDataImporter;
-import edu.asu.diging.wic.core.dataimport.IImportPhaseManager;
+import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.IImportedConceptDBConnection;
 import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
 import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
@@ -45,7 +45,7 @@ public class DataImporter implements IDataImporter {
     private IImportedConceptDBConnection importedConceptDb;
     
     @Autowired
-    private IImportPhaseManager phaseManager;
+    private ITransactionalImportManager phaseManager;
     
     
     /* (non-Javadoc)

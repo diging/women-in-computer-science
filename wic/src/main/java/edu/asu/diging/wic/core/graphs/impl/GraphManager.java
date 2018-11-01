@@ -20,7 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
-import edu.asu.diging.wic.core.dataimport.IImportPhaseManager;
+import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
 import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
 import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
@@ -70,7 +70,7 @@ public class GraphManager implements IGraphManager {
     private CacheManager cacheManager;
     
     @Autowired
-    private IImportPhaseManager phaseManager;
+    private ITransactionalImportManager phaseManager;
     
     private List<String> transformationNames;
     private Cache cache;

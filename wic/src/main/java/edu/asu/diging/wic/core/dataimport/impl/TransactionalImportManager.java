@@ -1,14 +1,13 @@
 package edu.asu.diging.wic.core.dataimport.impl;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.asu.diging.wic.core.dataimport.IImportPhaseManager;
+import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
 import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
 import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
@@ -16,7 +15,7 @@ import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 
 @Service
 @Transactional
-public class ImportPhaseManager implements IImportPhaseManager {
+public class TransactionalImportManager implements ITransactionalImportManager {
 
     @Autowired
     private ImportProgressDbConnection importDbConnector;
@@ -25,6 +24,7 @@ public class ImportPhaseManager implements IImportPhaseManager {
     public String createNewProgress(String conceptId) {
         ImportProgress progress = new ImportProgress();
         progress.setConceptId(conceptId);
+        progress.setStatus(ProgressStatus.STARTED);
         progress.setStartDate(ZonedDateTime.now());
         return importDbConnector.store(progress);
     }
@@ -84,4 +84,11 @@ public class ImportPhaseManager implements IImportPhaseManager {
         importDbConnector.update(progress);
     }
     
+    @Override
+    public ImportProgress getProgress(String id) {
+        ImportProgress progress = importDbConnector.get(id);
+        // load phases
+        progress.getPhases().size();
+        return progress;
+    }
 }

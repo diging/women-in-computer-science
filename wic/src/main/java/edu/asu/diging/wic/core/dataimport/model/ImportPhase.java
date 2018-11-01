@@ -1,6 +1,8 @@
 package edu.asu.diging.wic.core.dataimport.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,8 @@ public class ImportPhase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
+    
+    @Enumerated(EnumType.STRING)
     private ProgressStatus status;
     
     public long getId() {
