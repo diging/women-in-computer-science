@@ -1,10 +1,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <h1>Import Person</h1>
 
-<c:if test="${not empty importProgress and importProgress.status == 'STARTED'}">
+<c:if test="${empty importProgress or importProgress.status != 'STARTED'}">
+<form class="form-inline">
+<div class="row">
+<div class="col-md-12">
+  <div class="input-group col-md-12">
+    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
+    </span>
+  </div>
+</div>
+</div>
+</form>
+
+<div id="searchResults" class="list-group">
+
+</div>
+</c:if>
+
+<c:if test="${not empty importProgress}">
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Currently importing: ${concept.word}</h3>
+    <h3 class="panel-title">Currently importing: ${concept.word} 
+    <div class="pull-right">
+    <c:choose>
+        <c:when test="${importProgress.status == 'STARTED'}">
+        <span class="label label-warning">Started</span>
+        </c:when>
+        <c:when test="${importProgress.status == 'DONE'}">
+        <span class="label label-success">Done</span>
+        </c:when>
+        <c:otherwise>
+        <span class="label label-danger">Failed</span>
+        </c:otherwise>
+    </c:choose>
+   </div>
+   </h3>
   </div>
   <div class="panel-body">
     <div class="progress">
@@ -39,25 +72,6 @@
 </table>
 
 
-</c:if>
-
-<c:if test="${empty importProgress or importProgress.status != 'STARTED'}">
-<form class="form-inline">
-<div class="row">
-<div class="col-md-12">
-  <div class="input-group col-md-12">
-    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
-	<span class="input-group-btn">
-	  <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
-	</span>
-  </div>
-</div>
-</div>
-</form>
-
-<div id="searchResults" class="list-group">
-
-</div>
 </c:if>
 
 <script>
