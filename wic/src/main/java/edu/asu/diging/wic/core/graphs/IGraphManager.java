@@ -18,7 +18,7 @@ public interface IGraphManager {
      * @param uri The URI that should be present in a statement.
      * @throws IOException
      */
-    void transformGraph(String uri) throws IOException;
+    void transformGraph(String uri, String progressId) throws IOException;
 
     /** 
      * Returns the graph created from all transformed statements.
