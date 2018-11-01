@@ -54,9 +54,6 @@
 	    <tr>
 	        <td style="border:0px">${phase.title}</td>
 	        <td style="border:0px" class="pull-right">
-	        <c:if test="${}">
-	        
-	        </c:if>
 	        <c:choose>
 		        <c:when test="${phase.status == 'STARTED'}">
 		        <span class="label label-warning">Started</span>
