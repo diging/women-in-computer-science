@@ -1,14 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <h1>Import Person</h1>
 
+<c:if test="${empty importProgress or importProgress.status != 'STARTED'}">
 <form class="form-inline">
 <div class="row">
 <div class="col-md-12">
   <div class="input-group col-md-12">
     <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
-	<span class="input-group-btn">
-	  <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
-	</span>
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
+    </span>
   </div>
 </div>
 </div>
@@ -17,6 +18,60 @@
 <div id="searchResults" class="list-group">
 
 </div>
+</c:if>
+
+<c:if test="${not empty importProgress}">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Importing: ${concept.word} 
+    <div class="pull-right">
+    <c:choose>
+        <c:when test="${importProgress.status == 'STARTED'}">
+        <span class="label label-warning">Started</span>
+        </c:when>
+        <c:when test="${importProgress.status == 'DONE'}">
+        <span class="label label-success">Done</span>
+        </c:when>
+        <c:otherwise>
+        <span class="label label-danger">Failed</span>
+        </c:otherwise>
+    </c:choose>
+   </div>
+   </h3>
+  </div>
+  <div class="panel-body">
+  <c:if test="${importProgress.status == 'STARTED'}">
+    <div class="progress">
+	  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+	    <span class="sr-only"></span>
+	  </div>
+	</div>
+  </c:if>
+
+
+	<table class="table table-condensed">
+	<c:forEach items="${importProgress.phases}" var="phase">
+	    <tr>
+	        <td style="border:0px">${phase.title}</td>
+	        <td style="border:0px" class="pull-right">
+	        <c:choose>
+		        <c:when test="${phase.status == 'STARTED'}">
+		        <span class="label label-warning">Started</span>
+		        </c:when>
+		        <c:when test="${phase.status == 'DONE'}">
+		        <span class="label label-success">Done</span>
+		        </c:when>
+		        <c:otherwise>
+		        <span class="label label-danger">Failed</span>
+		        </c:otherwise>
+		    </c:choose>
+	    </tr>
+	</c:forEach>
+	</table>
+  </div>
+</div>
+
+</c:if>
 
 <script>
 //#sourceUrl=search.js
