@@ -43,6 +43,10 @@
     <definition name="admin/import/person" extends="base.definition">
         <put-attribute name="content" value="/WEB-INF/views/admin/import/person.jsp" />    
     </definition>
+    
+    <definition name="admin/import/list" extends="base.definition">
+        <put-attribute name="content" value="/WEB-INF/views/admin/import/list.jsp" />    
+    </definition>
 	
     <definition name="person" extends="base.definition.public">
         <put-attribute name="content" value="/WEB-INF/views/person.jsp" />    

@@ -42,6 +42,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
  	<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/bootstrap/js/main.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery-dateformat.min.js" />"></script>
   </head>
 
   <body>
@@ -55,9 +56,13 @@
           	</li>
           	
           	<sec:authorize access="isAuthenticated()">
-          	 <li role="presentation">
-                  <a href="<c:url value="/admin/import/person" />">Import</a>
-             </li>
+          	 <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Import <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="<c:url value="/admin/import/person" />">Import Person</a></li>
+	            <li><a href="<c:url value="/admin/import/list" />">Show Imports</a></li>
+	          </ul>
+	        </li>
             </sec:authorize>
           </ul>
          
