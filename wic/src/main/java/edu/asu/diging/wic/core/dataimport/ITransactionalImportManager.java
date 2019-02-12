@@ -1,6 +1,7 @@
 package edu.asu.diging.wic.core.dataimport;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
 import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
@@ -21,5 +22,7 @@ public interface ITransactionalImportManager {
     String createNewProgress(String conceptId);
 
     ImportProgress getProgress(String id);
+
+    List<ImportProgress> getAllProgresses();
 
 }

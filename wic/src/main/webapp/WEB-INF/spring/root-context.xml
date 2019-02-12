@@ -36,7 +36,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
     <!-- Reference the hibernate -->
-    <import resource="../hibernate/hibernate.cfg.xml"/>
+   <!--  <import resource="../hibernate/hibernate.cfg.xml"/> -->
     
     <task:executor id="executor" pool-size="5" />
     <!-- <task:scheduler id="scheduler" pool-size="5"/> -->
