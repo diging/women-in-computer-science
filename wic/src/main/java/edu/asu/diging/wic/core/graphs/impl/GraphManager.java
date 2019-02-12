@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
-import edu.asu.diging.wic.core.dataimport.db.impl.ImportProgressDbConnection;
 import edu.asu.diging.wic.core.dataimport.model.ImportPhase;
 import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
 import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
