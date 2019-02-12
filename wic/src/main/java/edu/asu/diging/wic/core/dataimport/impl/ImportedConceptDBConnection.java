@@ -22,9 +22,6 @@ public class ImportedConceptDBConnection implements IImportedConceptDBConnection
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     
-//    @Autowired
-//    protected SessionFactory sessionFactory;
-    
     @Autowired
     private ImportedConceptRepository conceptRepository;
     
@@ -38,8 +35,6 @@ public class ImportedConceptDBConnection implements IImportedConceptDBConnection
     
     @Override
     public List<IImportedConcept> list() {
-//        TypedQuery<ImportedConcept> query = sessionFactory.getCurrentSession().createQuery("SELECT c from ImportedConcept c", ImportedConcept.class);
-//        return new ArrayList<IImportedConcept>(query.getResultList());
         Iterable<ImportedConcept> concepts = conceptRepository.findAll();
         List<IImportedConcept> results = new ArrayList<>();
         concepts.forEach(c -> results.add(c));

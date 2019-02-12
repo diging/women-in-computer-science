@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,11 +101,8 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
 
             if (objConcept != null) {
                 em.detach(objConcept);
-                //sessionFactory.getCurrentSession().evict(objConcept);
             }
-            //sessionFactory.getCurrentSession().saveOrUpdate(concept);
             em.persist(concept);
-            //deleteConcept(concept.getId());
         }
 
         // update type if there is one
@@ -116,12 +112,9 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
             if (type == null || isDifferent(concept.getType(), type)) {
                 if (type != null) {
                     em.detach(type);
-                    //sessionFactory.getCurrentSession().evict(type);
                 }
                 if (concept.getType() != null) {
                     em.persist(concept.getType());
-//                    sessionFactory.getCurrentSession()
-//                            .saveOrUpdate(concept.getType());
                 }
             }
         }
@@ -133,7 +126,6 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
                 uri);
         if (concept != null) {
             em.remove(concept);
-//            sessionFactory.getCurrentSession().delete(concept);
         }
     }
 

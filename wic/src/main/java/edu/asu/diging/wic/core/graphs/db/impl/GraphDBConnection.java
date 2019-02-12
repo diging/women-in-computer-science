@@ -5,16 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +22,6 @@ import edu.asu.diging.wic.core.model.impl.Graph;
 @Service
 public class GraphDBConnection implements IGraphDBConnection {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
-//    @Autowired
-//    protected SessionFactory sessionFactory;
     
     @Autowired
     private EntityManager em;
@@ -60,37 +50,14 @@ public class GraphDBConnection implements IGraphDBConnection {
         Query query = em.createNativeQuery("select alternativeUris from tbl_conceptpower_alternativeuris where id = '" + conceptUri + "'");
         List<String> uris = query.getResultList();
         
-        //Criteria c = em.createCriteria(Edge.class, "edge");
-        
         CriteriaQuery<Edge> cQuery = em.getCriteriaBuilder().createQuery(Edge.class);
         Root<Edge> root = cQuery.from(Edge.class);
         cQuery.select(root);
         
         String edgeQueryString = "SELECT e FROM Edge e WHERE e.sourceNode.uri IN :uris OR e.targetNode.uri IN :uris";
-        Query edgeQuery = em.createQuery(edgeQueryString);
+        TypedQuery<Edge> edgeQuery = em.createQuery(edgeQueryString, Edge.class);
         edgeQuery.setParameter("uris", uris);
         return edgeQuery.getResultList();
-        
-//        c.createAlias("edge.sourceNode", "sourceNode");
-//        c.createAlias("edge.targetNode", "targetNode");
-//        c.add(Restrictions.disjunction()
-//                .add(Restrictions.in("targetNode.uri", uris))
-//                .add(Restrictions.in("sourceNode.uri", uris)));
-//        ProjectionList projList = Projections.projectionList()
-//                .add(Projections.property("id"), "id")
-//                .add(Projections.property("source"), "source")
-//                .add(Projections.property("target"), "target")
-//                .add(Projections.property("label"), "label")
-//                .add(Projections.property("concept"), "concept")
-//                .add(Projections.property("sourceUri"), "sourceUri")
-//                .add(Projections.property("startTime"), "startTime")
-//                .add(Projections.property("endTime"), "endTime")
-//                .add(Projections.property("occurred"), "occurred")
-//                .add(Projections.property("sourceNode"), "sourceNode")
-//                .add(Projections.property("targetNode"), "targetNode");
-//        c.setProjection(Projections.distinct(projList));
-//        c.setResultTransformer(Transformers.aliasToBean(Edge.class));
-//        return c.list();
     }
     
     @Override
