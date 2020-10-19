@@ -19,8 +19,8 @@ import org.hibernate.annotations.Parameter;
 public class ImportProgress {
 
     @Id
-    @GeneratedValue(generator = "import-id-generator")
-    @GenericGenerator(name = "import-id-generator", parameters = @Parameter(name = "prefix", value = "IM"), strategy = "edu.asu.diging.wic.core.db.IdGenerator")
+    @GeneratedValue(generator = "import_id_generator")
+    @GenericGenerator(name = "import_id_generator", parameters = @Parameter(name = "prefix", value = "IM"), strategy = "edu.asu.diging.wic.core.db.IdGenerator")
     private String id;
     
     @Enumerated(EnumType.STRING)
