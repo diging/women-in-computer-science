@@ -28,8 +28,11 @@
 	}
 </script>
 
-<script src="<c:url value="/resources/js/cytoscape.min.js" />"></script>
+<script src="https://unpkg.com/layout-base/layout-base.js"></script>
+<script src="https://unpkg.com/cose-base/cose-base.js"></script>
+<script src="<c:url value="/resources/js/cytoscape-3.2.12/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
+
 <c:if test="${not empty concept.id}" >
 <script type="text/javascript">
     var highlightSize = "20px";
