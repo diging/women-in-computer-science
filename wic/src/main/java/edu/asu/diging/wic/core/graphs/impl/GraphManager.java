@@ -4,9 +4,16 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -112,6 +119,7 @@ public class GraphManager implements IGraphManager {
      * Starts a new thread that transforms all statements that contain the given URI according to
      * registered patterns.
      */
+    
     @Override
     public void transformGraph(String uri, String progressId) throws IOException {
     		   		
@@ -127,47 +135,152 @@ public class GraphManager implements IGraphManager {
         // due to caching, we can't change the graph we get from the connector
         // so we need to clone it first, before we change it
         Map<String, Graph> graphs = new HashMap<>();
-        for (String tName : transformationNames) {
-            String phaseTitle = "Transformation: " + tName;
+        
+        ExecutorService executorService  = Executors.newCachedThreadPool();
+        
+//        HashMap<String,Integer> resourceErrorMapper = new HashMap<>();
+//        int count = 0;
+        
+        class CallAyncGetNetworks implements Callable<TransformationResponse> {
+        	String tName;
+        	CallAyncGetNetworks(String tName) { 
+	        	this.tName = tName; 
+	        }
+        	public TransformationResponse call() {
+        		try {
+					return quadrigaConnector.getTransformedNetworks(tName, props);
+				} catch (IOException ex) {
+					// TODO Auto-generated catch block
+					logger.error("Error when checking for results.", ex);
+//                    resourceErrors++;
+				}
+        		return null;
+        	}
+        }
+        
+        class CallAyncCheckResult implements Callable<TransformationResponse> {
+        	TransformationResponse response;
+        	CallAyncCheckResult(TransformationResponse response) { 
+	        	this.response = response; 
+	        }
+        	public TransformationResponse call() {
+        		return quadrigaConnector.checkForResult(response);
+        	}
+        }
+        class Data {
+        	Future<TransformationResponse> future;
+        	String phaseTitle;
+        	String tName;
+        	Data(Future<TransformationResponse> future, String phaseTitle, String tName) {
+        		this.future = future;
+        		this.phaseTitle = phaseTitle;
+        		this.tName = tName;
+        	}
+        }
+        Deque<Data> listResponse = new LinkedList<>();
+        for(String tName : transformationNames) {
+        	String phaseTitle = "Transformation: " + tName;
             phaseManager.addNewPhase(progressId, phaseTitle, ProgressStatus.STARTED);
             
             
             Graph retrievedGraph = null;
             // TODO: eventually we want to do this in parallel but for now let's not overwhelm Quadriga
-            TransformationResponse response = quadrigaConnector.getTransformedNetworks(tName, props);
-            int resourceErrors = 0;
-            while (true) {
-                try {
-                    response = quadrigaConnector.checkForResult(response);
-                } catch (ResourceAccessException ex) {
-                    logger.error("Error when checking for results.", ex);
-                    resourceErrors++;
-                }
-                // if more than 4 requests for the same resource fail, let's give up
-                if (resourceErrors >= 5) {
-                    logger.warn("Could not retrieve results for " + tName + ". Giving up.");
-                    // update progress
-                    phaseManager.updatePhaseAndProgress(progressId, phaseTitle, ProgressStatus.FAILED);
-                    return;
-                }
-                if (!response.getStatus().equals("IN_PROGRESS")) {
-                    retrievedGraph = response.getGraph();
-                    break;
-                }
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e1) {
-                    logger.error("Could not slep.", e1);
-                }
-            }
-            if (retrievedGraph != null) {
-                Graph graph = graphCloner.clone(retrievedGraph);
-                graphs.put(tName, graph);
-            }
             
-            // update progress
-            phaseManager.updatePhase(progressId, phaseTitle, ProgressStatus.DONE);
+            //http call
+            Future<TransformationResponse> response = executorService.submit(new CallAyncGetNetworks(tName));
+            Data d = new Data(response, phaseTitle, tName);
+            listResponse.add(d);
         }
+        
+        Deque<Data> listResponse2 = new LinkedList<>();
+        for(Data response : listResponse) {
+        	try {
+				response.future = executorService.submit(new CallAyncCheckResult(response.future.get()));
+				listResponse2.add(response);
+			} catch (InterruptedException | ExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
+        
+        int size = listResponse2.size();
+        while(size > 0) {
+        	Data response = listResponse2.remove();
+        	TransformationResponse transformationResponse = null;
+			try {
+				transformationResponse = response.future.get();
+			} catch (InterruptedException | ExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if(transformationResponse == null) {
+				
+			}
+			else if (!transformationResponse.getStatus().equals("IN_PROGRESS")) {
+        		Graph retrievedGraph = null;
+                retrievedGraph = transformationResponse.getGraph();
+                Graph graph = graphCloner.clone(retrievedGraph);
+                graphs.put(response.tName, graph);
+                phaseManager.updatePhase(progressId, response.phaseTitle, ProgressStatus.DONE);
+            } else {
+            	try {
+					response.future = executorService.submit(new CallAyncCheckResult(response.future.get()));
+				} catch (InterruptedException | ExecutionException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				listResponse2.add(response);
+            }
+        	--size;
+        	if(size == 0) {
+        		size = listResponse2.size();
+        	}
+        }
+//        for (String tName : transformationNames) {
+//            String phaseTitle = "Transformation: " + tName;
+//            phaseManager.addNewPhase(progressId, phaseTitle, ProgressStatus.STARTED);
+//            
+//            
+//            Graph retrievedGraph = null;
+//            // TODO: eventually we want to do this in parallel but for now let's not overwhelm Quadriga
+//            
+//            //http call
+//            TransformationResponse response = quadrigaConnector.getTransformedNetworks(tName, props);
+//            int resourceErrors = 0;
+//            while (true) {
+//                try {
+//                	
+//                	//http call
+//                    response = quadrigaConnector.checkForResult(response);
+//                } catch (ResourceAccessException ex) {
+//                    logger.error("Error when checking for results.", ex);
+//                    resourceErrors++;
+//                }
+//                // if more than 4 requests for the same resource fail, let's give up
+//                if (resourceErrors >= 5) {
+//                    logger.warn("Could not retrieve results for " + tName + ". Giving up.");
+//                    // update progress
+//                    phaseManager.updatePhaseAndProgress(progressId, phaseTitle, ProgressStatus.FAILED);
+//                    return;
+//                }
+//                if (!response.getStatus().equals("IN_PROGRESS")) {
+//                    retrievedGraph = response.getGraph();
+//                    break;
+//                }
+//                try {
+//                    TimeUnit.SECONDS.sleep(2);
+//                } catch (InterruptedException e1) {
+//                    logger.error("Could not slep.", e1);
+//                }
+//            }
+//            if (retrievedGraph != null) {
+//                Graph graph = graphCloner.clone(retrievedGraph);
+//                graphs.put(tName, graph);
+//            }
+//            
+//            // update progress
+//            phaseManager.updatePhase(progressId, phaseTitle, ProgressStatus.DONE);
+//        }
         
         Graph compoundGraph = new Graph();
         compoundGraph.setEdges(new ArrayList<>());
