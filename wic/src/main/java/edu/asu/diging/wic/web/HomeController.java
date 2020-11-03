@@ -1,9 +1,18 @@
 package edu.asu.diging.wic.web;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +29,7 @@ import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.Node;
+import edu.asu.diging.wic.core.quadriga.impl.TransformationResponse;
 import edu.asu.diging.wic.core.service.IStatementService;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;
@@ -69,38 +79,67 @@ public class HomeController {
     
     @RequestMapping(value = "/network")
     public ResponseEntity<Collection<GraphElement>> getPersonNetwork() {
+    	
         List<String> uris = graphDbConnection.getAllPersons();
-        Map<String, GraphElement> elements = new HashMap<>();
+        ConcurrentHashMap<String, GraphElement> elements = new ConcurrentHashMap<>();
+        
+        ExecutorService executorService  = Executors.newCachedThreadPool();
+        
+        List<Callable<Void>> todoGraph = new ArrayList<Callable<Void>>();
         for (String uri : uris) {
             List<Graph> graphs = graphDbConnection.getGraphs(uri);
             for (Graph graph : graphs) {
-                for (Edge edge : graph.getEdges()) {
-                    Node sourceNode = edge.getSourceNode();
-                    Node targetNode = edge.getTargetNode();
-                    
-                    GraphElement sourceElem = elements.get(sourceNode.getConceptId());
-                    if (sourceElem == null) {
-                        IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
-                        if (concept != null) {
-                            sourceElem = createElement(sourceNode, concept);
-                            elements.put(sourceNode.getConceptId(), sourceElem);
+            	todoGraph.add(new Callable<Void>() {
+            	    public Void call() throws Exception {
+            	    	List<Edge> edges = graph.getEdges();
+            	    	List<Callable<Void>> todoEdges = new ArrayList<Callable<Void>>();
+                        for (Edge edge : edges) {
+                        	
+                        	todoEdges.add(new Callable<Void>() {
+                        		 public Void call() throws Exception {
+                        			 Node sourceNode = edge.getSourceNode();
+                                     Node targetNode = edge.getTargetNode();
+                                     
+                                     GraphElement sourceElem = elements.get(sourceNode.getConceptId());
+                                     if (sourceElem == null) {
+                                         IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
+                                         if (concept != null) {
+                                             sourceElem = createElement(sourceNode, concept);
+                                             elements.put(sourceNode.getConceptId(), sourceElem);
+                                         }
+                                     }
+                                     GraphElement targetElem = elements.get(targetNode.getConceptId());
+                                     if (targetElem == null) {
+                                         IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
+                                         if (concept != null) {
+                                             targetElem = createElement(targetNode, concept);
+                                             elements.put(targetNode.getConceptId(), targetElem);
+                                         }
+                                     }
+                                     if (sourceElem != null && targetElem != null) {
+                                         elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
+                                     }
+                                     return null;
+                        		 }
+                        	});
                         }
-                    }
-                    GraphElement targetElem = elements.get(targetNode.getConceptId());
-                    if (targetElem == null) {
-                        IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
-                        if (concept != null) {
-                            targetElem = createElement(targetNode, concept);
-                            elements.put(targetNode.getConceptId(), targetElem);
-                        }
-                    }
-                    if (sourceElem != null && targetElem != null) {
-                        elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
-                    }
-                }
+                        try {
+                			executorService.invokeAll(todoEdges);
+                		} catch (InterruptedException e) {
+                			// TODO Auto-generated catch block
+                			e.printStackTrace();
+                		}
+                        return null;
+            	    }
+            	});
             }
         }
-        
+    	try {
+			executorService.invokeAll(todoGraph);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
 
