@@ -17,7 +17,7 @@
         <apache-tiles.version>3.0.8</apache-tiles.version> 
         <admin.password>admin</admin.password>
 
-        <hibernate.version>5.4.22.Final</hibernate.version> <!-- 5.4.22.Final -->
+        <hibernate.version>5.4.22.Final</hibernate.version>
         <hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
         <hibernate.dialect.storage_engine>InnoDB</hibernate.dialect.storage_engine>
 
@@ -25,18 +25,17 @@
 
         <app.url>http://localhost:8080/wic/</app.url>
 
-        <quadriga.url>https://diging.asu.edu/quadriga/</quadriga.url>
+        <quadriga.url>http://localhost:8080/quadriga/</quadriga.url>
         <quadriga.concepts.endpoint>public/concepts</quadriga.concepts.endpoint>
-        <!--<conceptpower.url>http://localhost:8080/conceptpower/rest/</conceptpower.url>-->
-        <conceptpower.url>https://chps.asu.edu/conceptpower/rest/</conceptpower.url>
+        <conceptpower.url>http://localhost:8080/conceptpower/rest/</conceptpower.url>
 
         <tomcat.manager.path></tomcat.manager.path>
         <tomcat.server.id></tomcat.server.id>
         <tomcat.appname>wic</tomcat.appname>
 
-        <database.url>jdbc:mysql://localhost:3306/giles</database.url>
-        <database.username>giles</database.username>
-        <database.pw>GilesPassword</database.pw>
+        <database.url>jdbc:mysql://localhost:3306/wic</database.url>
+        <database.username>wic</database.username>
+        <database.pw></database.pw>
         <database.driver>com.mysql.jdbc.Driver</database.driver>
 
         <google.tracking.id></google.tracking.id>
@@ -325,6 +324,11 @@
             <artifactId>jta</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -336,13 +340,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
-        
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-		<dependency>
-		    <groupId>javax.xml.bind</groupId>
-		    <artifactId>jaxb-api</artifactId>
-		    <version>2.3.1</version>
-		</dependency>
         
 
     </dependencies>
