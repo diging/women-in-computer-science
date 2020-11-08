@@ -85,18 +85,26 @@ public class HomeController {
         
         ExecutorService executorService  = Executors.newCachedThreadPool();
         
-        List<Callable<Void>> todoGraph = new ArrayList<Callable<Void>>();
+        List<Callable<Void>> threadsToFetchGraph = new ArrayList<Callable<Void>>();
+        
         for (String uri : uris) {
             List<Graph> graphs = graphDbConnection.getGraphs(uri);
             for (Graph graph : graphs) {
-            	todoGraph.add(new Callable<Void>() {
+            	
+            	threadsToFetchGraph.add(new Callable<Void>() {
+            		
             	    public Void call() throws Exception {
+            	    	
+//            	    	System.out.println(graph.getConceptUri());
             	    	List<Edge> edges = graph.getEdges();
-            	    	List<Callable<Void>> todoEdges = new ArrayList<Callable<Void>>();
+            	    	List<Callable<Void>> threadsToFetchEdges = new ArrayList<Callable<Void>>();
                         for (Edge edge : edges) {
                         	
-                        	todoEdges.add(new Callable<Void>() {
+                        	threadsToFetchEdges.add(new Callable<Void>() {
+                        		
                         		 public Void call() throws Exception {
+                        			 
+//                        			 System.out.println(edge.getLabel());
                         			 Node sourceNode = edge.getSourceNode();
                                      Node targetNode = edge.getTargetNode();
                                      
@@ -124,7 +132,7 @@ public class HomeController {
                         	});
                         }
                         try {
-                			executorService.invokeAll(todoEdges);
+                			executorService.invokeAll(threadsToFetchEdges);
                 		} catch (InterruptedException e) {
                 			// TODO Auto-generated catch block
                 			e.printStackTrace();
@@ -135,7 +143,7 @@ public class HomeController {
             }
         }
     	try {
-			executorService.invokeAll(todoGraph);
+			executorService.invokeAll(threadsToFetchGraph);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
