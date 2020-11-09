@@ -6,7 +6,6 @@
 <script src="https://unpkg.com/cose-base/cose-base.js"></script>
 <script src="<c:url value="/resources/js/cytoscape-3.16.3/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
-
 <script type="text/javascript">
     var cy;
     var highlightSize = "50px";
