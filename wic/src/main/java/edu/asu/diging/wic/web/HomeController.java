@@ -72,10 +72,8 @@ public class HomeController {
     
     @RequestMapping(value = "/network")
     public ResponseEntity<Collection<GraphElement>> getPersonNetwork() {
-    	
         List<String> uris = graphDbConnection.getAllPersons();
         ConcurrentHashMap<String, GraphElement> elements = new ConcurrentHashMap<>();
-        
         ExecutorService executorService  = Executors.newCachedThreadPool();
         
         List<Callable<Void>> threadsToFetchGraph = new ArrayList<Callable<Void>>();
@@ -88,7 +86,7 @@ public class HomeController {
             		
             	    public Void call() throws Exception {
             	    	
-//            	    	System.out.println(graph.getConceptUri());
+            	    	System.out.println(graph.getConceptUri());
             	    	List<Edge> edges = graph.getEdges();
             	    	List<Callable<Void>> threadsToFetchEdges = new ArrayList<Callable<Void>>();
                         for (Edge edge : edges) {
@@ -97,7 +95,7 @@ public class HomeController {
                         		
                         		 public Void call() throws Exception {
                         			 
-//                        			 System.out.println(edge.getLabel());
+                        			 System.out.println(edge.getLabel());
                         			 Node sourceNode = edge.getSourceNode();
                                      Node targetNode = edge.getTargetNode();
                                      
