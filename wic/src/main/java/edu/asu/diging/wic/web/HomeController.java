@@ -86,7 +86,7 @@ public class HomeController {
             		
             	    public Void call() throws Exception {
             	    	
-            	    	System.out.println(graph.getConceptUri());
+//            	    	System.out.println(graph.getConceptUri());
             	    	List<Edge> edges = graph.getEdges();
             	    	List<Callable<Void>> threadsToFetchEdges = new ArrayList<Callable<Void>>();
                         for (Edge edge : edges) {
@@ -95,7 +95,7 @@ public class HomeController {
                         		
                         		 public Void call() throws Exception {
                         			 
-                        			 System.out.println(edge.getLabel());
+//                        			 System.out.println(edge.getLabel());
                         			 Node sourceNode = edge.getSourceNode();
                                      Node targetNode = edge.getTargetNode();
                                      
