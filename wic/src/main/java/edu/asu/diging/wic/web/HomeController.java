@@ -1,12 +1,9 @@
 package edu.asu.diging.wic.web;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,72 +70,37 @@ public class HomeController {
     @RequestMapping(value = "/network")
     public ResponseEntity<Collection<GraphElement>> getPersonNetwork() {
         List<String> uris = graphDbConnection.getAllPersons();
-        ConcurrentHashMap<String, GraphElement> elements = new ConcurrentHashMap<>();
-        ExecutorService executorService  = Executors.newCachedThreadPool();
-        
-        List<Callable<Void>> threadsToFetchGraph = new ArrayList<Callable<Void>>();
-        
+        Map<String, GraphElement> elements = new HashMap<>();
         for (String uri : uris) {
             List<Graph> graphs = graphDbConnection.getGraphs(uri);
             for (Graph graph : graphs) {
-            	
-            	threadsToFetchGraph.add(new Callable<Void>() {
-            		
-            	    public Void call() throws Exception {
-            	    	
-//            	    	System.out.println(graph.getConceptUri());
-            	    	List<Edge> edges = graph.getEdges();
-            	    	List<Callable<Void>> threadsToFetchEdges = new ArrayList<Callable<Void>>();
-                        for (Edge edge : edges) {
-                        	
-                        	threadsToFetchEdges.add(new Callable<Void>() {
-                        		
-                        		 public Void call() throws Exception {
-                        			 
-//                        			 System.out.println(edge.getLabel());
-                        			 Node sourceNode = edge.getSourceNode();
-                                     Node targetNode = edge.getTargetNode();
-                                     
-                                     GraphElement sourceElem = elements.get(sourceNode.getConceptId());
-                                     if (sourceElem == null) {
-                                         IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
-                                         if (concept != null) {
-                                             sourceElem = createElement(sourceNode, concept);
-                                             elements.put(sourceNode.getConceptId(), sourceElem);
-                                         }
-                                     }
-                                     GraphElement targetElem = elements.get(targetNode.getConceptId());
-                                     if (targetElem == null) {
-                                         IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
-                                         if (concept != null) {
-                                             targetElem = createElement(targetNode, concept);
-                                             elements.put(targetNode.getConceptId(), targetElem);
-                                         }
-                                     }
-                                     if (sourceElem != null && targetElem != null) {
-                                         elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
-                                     }
-                                     return null;
-                        		 }
-                        	});
+                for (Edge edge : graph.getEdges()) {
+                    Node sourceNode = edge.getSourceNode();
+                    Node targetNode = edge.getTargetNode();
+                    
+                    GraphElement sourceElem = elements.get(sourceNode.getConceptId());
+                    if (sourceElem == null) {
+                        IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
+                        if (concept != null) {
+                            sourceElem = createElement(sourceNode, concept);
+                            elements.put(sourceNode.getConceptId(), sourceElem);
                         }
-                        try {
-                			executorService.invokeAll(threadsToFetchEdges);
-                		} catch (InterruptedException e) {
-                			// TODO Auto-generated catch block
-                			e.printStackTrace();
-                		}
-                        return null;
-            	    }
-            	});
+                    }
+                    GraphElement targetElem = elements.get(targetNode.getConceptId());
+                    if (targetElem == null) {
+                        IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
+                        if (concept != null) {
+                            targetElem = createElement(targetNode, concept);
+                            elements.put(targetNode.getConceptId(), targetElem);
+                        }
+                    }
+                    if (sourceElem != null && targetElem != null) {
+                        elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
+                    }
+                }
             }
         }
-    	try {
-			executorService.invokeAll(threadsToFetchGraph);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
 

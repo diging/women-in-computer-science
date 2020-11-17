@@ -29,6 +29,19 @@ $(document).ready(function() {
                             }
                         },
                         {
+//                        	* selecting node with type person
+//                        	* selectors are overwritten so the last rule applicable to the
+//                        	  node will be applied
+                            selector: '[type = "http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab" ]',
+                            style: {
+                            	'background-color': 'data(color)',
+                                'width': nodeSize,
+                                'height': nodeSize,
+                                'label': 'data(label)',
+                                'min-zoomed-font-size': 0
+                            }
+                        },
+                        {
                             selector: 'edge',
                             style: {
                                 'width': 2,
