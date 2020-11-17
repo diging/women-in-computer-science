@@ -9,14 +9,15 @@
     <packaging>war</packaging>
 
     <properties>
-        <org.slf4j-version>1.7.5</org.slf4j-version>
-        <org.springframework-version>5.1.2.RELEASE</org.springframework-version>
-        <spring-security-version>5.1.2.RELEASE</spring-security-version>
-        <spring.version>5.1.2.RELEASE</spring.version>
-        <spring-data.version>Lovelace-RELEASE</spring-data.version>
+        <org.slf4j-version>1.7.30</org.slf4j-version>
+        <org.springframework-version>5.2.9.RELEASE</org.springframework-version>
+        <spring-security-version>5.3.5.RELEASE</spring-security-version>
+        <spring.version>5.2.9.RELEASE</spring.version>
+        <spring-data.version>Neumann-RELEASE</spring-data.version>
+        <apache-tiles.version>3.0.8</apache-tiles.version> 
         <admin.password>admin</admin.password>
 
-        <hibernate.version>5.2.11.Final</hibernate.version>
+        <hibernate.version>5.4.22.Final</hibernate.version>
         <hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
         <hibernate.dialect.storage_engine>InnoDB</hibernate.dialect.storage_engine>
 
@@ -94,7 +95,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -102,7 +103,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
+            <version>2.11.3</version>
         </dependency>
 
         <!-- Spring Security -->
@@ -131,13 +132,13 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.8.9</version>
+            <version>1.9.6</version>
         </dependency>
 
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.8.9</version>
+            <version>1.9.6</version>
         </dependency>
 
         <!-- Logging -->
@@ -161,7 +162,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
+            <version>1.2.17</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.mail</groupId>
@@ -187,27 +188,27 @@
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-template</artifactId>
-            <version>3.0.1</version>
+            <version>${apache-tiles.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-core</artifactId>
-            <version>3.0.1</version>
+            <version>${apache-tiles.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-api</artifactId>
-            <version>3.0.1</version>
+            <version>${apache-tiles.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-servlet</artifactId>
-            <version>3.0.1</version>
+            <version>${apache-tiles.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
-            <version>3.0.1</version>
+            <version>${apache-tiles.version}</version>
         </dependency>
 
         <dependency>
@@ -218,14 +219,14 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>4.0.1</version>
         </dependency>
 
         <!-- Caching -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>2.10.1</version>
+            <version>2.10.6</version>
             <exclusions>
                 <!-- Exclude oder version of SLF4j -->
                 <exclusion>
@@ -239,14 +240,14 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>3.2.0</version>
+            <version>3.4.5</version>
         </dependency>
         
         <!-- MySQL database driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.25</version>
+            <version>8.0.22</version>
         </dependency>
 
         <!-- Hibernate and Dependent jars -->
@@ -261,7 +262,7 @@
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
-            <version>2.1.1</version>
+            <version>2.1.3</version>
         </dependency>
 
         <dependency>
@@ -273,14 +274,14 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
+            <version>1.0.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>2.8.0</version>
         </dependency>
 
         <!-- Hibernate library dependecy end -->
@@ -289,12 +290,12 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
+            <version>2.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.0.1.Final</version>
+            <version>6.1.6.Final</version>
         </dependency>
 
         <!-- @Inject -->
@@ -313,16 +314,21 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
-        </dependency>
+	<dependency>
+	    <groupId>org.eclipse.persistence</groupId>
+	    <artifactId>eclipselink</artifactId>
+	    <version>2.7.7</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.transaction</groupId>
+	    <artifactId>jta</artifactId>
+	    <version>1.1</version>
+	</dependency>
+	<dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+	</dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -354,7 +360,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.3.1</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -392,5 +398,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
