@@ -12,7 +12,11 @@ $(document).ready(function() {
                 data = JSON.stringify(result);
                 cy = cytoscape({
                     container: $('#network'),
+                    zoom: 1,
+                    pan: { x: 0, y: 0 },
                     elements: result,
+                    pixelRatio: 1,
+                    textureOnViewport: true,
                     style: [ // the stylesheet for the graph
                         {
                             selector: 'node',
@@ -20,7 +24,21 @@ $(document).ready(function() {
                                 'background-color': 'data(color)',
                                 'width': nodeSize,
                                 'height': nodeSize,
-                                'label': 'data(label)'
+                                'label': 'data(label)',
+                                'min-zoomed-font-size': 16
+                            }
+                        },
+                        {
+//                        	* selecting node with type person
+//                        	* selectors are overwritten so the last rule applicable to the
+//                        	  node will be applied
+                            selector: '[type = "http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab" ]',
+                            style: {
+                            	'background-color': 'data(color)',
+                                'width': nodeSize,
+                                'height': nodeSize,
+                                'label': 'data(label)',
+                                'min-zoomed-font-size': 0
                             }
                         },
                         {
@@ -28,8 +46,7 @@ $(document).ready(function() {
                             style: {
                                 'width': 2,
                                 'line-color': '#b0c7c3',
-                                'target-arrow-color': '#b0c7c3',
-                                'target-arrow-shape': 'triangle'
+                                'curve-style':'haystack'
                             }
                         }
                     ],
