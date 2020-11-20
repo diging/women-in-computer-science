@@ -61,6 +61,7 @@
 	          <ul class="dropdown-menu">
 	            <li><a href="<c:url value="/admin/import/person" />">Import Person</a></li>
 	            <li><a href="<c:url value="/admin/import/list" />">Show Imports</a></li>
+	            <li><a href="<c:url value="admin/import/conceptText" />">Show Imports</a></li>
 	          </ul>
 	        </li>
             </sec:authorize>
