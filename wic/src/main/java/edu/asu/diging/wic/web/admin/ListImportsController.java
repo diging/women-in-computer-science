@@ -48,4 +48,10 @@ public class ListImportsController {
         
         return "admin/import/conceptText";
     }
+    
+    @RequestMapping(value="/admin/import/text", method=RequestMethod.GET)
+    public String showText(Model model) {
+        
+        return "admin/import/text";
+    }
 }
