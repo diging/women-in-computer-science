@@ -62,7 +62,7 @@
 	            <li><a href="<c:url value="/admin/import/person" />">Import Person</a></li>
 	            <li><a href="<c:url value="/admin/import/list" />">Show Imports</a></li>
 	            <li><a href="<c:url value="/admin/import/conceptText" />">Show Imports</a></li>
-	            <li><a href="<c:url value="/admin/import/text" />">Show Text</a></li>
+	            <li><a href="<c:url value="/admin/import/addConceptText" />">Show Text</a></li>
 	          </ul>
 	        </li>
             </sec:authorize>

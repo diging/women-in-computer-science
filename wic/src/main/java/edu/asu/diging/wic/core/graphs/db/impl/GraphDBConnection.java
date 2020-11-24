@@ -77,3 +77,4 @@ public class GraphDBConnection implements IGraphDBConnection {
         }
     }
 }
+//insert into

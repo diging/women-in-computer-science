@@ -1,30 +1,29 @@
 package edu.asu.diging.wic.core.conceptText.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "ConceptText")
 public class ConceptText {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dbId;
+    private Long id;
 
-    private String id;
     private String conceptId;
     private String text;
     
-	public Long getDbId() {
-		return dbId;
-	}
-	public void setDbId(Long dbId) {
-		this.dbId = dbId;
-	}
-	public String getId() {
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getConceptId() {

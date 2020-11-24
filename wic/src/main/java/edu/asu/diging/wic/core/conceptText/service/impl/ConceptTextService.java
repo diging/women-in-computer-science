@@ -1,0 +1,32 @@
+package edu.asu.diging.wic.core.conceptText.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import edu.asu.diging.wic.core.conceptText.model.ConceptText;
+import edu.asu.diging.wic.core.conceptText.repository.IConceptTextDatabaseConnection;
+import edu.asu.diging.wic.core.conceptText.service.IConceptTextService;
+
+@Service
+public class ConceptTextService implements IConceptTextService {
+	
+	@Autowired
+	IConceptTextDatabaseConnection iConceptTextDatabaseConnection;
+	
+	@Override
+	public void addText(ConceptText conceptText) {
+		// TODO Auto-generated method stub
+		iConceptTextDatabaseConnection.addText(conceptText);
+	}
+
+	@Override
+	public List<ConceptText> allTextOfConcept(String conceptId) {
+		
+		return iConceptTextDatabaseConnection.allTextOfConcept(conceptId);
+	}
+	
+	
+
+}

@@ -47,7 +47,7 @@ public class PersistentContext {
        LocalContainerEntityManagerFactoryBean em 
          = new LocalContainerEntityManagerFactoryBean();
        em.setDataSource(dataSource());
-       em.setPackagesToScan(new String[] { "edu.asu.diging.wic.core.dataimport.model", "edu.asu.diging.wic.core.model" });
+       em.setPackagesToScan(new String[] { "edu.asu.diging.wic.core.dataimport.model", "edu.asu.diging.wic.core.model", "edu.asu.diging.wic.core.conceptText.model"});
   
        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
        em.setJpaVendorAdapter(vendorAdapter);
