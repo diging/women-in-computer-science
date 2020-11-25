@@ -48,8 +48,12 @@
         <put-attribute name="content" value="/WEB-INF/views/admin/import/list.jsp" />    
     </definition>
     
-    <definition name="admin/import/conceptText" extends="base.definition"> 
-    	<put-attribute name="content" value="/WEB-INF/views/admin/import/conceptText.jsp" />
+    <definition name="admin/import/addConceptText" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/import/addConceptText.jsp" />
+    </definition>
+    
+    <definition name="admin/import/showConceptText" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/import/showConceptText.jsp" />
     </definition>
 	
     <definition name="person" extends="base.definition.public">

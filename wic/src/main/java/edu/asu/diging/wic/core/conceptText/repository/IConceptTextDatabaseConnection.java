@@ -8,6 +8,8 @@ public interface IConceptTextDatabaseConnection {
 	
 	List<ConceptText> allTextOfConcept(String conceptId);
 	void addText(ConceptText conceptText);
+	public List<ConceptText> showAllText();
 	void update(String id, String text);
 	void delete(String id);
+	
 }

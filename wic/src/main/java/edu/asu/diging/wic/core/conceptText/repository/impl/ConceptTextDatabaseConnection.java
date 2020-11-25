@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 import edu.asu.diging.wic.core.conceptText.repository.IConceptTextDatabaseConnection;
+import edu.asu.diging.wic.core.model.impl.Concept;
 import edu.asu.diging.wic.core.model.impl.Graph;
 
 @Repository
@@ -43,7 +44,18 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 	@Override
 	public void delete(String id) {
 		// TODO Auto-generated method stub
-		
+		Long dbid = Long.parseLong(id);
+		Object concept = em.find(ConceptText.class,dbid);
+        if (concept != null) {
+            em.remove(concept);
+        }
+	}
+
+	@Override
+	public List<ConceptText> showAllText() {
+		// TODO Auto-generated method stub
+		TypedQuery<ConceptText> query = em.createQuery("from ConceptText", ConceptText.class);
+        return query.getResultList();
 	}
 
 }

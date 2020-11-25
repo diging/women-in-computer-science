@@ -24,19 +24,41 @@ public class ConceptTextController {
     public String addText(Model model) {
         
 		ConceptText conceptText = new ConceptText();
-		conceptText.setConceptId("CONRsyWzi5zJ4st");
-		conceptText.setText("xyz");
-		iConceptTextService.addText(conceptText);
-        return "admin/import/conceptText";
+//		conceptText.setConceptId("CONRsyWzi5zJ4st");
+//		conceptText.setText("xyz");
+//		iConceptTextService.addText(conceptText);
+        return "admin/import/addConceptText";
     }
 
 	@RequestMapping(value="/admin/import/getConceptText/{conceptId}", method=RequestMethod.GET)
     public String showText(@PathVariable("conceptId") String conceptId, Model model) {
         
-		List<ConceptText> allConceptIdData = iConceptTextService.allTextOfConcept(conceptId);
-		for(ConceptText tmp : allConceptIdData) {
-			System.out.println(tmp.getText());
-		}
-        return "admin/import/conceptText";
+//		List<ConceptText> allConceptIdData = iConceptTextService.allTextOfConcept(conceptId);
+//		for(ConceptText tmp : allConceptIdData) {
+//			System.out.println(tmp.getText());
+//		}
+//        return "admin/import/addConceptText";
+		return "";
     }
+	
+	@RequestMapping(value="/admin/import/showConceptText", method=RequestMethod.GET)
+	public String showAllText(Model model) {
+		
+		List<ConceptText> allConceptText = iConceptTextService.showAllText();
+		for(ConceptText k : allConceptText) {
+			System.out.println(k.getText());
+		}
+//		model.addAttribute("conceptText",allConceptText);
+		model.addAttribute("allConceptText",allConceptText);
+		return "admin/import/showConceptText";
+	}
+	
+	@RequestMapping(value="/admin/import/deleteConceptText/{id}", method=RequestMethod.GET)
+	public String deleteText(@PathVariable("id") String id, Model model) {
+		
+		iConceptTextService.deleteText(id);
+		List<ConceptText> allConceptText = iConceptTextService.showAllText();
+		model.addAttribute("allConceptText",allConceptText);
+		return "admin/import/showConceptText";
+	}
 }

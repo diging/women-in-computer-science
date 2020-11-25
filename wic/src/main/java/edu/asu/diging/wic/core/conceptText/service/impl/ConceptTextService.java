@@ -26,6 +26,17 @@ public class ConceptTextService implements IConceptTextService {
 		
 		return iConceptTextDatabaseConnection.allTextOfConcept(conceptId);
 	}
+
+	@Override
+	public List<ConceptText> showAllText() {
+		return iConceptTextDatabaseConnection.showAllText();
+	}
+
+	@Override
+	public void deleteText(String id) {
+		// TODO Auto-generated method stub
+		iConceptTextDatabaseConnection.delete(id);
+	}
 	
 	
 

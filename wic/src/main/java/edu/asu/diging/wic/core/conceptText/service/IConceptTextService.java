@@ -9,4 +9,8 @@ public interface IConceptTextService {
 	public void addText(ConceptText conceptText);
 	
 	public List<ConceptText> allTextOfConcept(String conceptId);
+	
+	public List<ConceptText> showAllText();
+	
+	public void deleteText(String id);
 }
