@@ -1,7 +1,10 @@
 package edu.asu.diging.wic.web;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
@@ -101,6 +107,53 @@ public class HomeController {
             }
         }
         
+        return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/network1",  method=RequestMethod.POST)
+    public ResponseEntity<Collection<GraphElement>> getPersonNetworkFilter(@RequestParam(value="filterList") ArrayList<String> filterList, Principal principal, RedirectAttributes redirectAttrs) {
+        List<String> uris = graphDbConnection.getAllPersons();
+        Map<String, GraphElement> elements = new HashMap<>();
+        for (String uri : uris) {
+            List<Graph> graphs = graphDbConnection.getGraphs(uri);
+            for (Graph graph : graphs) {
+                for (Edge edge : graph.getEdges()) {
+                    Node sourceNode = edge.getSourceNode();
+                    Node targetNode = edge.getTargetNode();
+                    
+                    GraphElement sourceElem = elements.get(sourceNode.getConceptId());
+                    if (sourceElem == null) {
+                        IConcept concept = conceptCache.getConceptById(sourceNode.getConceptId());
+                        if (concept != null) {
+                            sourceElem = createElement(sourceNode, concept);
+                            elements.put(sourceNode.getConceptId(), sourceElem);
+                        }
+                    }
+                    GraphElement targetElem = elements.get(targetNode.getConceptId());
+                    if (targetElem == null) {
+                        IConcept concept = conceptCache.getConceptById(targetNode.getConceptId());
+                        if (concept != null) {
+                            targetElem = createElement(targetNode, concept);
+                            elements.put(targetNode.getConceptId(), targetElem);
+                        }
+                    }
+                    if (sourceElem != null && targetElem != null) {
+                        elements.put(edge.getId() + "", new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(), edge.getId() + "", "")));
+                    }
+                }
+            }
+        }
+        HashSet<String> filterTypes = new HashSet<String>(filterList);
+        ArrayList<String> valuesToBeRemoved = new ArrayList<String>();
+        for(String key : elements.keySet()) {
+        	GraphElement value = elements.get(key);
+        	if(filterTypes.contains(value.getData().getType())) {
+        		valuesToBeRemoved.add(key);
+        	}
+        }
+        for (String key : valuesToBeRemoved) {
+			elements.remove(key);
+		}
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
     
