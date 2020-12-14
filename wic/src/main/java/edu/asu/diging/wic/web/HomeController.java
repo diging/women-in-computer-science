@@ -103,6 +103,8 @@ public class HomeController {
         
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
+    
+    
 
     private GraphElement createElement(Node node, IConcept concept) {
         GraphElement element = new GraphElement(new Data(concept.getId(), node.getLabel()));

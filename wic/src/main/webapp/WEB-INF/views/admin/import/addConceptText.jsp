@@ -21,17 +21,17 @@
 
 <h3> Add title for the text</h3>
 
-<textarea name="title" cols="150"></textarea>
+<textarea id="title" cols="150"></textarea>
 
 <h3> Add author for the text</h3>
 
-<textarea name="author" cols="150"></textarea>
+<textarea id="author" cols="150"></textarea>
 
 <h3>Add Text in markdown</h3>
 
-<textarea name="paragraph_text" cols="150" rows="8"></textarea>
+<textarea id="paragraph_text" cols="150" rows="8"></textarea>
 
-<form action="verifyNonEmpty">
+<form onSubmit="verifyNonEmpty()">
      <input type="submit" value="Add Concept Text">
 </form>
 			    
@@ -40,16 +40,26 @@
 var conceptId;
 
 function verifyNonEmpty() {
-	if(conceptId === undefined) {
+	
+	if(window.conceptId === undefined) {
 		alert("Concept is not selected");
-	} else if($.trim($("title").val()) === "") {
-		alert("Concept is null or empty");
-	} else if($.trim($("author").val()) === "") {
+	} else if(document.getElementById('title').value.trim() === "") {
+		alert("Title is null or empty");
+	} else if(document.getElementById('author').value.trim() === "") {
 		alert("Author is null or empty");
-	} else if($.trim($("paragraph_text").val()) === "") {
+	} else if(document.getElementById('paragraph_text').value.trim() === "") {
 		alert("Concept Text is null or empty");
 	} else {
-		
+		console.log("hi");
+		$.ajax({
+			type:"POST",
+			contentType: "application/json",
+			url : '<c:url value="/admin/import/addConceptTextData" />',
+			data: {"one":"one"},
+			success: function(msg) {
+				alert("ConcepText added");
+			}
+		});
 	}
 }
 
@@ -77,7 +87,7 @@ function search(searchTerm) {
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    li.append('<small>' + element.description + '</small>');
     	    li.on('click', function() {
-    	    	conceptId = element.id;
+    	    	window.conceptId = element.id;
     	    });
     	    container.append(li);
     	   });
