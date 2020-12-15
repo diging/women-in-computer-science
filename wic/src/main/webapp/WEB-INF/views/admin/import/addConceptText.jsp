@@ -33,8 +33,7 @@
 
 <form onSubmit="verifyNonEmpty()">
      <input type="submit" value="Add Concept Text">
-</form>
-			    
+</form>	    
 <script>
 
 var conceptId;
@@ -50,12 +49,15 @@ function verifyNonEmpty() {
 	} else if(document.getElementById('paragraph_text').value.trim() === "") {
 		alert("Concept Text is null or empty");
 	} else {
-		console.log("hi");
 		$.ajax({
 			type:"POST",
-			contentType: "application/json",
-			url : '<c:url value="/admin/import/addConceptTextData" />',
-			data: {"one":"one"},
+			url : '<c:url value="/admin/import/addConceptTextData/?${_csrf.parameterName}=${_csrf.token}" />',
+			data: {
+				conceptId:window.conceptId, 
+				title:document.getElementById('title').value.trim(),
+				author:document.getElementById('author').value.trim(),
+				paragraph_text:document.getElementById('paragraph_text').value.trim()
+				},
 			success: function(msg) {
 				alert("ConcepText added");
 			}
