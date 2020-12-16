@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,4 +81,13 @@ public class ConceptTextController {
 		model.addAttribute("allConceptText",allConceptText);
 		return "admin/import/showConceptText";
 	}
+	
+	@RequestMapping(value="/admin/import/updateConceptTextData", method=RequestMethod.POST)
+    public ResponseEntity<String> updateTextData(@RequestParam(value="id") String id, 
+    		@RequestParam(value="text") String text ,
+    		Principal principal, RedirectAttributes redirectAttrs) {
+
+        iConceptTextService.updateText(id, text);
+        return new ResponseEntity<>("result successful result", HttpStatus.OK);
+    }
 }

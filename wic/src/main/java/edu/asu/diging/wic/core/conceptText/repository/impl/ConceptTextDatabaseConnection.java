@@ -38,7 +38,11 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 	@Override
 	public void update(String id, String text) {
 		// TODO Auto-generated method stub
-		
+		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.id = :id", ConceptText.class);
+        query.setParameter("id", Long.parseLong(id));
+        ConceptText obj = query.getSingleResult();
+        obj.setText(text);
+        addText(obj);
 	}
 
 	@Override

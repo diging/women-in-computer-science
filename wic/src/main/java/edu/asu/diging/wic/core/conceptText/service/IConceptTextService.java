@@ -13,4 +13,6 @@ public interface IConceptTextService {
 	public List<ConceptText> showAllText();
 	
 	public void deleteText(String id);
+	
+	public void updateText(String id, String text);
 }

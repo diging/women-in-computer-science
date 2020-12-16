@@ -37,6 +37,12 @@ public class ConceptTextService implements IConceptTextService {
 		// TODO Auto-generated method stub
 		iConceptTextDatabaseConnection.delete(id);
 	}
+
+	@Override
+	public void updateText(String id, String text) {
+		// TODO Auto-generated method stub
+		iConceptTextDatabaseConnection.update(id, text);
+	}
 	
 	
 
