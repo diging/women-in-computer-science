@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
 <h3>Search Concept</h3>
 
@@ -16,20 +18,19 @@
 </form>
 
 <div id="searchResults" class="list-group">
-
 </div>
 
 <h3> Add title for the text</h3>
-
 <textarea id="title" cols="150"></textarea>
 
 <h3> Add author for the text</h3>
-
 <textarea id="author" cols="150"></textarea>
 
 <h3>Add Text in markdown</h3>
-
 <textarea id="paragraph_text" cols="150" rows="8"></textarea>
+<script>
+var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});
+</script>
 
 <form onSubmit="verifyNonEmpty()">
      <input type="submit" value="Add Concept Text">
@@ -46,7 +47,7 @@ function verifyNonEmpty() {
 		alert("Title is null or empty");
 	} else if(document.getElementById('author').value.trim() === "") {
 		alert("Author is null or empty");
-	} else if(document.getElementById('paragraph_text').value.trim() === "") {
+	} else if(easyMDE.value().trim() === "") {
 		alert("Concept Text is null or empty");
 	} else {
 		$.ajax({
@@ -56,10 +57,11 @@ function verifyNonEmpty() {
 				conceptId:window.conceptId, 
 				title:document.getElementById('title').value.trim(),
 				author:document.getElementById('author').value.trim(),
-				paragraph_text:document.getElementById('paragraph_text').value.trim()
+				paragraph_text:easyMDE.value().trim()
 				},
 			success: function(msg) {
 				alert("ConcepText added");
+				window.location.reload();
 			}
 		});
 	}
