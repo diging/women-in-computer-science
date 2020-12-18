@@ -90,4 +90,34 @@ public class ConceptTextController {
         iConceptTextService.updateText(id, text);
         return new ResponseEntity<>("result successful result", HttpStatus.OK);
     }
+	
+	@RequestMapping(value="/admin/import/editConceptText", method=RequestMethod.POST)
+    public String editTextData(@RequestParam(value="id") String id, 
+    		@RequestParam(value="text") String text ,
+    		@RequestParam(value="conceptId") String conceptId ,
+    		@RequestParam(value="title") String title ,
+    		Principal principal, RedirectAttributes redirectAttrs, Model model) {
+		System.out.println(id);
+        model.addAttribute("id", id);
+        redirectAttrs.addFlashAttribute("id", id);
+        //editConceptTextView(model);
+        return "redirect:/admin/import/editConceptTextView";
+    }
+	
+	@RequestMapping(value="/admin/import/editConceptTextView", method=RequestMethod.GET)
+    public String editConceptTextView( @RequestParam(value = "conceptId") String conceptId,
+    		@RequestParam(value = "id") String id,
+    		@RequestParam(value = "title") String title,
+    		@RequestParam(value = "text") String text,
+    		Model model) {
+		model.addAttribute("idOfData", id);
+		model.addAttribute("title", title);
+		model.addAttribute("text", text);
+		model.addAttribute("conceptId", conceptId);
+		System.out.println(conceptId);
+		System.out.println(title);
+		System.out.println(text);
+		System.out.println(id);
+        return "admin/import/editConceptText";
+    }
 }

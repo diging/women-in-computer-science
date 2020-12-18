@@ -55,6 +55,10 @@
     <definition name="admin/import/showConceptText" extends="base.definition"> 
     	<put-attribute name="content" value="/WEB-INF/views/admin/import/showConceptText.jsp" />
     </definition>
+    
+    <definition name="admin/import/editConceptText" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/import/editConceptText.jsp" />
+    </definition>
 	
     <definition name="person" extends="base.definition.public">
         <put-attribute name="content" value="/WEB-INF/views/person.jsp" />    
