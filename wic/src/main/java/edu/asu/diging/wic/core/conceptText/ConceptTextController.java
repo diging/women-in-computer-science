@@ -104,20 +104,15 @@ public class ConceptTextController {
         return "redirect:/admin/import/editConceptTextView";
     }
 	
-	@RequestMapping(value="/admin/import/editConceptTextView", method=RequestMethod.GET)
-    public String editConceptTextView( @RequestParam(value = "conceptId") String conceptId,
-    		@RequestParam(value = "id") String id,
-    		@RequestParam(value = "title") String title,
-    		@RequestParam(value = "text") String text,
-    		Model model) {
-		model.addAttribute("idOfData", id);
-		model.addAttribute("title", title);
-		model.addAttribute("text", text);
-		model.addAttribute("conceptId", conceptId);
-		System.out.println(conceptId);
-		System.out.println(title);
-		System.out.println(text);
-		System.out.println(id);
+	@RequestMapping(value="/admin/import/editConceptTextView/{id}", method=RequestMethod.GET)
+    public String editConceptTextView( @PathVariable("id") String id, Model model) {
+		
+		ConceptText data = iConceptTextService.getConceptTextById(id);
+		model.addAttribute("idOfData", data.getId());
+		model.addAttribute("title", data.getTitle());
+		model.addAttribute("text", data.getText());
+		model.addAttribute("conceptId", data.getConceptId());
+		
         return "admin/import/editConceptText";
     }
 }

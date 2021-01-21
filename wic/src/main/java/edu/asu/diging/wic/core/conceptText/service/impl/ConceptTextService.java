@@ -44,6 +44,12 @@ public class ConceptTextService implements IConceptTextService {
 		iConceptTextDatabaseConnection.update(id, text);
 	}
 	
+	@Override
+	public ConceptText getConceptTextById(String id) {
+		// TODO Auto-generated method stub
+		ConceptText data = iConceptTextDatabaseConnection.getConceptTextById(id);
+		return data;
+	}
 	
 
 }

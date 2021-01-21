@@ -11,5 +11,6 @@ public interface IConceptTextDatabaseConnection {
 	public List<ConceptText> showAllText();
 	void update(String id, String text);
 	void delete(String id);
+	ConceptText getConceptTextById(String id);
 	
 }

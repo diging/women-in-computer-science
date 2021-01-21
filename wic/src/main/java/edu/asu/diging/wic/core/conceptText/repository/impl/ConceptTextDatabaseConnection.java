@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 import edu.asu.diging.wic.core.conceptText.repository.IConceptTextDatabaseConnection;
-import edu.asu.diging.wic.core.model.impl.Concept;
-import edu.asu.diging.wic.core.model.impl.Graph;
 
 @Repository
 @Transactional
@@ -61,5 +59,15 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 		TypedQuery<ConceptText> query = em.createQuery("from ConceptText", ConceptText.class);
         return query.getResultList();
 	}
+
+	@Override
+	public ConceptText getConceptTextById(String id) {
+		// TODO Auto-generated method stub
+		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.id = :id", ConceptText.class);
+		query.setParameter("id", Long.parseLong(id));
+		ConceptText obj = query.getSingleResult();
+		return obj;
+	}
+
 
 }

@@ -15,4 +15,6 @@ public interface IConceptTextService {
 	public void deleteText(String id);
 	
 	public void updateText(String id, String text);
+	
+	public ConceptText getConceptTextById(String id);
 }

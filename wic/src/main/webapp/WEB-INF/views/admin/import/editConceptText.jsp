@@ -3,21 +3,16 @@
 <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
-<b>Previous Text</b>
-<br>${text}<br>
 <b>Enter new Text</b>
-<textarea cols="150" rows="3"></textarea>
-<script>var easyMDE = new EasyMDE();</script>
-<input id="clickMe" type="button" value="Update"/>
-
+<textarea id="paragraph_text" cols="150" rows="3">${text}</textarea>
+<script>var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});</script>
+<!--  <input id="clickMe" type="button" value="Update" onclick="updateText(${idOfData})"/>-->
+<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/import/showConceptText"/>" class="btn btn-primary">Update</a>
 <script>
 
-document.getElementById("clickMe").onclick = function() {
-	updateText(${idOfData},easyMDE);
-};
 
-function updateText(id,easyMDE) {
-	console.log("inside");
+function updateText(id) {
+	console.log("inside:"+id);
 	if(easyMDE.value().trim() === "") {
 		console.log("bye");
 		alert("Concept Text is null or empty");
@@ -32,16 +27,9 @@ function updateText(id,easyMDE) {
 			},
 			success: function(msg) {
 				alert("ConcepText updated");
-				$.ajax({
-					type:"GET",
-					url : '<c:url value="/admin/import/showConceptText" />',
-					success: function(msg) {
-						console.log(msg);
-						$( "html" ).html( msg );
-					}
-				})
-				
-			}
+
+			},
+			async: false
 		});
 	}
 }
