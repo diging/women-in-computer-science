@@ -9,7 +9,7 @@ public interface IConceptTextDatabaseConnection {
 	List<ConceptText> allTextOfConcept(String conceptId);
 	void addText(ConceptText conceptText);
 	public List<ConceptText> showAllText();
-	void update(String id, String text);
+	void update(String id, String text, String modifiedBy);
 	void delete(String id);
 	ConceptText getConceptTextById(String id);
 	

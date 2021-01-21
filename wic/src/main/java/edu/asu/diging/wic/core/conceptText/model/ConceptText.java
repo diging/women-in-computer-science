@@ -17,7 +17,10 @@ public class ConceptText {
     private String title;
     private String author;
     private String text;
-    private String timestamp;
+    private String addedOn;
+    private String addedBy;
+    private String modifiedOn;
+    private String modifiedby;
     
 	
 	public Long getId() {
@@ -50,11 +53,29 @@ public class ConceptText {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getTimestamp() {
-		return timestamp;
+	public String getAddedBy() {
+		return addedBy;
 	}
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setAddedBy(String addedBy) {
+		this.addedBy = addedBy;
+	}
+	public String getAddedOn() {
+		return addedOn;
+	}
+	public void setAddedOn(String addedOn) {
+		this.addedOn = addedOn;
+	}
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+	public String getModifiedby() {
+		return modifiedby;
+	}
+	public void setModifiedby(String modifiedby) {
+		this.modifiedby = modifiedby;
 	}
 	
 }

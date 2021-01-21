@@ -39,9 +39,9 @@ public class ConceptTextService implements IConceptTextService {
 	}
 
 	@Override
-	public void updateText(String id, String text) {
+	public void updateText(String id, String text, String modifiedBy) {
 		// TODO Auto-generated method stub
-		iConceptTextDatabaseConnection.update(id, text);
+		iConceptTextDatabaseConnection.update(id, text, modifiedBy);
 	}
 	
 	@Override

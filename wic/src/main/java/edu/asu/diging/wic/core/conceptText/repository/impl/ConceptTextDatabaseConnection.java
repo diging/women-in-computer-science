@@ -1,5 +1,6 @@
 package edu.asu.diging.wic.core.conceptText.repository.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -34,12 +35,14 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 	}
 
 	@Override
-	public void update(String id, String text) {
+	public void update(String id, String text, String modifiedBy) {
 		// TODO Auto-generated method stub
 		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.id = :id", ConceptText.class);
         query.setParameter("id", Long.parseLong(id));
         ConceptText obj = query.getSingleResult();
         obj.setText(text);
+        obj.setModifiedby(modifiedBy);
+        obj.setModifiedOn(new Date().getTime()+"");
         addText(obj);
 	}
 
