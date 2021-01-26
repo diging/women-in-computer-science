@@ -25,27 +25,27 @@ public class ConceptTextController {
 	private IConceptTextService iConceptTextService;
 	
 	@RequestMapping(value="/admin/import/addConceptText", method=RequestMethod.GET)
-    public String addText(Model model) {
-        return "admin/import/addConceptText";
-    }
+	public String addText(Model model) {
+	    return "admin/import/addConceptText";
+	}
 		
 	@RequestMapping(value="/admin/import/addConceptTextData", method=RequestMethod.POST)
-    public String addTextData(@RequestParam(value="conceptId") String conceptId, 
-    		@RequestParam(value="title") String title ,
-    		@RequestParam(value="author") String author ,
-    		@RequestParam(value="paragraph_text") String paragraph_text ,
-    		Principal principal, RedirectAttributes redirectAttrs) {
-
-        ConceptText dataObj = new ConceptText();
-        dataObj.setConceptId(conceptId);
-        dataObj.setTitle(title);
-        dataObj.setAuthor(author);
-        dataObj.setText(paragraph_text);
-        dataObj.setAddedOn(new Date().getTime()+"");
-        dataObj.setAddedBy(principal.getName());
-        iConceptTextService.addText(dataObj);
-        return "admin/import/addConceptText";
-    }
+	public String addTextData(@RequestParam(value="conceptId") String conceptId, 
+			@RequestParam(value="title") String title ,
+			@RequestParam(value="author") String author ,
+			@RequestParam(value="paragraph_text") String paragraph_text ,
+			Principal principal, RedirectAttributes redirectAttrs) {
+	
+	    ConceptText dataObj = new ConceptText();
+	    dataObj.setConceptId(conceptId);
+	    dataObj.setTitle(title);
+	    dataObj.setAuthor(author);
+	    dataObj.setText(paragraph_text);
+	    dataObj.setAddedOn(new Date().getTime()+"");
+	    dataObj.setAddedBy(principal.getName());
+	    iConceptTextService.addText(dataObj);
+	    return "admin/import/addConceptText";
+	}
 
 	@RequestMapping(value="/admin/import/showConceptText", method=RequestMethod.GET)
 	public String showAllText(Model model) {
