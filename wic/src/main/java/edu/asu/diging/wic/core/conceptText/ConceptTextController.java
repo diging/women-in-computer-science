@@ -76,11 +76,11 @@ public class ConceptTextController {
 	@RequestMapping(value="/admin/import/editConceptTextView/{id}", method=RequestMethod.GET)
     public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
 		
-		ConceptText data = iConceptTextService.getConceptTextById(id);
-		model.addAttribute("idOfData", data.getId());
-		model.addAttribute("title", data.getTitle());
-		model.addAttribute("text", data.getText());
-		model.addAttribute("conceptId", data.getConceptId());
+		ConceptText dataObj = iConceptTextService.getConceptTextById(id);
+		model.addAttribute("idOfData", dataObj.getId());
+		model.addAttribute("title", dataObj.getTitle());
+		model.addAttribute("text", dataObj.getText());
+		model.addAttribute("conceptId", dataObj.getConceptId());
         return "admin/import/editConceptText";
     }
 }
