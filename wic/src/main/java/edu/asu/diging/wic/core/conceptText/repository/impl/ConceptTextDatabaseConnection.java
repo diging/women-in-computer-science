@@ -18,7 +18,7 @@ import edu.asu.diging.wic.core.conceptText.repository.IConceptTextDatabaseConnec
 public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnection {
 	
 	@Autowired
-    private EntityManager em;
+	private EntityManager em;
 	
 	@Override
 	public List<ConceptText> allTextOfConcept(String conceptId) {

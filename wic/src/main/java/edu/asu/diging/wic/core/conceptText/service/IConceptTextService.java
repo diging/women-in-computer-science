@@ -6,15 +6,15 @@ import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 
 public interface IConceptTextService {
 	
-	public void addText(ConceptText conceptText);
+	void addText(ConceptText conceptText);
 	
-	public List<ConceptText> allTextOfConcept(String conceptId);
+	List<ConceptText> allTextOfConcept(String conceptId);
 	
-	public List<ConceptText> showAllText();
+	List<ConceptText> showAllText();
 	
-	public void deleteText(String id);
+	void deleteText(String id);
 	
-	public void updateText(String id, String text, String modifiedBy);
+	void updateText(String id, String text, String modifiedBy);
 	
 	public ConceptText getConceptTextById(String id);
 }

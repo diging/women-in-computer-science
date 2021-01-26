@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class ConceptText {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	private Long id;
 
     private String conceptId;
     private String title;
