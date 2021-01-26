@@ -65,22 +65,22 @@ public class ConceptTextController {
 	}
 	
 	@RequestMapping(value="/admin/import/updateConceptTextData", method=RequestMethod.POST)
-    public ResponseEntity<String> updateTextData(@RequestParam(value="id") String id, 
-    		@RequestParam(value="text") String text ,
-    		Principal principal, RedirectAttributes redirectAttrs) {
+	public ResponseEntity<String> updateTextData(@RequestParam(value="id") String id, 
+			@RequestParam(value="text") String text ,
+			Principal principal, RedirectAttributes redirectAttrs) {
 		
-        iConceptTextService.updateText(id, text, principal.getName());
-        return new ResponseEntity<>("result successful result", HttpStatus.OK);
-    }
-
+	    iConceptTextService.updateText(id, text, principal.getName());
+	    return new ResponseEntity<>("result successful result", HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/admin/import/editConceptTextView/{id}", method=RequestMethod.GET)
-    public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
+	public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
 		
 		ConceptText dataObj = iConceptTextService.getConceptTextById(id);
 		model.addAttribute("idOfData", dataObj.getId());
 		model.addAttribute("title", dataObj.getTitle());
 		model.addAttribute("text", dataObj.getText());
 		model.addAttribute("conceptId", dataObj.getConceptId());
-        return "admin/import/editConceptText";
-    }
+	    return "admin/import/editConceptText";
+	}
 }
