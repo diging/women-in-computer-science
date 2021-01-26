@@ -97,7 +97,7 @@ function search(searchTerm) {
     	   });
     });
 }
-//#sourceUrl=search.js
+
 $( document ).ready(function() {
 	$('#selectConcept').click(function() {
 		add($("#searchbox").val());

@@ -6,7 +6,7 @@
 <b>Enter new Text</b>
 <textarea id="paragraph_text" cols="150" rows="3">${text}</textarea>
 <script>var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});</script>
-<!--  <input id="clickMe" type="button" value="Update" onclick="updateText(${idOfData})"/>-->
+
 <a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/import/showConceptText"/>" class="btn btn-primary">Update</a>
 <script>
 

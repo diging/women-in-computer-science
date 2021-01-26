@@ -15,12 +15,6 @@
 		    </form>
 		</div>
 		<div class="pull-right">
-			<!--<form method="post" action="editConceptText.jsp">
-				<input type="submit" value="edit1">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			  	<input type="hidden" name="text" value=`${element.text}`>  
-			</form>-->
-			<!-- <input id="clickMe" type="button" value="edit" onclick="editTextInfo(`${element.text}`,`${element.id}`,`${element.conceptId}`,`${element.title}`)" />  -->
 			<a type="button" href="<c:url value="/admin/import/editConceptTextView/${element.id}" />" class="btn btn-primary">edit</a>
 		</div>
 		</li>
