@@ -12,6 +12,7 @@ $(document).ready(function() {
                 data = JSON.stringify(result);
                 stringifiedResult = data;
                 loadCytoScape(data,result,null);
+                addDropDown();
             }
         },
         error: function() {
@@ -101,16 +102,16 @@ function loadCytoScape(data,result,removeNodes) {
     cy.ready(function() {
         $(".person-entry").hover(highlightPersonInGraph(data,cy), removeHighlight(data,cy));
     });
-    console.log(removeNodes);
+
     if(removeNodes !== null) {
     	
     	for (i = 0; i < removeNodes.length; i++) {
-		  //console.log(removeNodes[i]);
+    		
 		  var selectorData1 = 'node[type = "';
 		  var selectorData2 = '"]';
 		  
 		  var finalSelector = selectorData1.concat(removeNodes[i],selectorData2);
-		  console.log(finalSelector);
+
 		  cy.style().selector(finalSelector)
 	    	.style({
 	    		opacity : 0.4
@@ -120,14 +121,5 @@ function loadCytoScape(data,result,removeNodes) {
 	    		  'line-color': '#e1e6e5'
 	    		});
 		}
-//    	cy.style().selector('node[type = "http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab"]')
-//    	.style({
-//    		opacity : 0.4
-//    	})
-//    	.update();
-//    	cy.$('node[type = "http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab"]').connectedEdges().style({
-//    		  'line-color': '#e1e6e5'
-//    		});
-    	//cy.remove('node[type = "http://www.digitalhps.org/types/TYPE_dfc95f97-f128-42ae-b54c-ee40333eae8c"]');
     }
 }

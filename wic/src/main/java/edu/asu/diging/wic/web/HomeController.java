@@ -159,10 +159,11 @@ public class HomeController {
     }
     
     @RequestMapping(value="/getAllConceptsType", method=RequestMethod.GET)
-    public List<ConceptType> getAllConceptsType() {
+    public ResponseEntity<Collection<ConceptType>> getAllConceptsType(Model model) {
     	
     	List<ConceptType> data = conceptCache.getAllConceptType();
-    	return data;
+    	model.addAttribute("data", data);
+    	return new ResponseEntity<Collection<ConceptType>>(data, HttpStatus.OK);
     }
 
     private GraphElement createElement(Node node, IConcept concept) {
