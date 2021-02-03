@@ -11,6 +11,7 @@ import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
 import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.model.impl.ConceptType;
 
 @Service
 public class ConceptpowerCache implements IConceptpowerCache {
@@ -54,4 +55,10 @@ public class ConceptpowerCache implements IConceptpowerCache {
         }
         return concept; 
     }
+
+	@Override
+	public List<ConceptType> getAllConceptType() {
+		// TODO Auto-generated method stub
+		return conceptDB.getAllConceptType();
+	}
 }

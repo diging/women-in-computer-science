@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.IConceptType;
@@ -216,4 +218,11 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
         }
         return false;
     }
+
+	@Override
+	public List<ConceptType> getAllConceptType() {
+		// TODO Auto-generated method stub
+		TypedQuery<ConceptType> query = em.createQuery("from ConceptType", ConceptType.class);
+        return query.getResultList();
+	}
 }

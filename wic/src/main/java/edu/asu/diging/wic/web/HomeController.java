@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.model.impl.ConceptType;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.Node;
@@ -157,7 +158,12 @@ public class HomeController {
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
     
-    
+    @RequestMapping(value="/getAllConceptsType", method=RequestMethod.GET)
+    public List<ConceptType> getAllConceptsType() {
+    	
+    	List<ConceptType> data = conceptCache.getAllConceptType();
+    	return data;
+    }
 
     private GraphElement createElement(Node node, IConcept concept) {
         GraphElement element = new GraphElement(new Data(concept.getId(), node.getLabel()));
