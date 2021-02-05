@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.model;
+package edu.asu.diging.wic.core.model.impl;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

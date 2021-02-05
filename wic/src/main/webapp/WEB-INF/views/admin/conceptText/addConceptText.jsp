@@ -52,7 +52,7 @@ function verifyNonEmpty() {
 	} else {
 		$.ajax({
 			type:"POST",
-			url : '<c:url value="/admin/import/addConceptTextData/?${_csrf.parameterName}=${_csrf.token}" />',
+			url : '<c:url value="/admin/text/add/?${_csrf.parameterName}=${_csrf.token}" />',
 			data: {
 				conceptId:window.conceptId, 
 				title:document.getElementById('title').value.trim(),

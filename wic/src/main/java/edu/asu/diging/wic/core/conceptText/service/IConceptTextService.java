@@ -2,7 +2,7 @@ package edu.asu.diging.wic.core.conceptText.service;
 
 import java.util.List;
 
-import edu.asu.diging.wic.core.conceptText.model.ConceptText;
+import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 public interface IConceptTextService {
 	

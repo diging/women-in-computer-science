@@ -59,10 +59,10 @@
           	 <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Import <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="<c:url value="/admin/import/person" />">Import Person</a></li>
-	            <li><a href="<c:url value="/admin/import/list" />">Show Imports</a></li>
-	            <li><a href="<c:url value="/admin/import/addConceptText" />">Add Text</a></li>
-	            <li><a href="<c:url value="/admin/import/showConceptText" />">Show Text</a></li>
+	            <li><a href="<c:url value="/admin/text/person" />">Import Person</a></li>
+	            <li><a href="<c:url value="/admin/text/list" />">Show Imports</a></li>
+	            <li><a href="<c:url value="/admin/text/addTextView" />">Add Text</a></li>
+	            <li><a href="<c:url value="/admin/text/show" />">Show Text</a></li>
 	          </ul>
 	        </li>
             </sec:authorize>

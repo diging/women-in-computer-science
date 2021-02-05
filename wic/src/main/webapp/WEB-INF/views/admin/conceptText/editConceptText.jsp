@@ -7,7 +7,7 @@
 <textarea id="paragraph_text" cols="150" rows="3">${text}</textarea>
 <script>var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});</script>
 
-<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/import/showConceptText"/>" class="btn btn-primary">Update</a>
+<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/text/show"/>" class="btn btn-primary">Update</a>
 <script>
 
 
@@ -20,7 +20,7 @@ function updateText(id) {
 		console.log("hi");
 		$.ajax({
 			type:"POST",
-			url : '<c:url value="/admin/import/updateConceptTextData/?${_csrf.parameterName}=${_csrf.token}" />',
+			url : '<c:url value="/admin/text/update/?${_csrf.parameterName}=${_csrf.token}" />',
 			data: {
 				id:id, 
 				text:easyMDE.value().trim()

@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 import edu.asu.diging.wic.core.conceptText.repository.IConceptTextDatabaseConnection;
+import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 @Repository
 @Transactional

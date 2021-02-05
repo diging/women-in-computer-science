@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import edu.asu.diging.wic.core.conceptText.model.ConceptText;
 import edu.asu.diging.wic.core.conceptText.service.IConceptTextService;
+import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 @Controller
 public class ConceptTextController {
@@ -24,12 +24,12 @@ public class ConceptTextController {
 	@Autowired
 	private IConceptTextService iConceptTextService;
 	
-	@RequestMapping(value="/admin/import/addConceptText", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/text/addTextView", method=RequestMethod.GET)
 	public String addText(Model model) {
-	    return "admin/import/addConceptText";
+	    return "admin/text/addTextView";
 	}
 		
-	@RequestMapping(value="/admin/import/addConceptTextData", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
 	public String addTextData(@RequestParam(value="conceptId") String conceptId, 
 			@RequestParam(value="title") String title ,
 			@RequestParam(value="author") String author ,
@@ -44,27 +44,27 @@ public class ConceptTextController {
 	    dataObj.setAddedOn(new Date().getTime()+"");
 	    dataObj.setAddedBy(principal.getName());
 	    iConceptTextService.addText(dataObj);
-	    return "admin/import/addConceptText";
+	    return "admin/text/addTextView";
 	}
 
-	@RequestMapping(value="/admin/import/showConceptText", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/text/show", method=RequestMethod.GET)
 	public String showAllText(Model model) {
 		
 		List<ConceptText> allConceptText = iConceptTextService.showAllText();
 		model.addAttribute("allConceptText",allConceptText);
-		return "admin/import/showConceptText";
+		return "admin/text/show";
 	}
 	
-	@RequestMapping(value="/admin/import/deleteConceptText/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.GET)
 	public String deleteText(@PathVariable("id") String id, Model model) {
 		
 		iConceptTextService.deleteText(id);
 		List<ConceptText> allConceptText = iConceptTextService.showAllText();
 		model.addAttribute("allConceptText",allConceptText);
-		return "admin/import/showConceptText";
+		return "admin/text/show";
 	}
 	
-	@RequestMapping(value="/admin/import/updateConceptTextData", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
 	public ResponseEntity<String> updateTextData(@RequestParam(value="id") String id, 
 			@RequestParam(value="text") String text ,
 			Principal principal, RedirectAttributes redirectAttrs) {
@@ -73,7 +73,7 @@ public class ConceptTextController {
 	    return new ResponseEntity<>("result successful result", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/admin/import/editConceptTextView/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/text/edit/{id}", method=RequestMethod.GET)
 	public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
 		
 		ConceptText dataObj = iConceptTextService.getConceptTextById(id);
@@ -81,6 +81,6 @@ public class ConceptTextController {
 		model.addAttribute("title", dataObj.getTitle());
 		model.addAttribute("text", dataObj.getText());
 		model.addAttribute("conceptId", dataObj.getConceptId());
-	    return "admin/import/editConceptText";
+	    return "admin/text/edit";
 	}
 }
