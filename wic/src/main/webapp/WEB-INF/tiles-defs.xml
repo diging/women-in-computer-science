@@ -52,7 +52,7 @@
     	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/addConceptText.jsp" />
     </definition>
     
-    <definition name="admin/text/show" extends="base.definition"> 
+    <definition name="admin/text/list" extends="base.definition"> 
     	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/showConceptText.jsp" />
     </definition>
     

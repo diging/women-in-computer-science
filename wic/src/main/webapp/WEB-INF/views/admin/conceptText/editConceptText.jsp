@@ -3,18 +3,28 @@
 <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
-<b>Enter new Text</b>
+
+<h3> Add title for the text</h3>
+<textarea id="title" cols="150">${title}</textarea>
+
+<h3> Add author for the text</h3>
+<textarea id="author" cols="150">${author}</textarea>
+
+<h3>Enter new Text</h3>
 <textarea id="paragraph_text" cols="150" rows="3">${text}</textarea>
 <script>var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});</script>
 
-<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/text/show"/>" class="btn btn-primary">Update</a>
+<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/text/list"/>" class="btn btn-primary">Update</a>
 <script>
 
 
 function updateText(id) {
-	console.log("inside:"+id);
-	if(easyMDE.value().trim() === "") {
-		console.log("bye");
+	console.log(id)
+	if(document.getElementById('title').value.trim() === "") {
+		alert("Title is null or empty");
+	} else if(document.getElementById('author').value.trim() === "") {
+		alert("Author is null or empty");
+	} else if(easyMDE.value().trim() === "") {
 		alert("Concept Text is null or empty");
 	} else {
 		console.log("hi");
@@ -23,7 +33,9 @@ function updateText(id) {
 			url : '<c:url value="/admin/text/update/?${_csrf.parameterName}=${_csrf.token}" />',
 			data: {
 				id:id, 
-				text:easyMDE.value().trim()
+				text:easyMDE.value().trim(),
+				title:document.getElementById('title').value.trim(),
+				author:document.getElementById('author').value.trim()
 			},
 			success: function(msg) {
 				alert("ConcepText updated");

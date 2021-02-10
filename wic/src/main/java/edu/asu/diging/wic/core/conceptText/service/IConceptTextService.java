@@ -7,14 +7,12 @@ import edu.asu.diging.wic.core.model.impl.ConceptText;
 public interface IConceptTextService {
 	
 	void addText(ConceptText conceptText);
-	
-	List<ConceptText> allTextOfConcept(String conceptId);
-	
-	List<ConceptText> showAllText();
+
+	List<ConceptText> findAll();
 	
 	void deleteText(String id);
 	
-	void updateText(String id, String text, String modifiedBy);
+	void updateText(ConceptText updatedForm, String modifiedBy);
 	
 	public ConceptText getConceptTextById(String id);
 }

@@ -57,11 +57,14 @@ function verifyNonEmpty() {
 				conceptId:window.conceptId, 
 				title:document.getElementById('title').value.trim(),
 				author:document.getElementById('author').value.trim(),
-				paragraph_text:easyMDE.value().trim()
+				text:easyMDE.value().trim()
 				},
 			success: function(msg) {
 				alert("ConcepText added");
 				window.location.reload();
+			},
+			error: function(msg) {
+				alert("Please fill Title, Author & ConceptId");
 			}
 		});
 	}

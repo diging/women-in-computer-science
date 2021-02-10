@@ -20,7 +20,7 @@ public class ConceptText {
     private String addedOn;
     private String addedBy;
     private String modifiedOn;
-    private String modifiedby;
+    private String modifiedBy;
     
 	
 	public Long getId() {
@@ -72,10 +72,9 @@ public class ConceptText {
 		this.modifiedOn = modifiedOn;
 	}
 	public String getModifiedby() {
-		return modifiedby;
+		return modifiedBy;
 	}
 	public void setModifiedby(String modifiedby) {
-		this.modifiedby = modifiedby;
+		this.modifiedBy = modifiedby;
 	}
-	
 }

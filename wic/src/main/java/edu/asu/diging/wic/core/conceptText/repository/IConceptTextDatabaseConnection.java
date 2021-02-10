@@ -6,10 +6,9 @@ import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 public interface IConceptTextDatabaseConnection {
 	
-	List<ConceptText> allTextOfConcept(String conceptId);
-	void addText(ConceptText conceptText);
-	List<ConceptText> showAllText();
-	void update(String id, String text, String modifiedBy);
+	void add(ConceptText conceptText);
+	List<ConceptText> findAll();
+	void update(ConceptText updatedForm, String modifiedBy);
 	void delete(String id);
 	ConceptText getConceptTextById(String id);
 	

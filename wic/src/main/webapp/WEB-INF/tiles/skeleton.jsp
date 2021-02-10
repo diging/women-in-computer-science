@@ -62,7 +62,7 @@
 	            <li><a href="<c:url value="/admin/text/person" />">Import Person</a></li>
 	            <li><a href="<c:url value="/admin/text/list" />">Show Imports</a></li>
 	            <li><a href="<c:url value="/admin/text/addTextView" />">Add Text</a></li>
-	            <li><a href="<c:url value="/admin/text/show" />">Show Text</a></li>
+	            <li><a href="<c:url value="/admin/text/list" />">Show Text</a></li>
 	          </ul>
 	        </li>
             </sec:authorize>

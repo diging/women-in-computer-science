@@ -19,36 +19,30 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 	
 	@Autowired
 	private EntityManager em;
-	
-	@Override
-	public List<ConceptText> allTextOfConcept(String conceptId) {
-		// TODO Auto-generated method stub
-		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.conceptId = :conceptId", ConceptText.class);
-        query.setParameter("conceptId", conceptId);
-        return query.getResultList();
-	}
 
 	@Override
-	public void addText(ConceptText conceptText) {
-		// TODO Auto-generated method stub
+	public void add(ConceptText conceptText) {
+
 		em.persist(conceptText);
 	}
 
 	@Override
-	public void update(String id, String text, String modifiedBy) {
-		// TODO Auto-generated method stub
+	public void update(ConceptText updatedForm, String modifiedBy) {
+
 		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.id = :id", ConceptText.class);
-        query.setParameter("id", Long.parseLong(id));
+        query.setParameter("id", updatedForm.getId());
         ConceptText obj = query.getSingleResult();
-        obj.setText(text);
+        obj.setText(updatedForm.getText());
+        obj.setTitle(updatedForm.getTitle());
+        obj.setAuthor(updatedForm.getAuthor());
         obj.setModifiedby(modifiedBy);
         obj.setModifiedOn(new Date().getTime()+"");
-        addText(obj);
+        add(obj);
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+
 		Long dbid = Long.parseLong(id);
 		Object concept = em.find(ConceptText.class,dbid);
         if (concept != null) {
@@ -57,15 +51,15 @@ public class ConceptTextDatabaseConnection implements IConceptTextDatabaseConnec
 	}
 
 	@Override
-	public List<ConceptText> showAllText() {
-		// TODO Auto-generated method stub
+	public List<ConceptText> findAll() {
+
 		TypedQuery<ConceptText> query = em.createQuery("from ConceptText", ConceptText.class);
         return query.getResultList();
 	}
 
 	@Override
 	public ConceptText getConceptTextById(String id) {
-		// TODO Auto-generated method stub
+		
 		TypedQuery<ConceptText> query = em.createQuery("SELECT g from ConceptText g WHERE g.id = :id", ConceptText.class);
 		query.setParameter("id", Long.parseLong(id));
 		ConceptText obj = query.getSingleResult();

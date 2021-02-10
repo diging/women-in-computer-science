@@ -18,18 +18,12 @@ public class ConceptTextService implements IConceptTextService {
 	@Override
 	public void addText(ConceptText conceptText) {
 		// TODO Auto-generated method stub
-		iConceptTextDatabaseConnection.addText(conceptText);
+		iConceptTextDatabaseConnection.add(conceptText);
 	}
 
 	@Override
-	public List<ConceptText> allTextOfConcept(String conceptId) {
-		
-		return iConceptTextDatabaseConnection.allTextOfConcept(conceptId);
-	}
-
-	@Override
-	public List<ConceptText> showAllText() {
-		return iConceptTextDatabaseConnection.showAllText();
+	public List<ConceptText> findAll() {
+		return iConceptTextDatabaseConnection.findAll();
 	}
 
 	@Override
@@ -39,9 +33,9 @@ public class ConceptTextService implements IConceptTextService {
 	}
 
 	@Override
-	public void updateText(String id, String text, String modifiedBy) {
+	public void updateText(ConceptText updatedForm, String modifiedBy) {
 		// TODO Auto-generated method stub
-		iConceptTextDatabaseConnection.update(id, text, modifiedBy);
+		iConceptTextDatabaseConnection.update(updatedForm, modifiedBy);
 	}
 	
 	@Override
