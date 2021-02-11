@@ -8,11 +8,13 @@ public interface IConceptTextService {
 	
 	void addText(ConceptText conceptText);
 
-	List<ConceptText> findAll();
+	List<ConceptText> findAll(String pageNumber);
 	
 	void deleteText(String id);
 	
 	void updateText(ConceptText updatedForm, String modifiedBy);
 	
-	public ConceptText getConceptTextById(String id);
+	ConceptText getConceptTextById(String id);
+	
+	int getCount();
 }

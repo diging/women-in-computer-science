@@ -19,11 +19,12 @@ public class DeleteConceptTextController {
 	private IConceptTextService conceptTextService;
 	
 	
-	@RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
-	public String deleteText(@PathVariable("id") String id, Model model) {
+	@RequestMapping(value="/admin/text/delete/{id}/{pageNumber}", method=RequestMethod.DELETE)
+	public String deleteText(@PathVariable("id") String id, 
+			@PathVariable("pageNumber") String pageNumber, Model model) {
 		
 		conceptTextService.deleteText(id);
-		List<ConceptText> allConceptText = conceptTextService.findAll();
+		List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
 		model.addAttribute("allConceptText",allConceptText);
 		return "admin/text/list";
 	}

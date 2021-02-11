@@ -183,6 +183,14 @@
             </exclusions>
             <scope>runtime</scope>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-spring-jpa -->
+		<dependency>
+		    <groupId>org.javers</groupId>
+		    <artifactId>javers-spring-jpa</artifactId>
+		    <version>5.13.2</version>
+		</dependency>
+        
 
         <!-- Tiles -->
         <dependency>
