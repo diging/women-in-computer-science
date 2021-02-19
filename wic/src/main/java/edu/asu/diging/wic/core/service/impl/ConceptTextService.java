@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.service.impl;
+package edu.asu.diging.wic.core.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,9 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.asu.diging.wic.core.conceptText.service.IConceptTextService;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.repository.ConceptTextDatabaseRepository;
+import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Service
 @Transactional
@@ -23,11 +23,23 @@ public class ConceptTextService implements IConceptTextService {
 	@Autowired
 	private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
 	
+	/**
+	 * <p>Method is used to add conceptText Object in database
+	 * </p>
+	 * @param ConceptText Object
+	 * @return void
+	 */
 	@Override
 	public void addText(ConceptText conceptText) {
 		conceptTextDatabaseConnection.save(conceptText);
 	}
 
+	/**
+	 * <p>Method is used to find all conceptText to show on particular page
+	 * </p>
+	 * @param Pagenumber 
+	 * @return List of ConceptText belonging to that pageNumber
+	 */
 	@Override
 	public List<ConceptText> findAll(String pageNumber) {
 		

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import edu.asu.diging.wic.core.conceptText.service.IConceptTextService;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
+import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Controller
 public class EditViewConceptTextController {

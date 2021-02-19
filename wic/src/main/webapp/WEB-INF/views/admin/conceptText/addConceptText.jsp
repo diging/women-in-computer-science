@@ -21,52 +21,50 @@
 </div>
 
 <h3> Add title for the text</h3>
-<textarea id="title" cols="150"></textarea>
+<textarea id="titleInput" cols="150"></textarea>
 
 <h3> Add author for the text</h3>
-<textarea id="author" cols="150"></textarea>
+<textarea id="authorInput" cols="150"></textarea>
 
 <h3>Add Text in markdown</h3>
-<textarea id="paragraph_text" cols="150" rows="8"></textarea>
+<textarea id="paragraph_textInput" cols="150" rows="8"></textarea>
 <script>
-var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});
+var easyMDE = new EasyMDE({element: document.getElementById('paragraph_textInput')});
 </script>
 
-<form onSubmit="verifyNonEmpty()">
-     <input type="submit" value="Add Concept Text">
-</form>	    
+<form action="<c:url value='/admin/text/add' />" onsubmit="return verifyNonEmpty()" method='POST'>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<input type="hidden" id="title" name="title"/>
+	<input type="hidden" id="author" name="author"/>
+	<input type="hidden" id="conceptId" name="conceptId"/>
+	<input type="hidden" id="text" name="text"/>
+	<input type="submit" id="Add Concept Text">
+</form>
+    
 <script>
 
-var conceptId;
+var conceptIdInput;
 
 function verifyNonEmpty() {
 	
-	if(window.conceptId === undefined) {
+	if(window.conceptIdInput === undefined) {
 		alert("Concept is not selected");
-	} else if(document.getElementById('title').value.trim() === "") {
+		return false;
+	} else if(document.getElementById('titleInput').value.trim() === "") {
 		alert("Title is null or empty");
-	} else if(document.getElementById('author').value.trim() === "") {
+		return false;
+	} else if(document.getElementById('authorInput').value.trim() === "") {
 		alert("Author is null or empty");
+		return false;
 	} else if(easyMDE.value().trim() === "") {
 		alert("Concept Text is null or empty");
+		return false;
 	} else {
-		$.ajax({
-			type:"POST",
-			url : '<c:url value="/admin/text/add/?${_csrf.parameterName}=${_csrf.token}" />',
-			data: {
-				conceptId:window.conceptId, 
-				title:document.getElementById('title').value.trim(),
-				author:document.getElementById('author').value.trim(),
-				text:easyMDE.value().trim()
-				},
-			success: function(msg) {
-				alert("ConcepText added");
-				window.location.reload();
-			},
-			error: function(msg) {
-				alert("Please fill Title, Author & ConceptId");
-			}
-		});
+		 document.getElementById("conceptId").value = window.conceptIdInput;
+		 document.getElementById("title").value = document.getElementById("titleInput").value;
+		 document.getElementById("author").value = document.getElementById("authorInput").value;
+		 document.getElementById("text").value = easyMDE.value().trim();
+		 return true;
 	}
 }
 
@@ -94,7 +92,7 @@ function search(searchTerm) {
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    li.append('<small>' + element.description + '</small>');
     	    li.on('click', function() {
-    	    	window.conceptId = element.id;
+    	    	window.conceptIdInput = element.id;
     	    });
     	    container.append(li);
     	   });

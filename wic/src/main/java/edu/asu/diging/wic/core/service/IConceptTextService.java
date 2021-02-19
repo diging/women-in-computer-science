@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.service;
+package edu.asu.diging.wic.core.service;
 
 import java.util.List;
 
