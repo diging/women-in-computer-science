@@ -11,9 +11,9 @@ import javax.persistence.Table;
 @Table(name = "ConceptText")
 public class ConceptText {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String conceptId;
     private String title;
     private String author;
@@ -25,59 +25,59 @@ public class ConceptText {
     private String modifiedOn;
     private String modifiedBy;
     
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getConceptId() {
-		return conceptId;
-	}
-	public void setConceptId(String conceptId) {
-		this.conceptId = conceptId;
-	}
-	public String getText() {
-		return text;
-	}
-	public void setText(String text) {
-		this.text = text;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	public String getAddedBy() {
-		return addedBy;
-	}
-	public void setAddedBy(String addedBy) {
-		this.addedBy = addedBy;
-	}
-	public String getAddedOn() {
-		return addedOn;
-	}
-	public void setAddedOn(String addedOn) {
-		this.addedOn = addedOn;
-	}
-	public String getModifiedOn() {
-		return modifiedOn;
-	}
-	public void setModifiedOn(String modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
-	public String getModifiedby() {
-		return modifiedBy;
-	}
-	public void setModifiedby(String modifiedby) {
-		this.modifiedBy = modifiedby;
-	}
+    
+    public Long getId() {
+    	return id;
+    }
+    public void setId(Long id) {
+    	this.id = id;
+    }
+    public String getConceptId() {
+    	return conceptId;
+    }
+    public void setConceptId(String conceptId) {
+    	this.conceptId = conceptId;
+    }
+    public String getText() {
+    	return text;
+    }
+    public void setText(String text) {
+    	this.text = text;
+    }
+    public String getTitle() {
+    	return title;
+    }
+    public void setTitle(String title) {
+    	this.title = title;
+    }
+    public String getAuthor() {
+    	return author;
+    }
+    public void setAuthor(String author) {
+    	this.author = author;
+    }
+    public String getAddedBy() {
+    	return addedBy;
+    }
+    public void setAddedBy(String addedBy) {
+    	this.addedBy = addedBy;
+    }
+    public String getAddedOn() {
+    	return addedOn;
+    }
+    public void setAddedOn(String addedOn) {
+    	this.addedOn = addedOn;
+    }
+    public String getModifiedOn() {
+    	return modifiedOn;
+    }
+    public void setModifiedOn(String modifiedOn) {
+    	this.modifiedOn = modifiedOn;
+    }
+    public String getModifiedby() {
+    	return modifiedBy;
+    }
+    public void setModifiedby(String modifiedby) {
+    	this.modifiedBy = modifiedby;
+    }
 }

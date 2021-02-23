@@ -30,15 +30,15 @@ public class AddConceptTextController {
 	public String addTextData(ConceptText formData, 
 			Principal principal, RedirectAttributes redirectAttrs) {
 	
-		if(formData.getConceptId() == null && formData.getConceptId().trim().isEmpty()) {
-			return new ResponseEntity<String>("ConceptId missing",HttpStatus.NO_CONTENT).getBody();
-		}
-		if(formData.getAuthor() == null && formData.getAuthor().trim().isEmpty()) {
-			return new ResponseEntity<String>("Author missing",HttpStatus.NO_CONTENT).getBody();
-		}
-		if(formData.getTitle() == null && formData.getTitle().trim().isEmpty()) {
-			return new ResponseEntity<String>("Title missing",HttpStatus.NO_CONTENT).getBody();
-		}
+        if(formData.getConceptId() == null && formData.getConceptId().trim().isEmpty()) {
+        	return new ResponseEntity<String>("ConceptId missing",HttpStatus.NO_CONTENT).getBody();
+        }
+        if(formData.getAuthor() == null && formData.getAuthor().trim().isEmpty()) {
+        	return new ResponseEntity<String>("Author missing",HttpStatus.NO_CONTENT).getBody();
+        }
+        if(formData.getTitle() == null && formData.getTitle().trim().isEmpty()) {
+        	return new ResponseEntity<String>("Title missing",HttpStatus.NO_CONTENT).getBody();
+        }
         formData.setAddedOn(new Date().getTime()+"");
         formData.setAddedBy(principal.getName());
         conceptTextService.addText(formData);

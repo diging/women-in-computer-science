@@ -42,14 +42,14 @@ public class ConceptTextService implements IConceptTextService {
 	@Override
 	public List<ConceptText> findAll(String pageNumber) {
 		
-		Pageable pagination = PageRequest.of(Integer.parseInt(pageNumber)-1, 5);
-		Page<ConceptText> data = conceptTextDatabaseConnection.findAll(pagination);
-
-		List<ConceptText> allDataConverted = new ArrayList<ConceptText>();
-		 if(data != null) {
-			 data.getContent().forEach(i -> allDataConverted.add(i));
-	     }
-		return allDataConverted;
+        Pageable pagination = PageRequest.of(Integer.parseInt(pageNumber)-1, 5);
+        Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
+        
+        List<ConceptText> data = new ArrayList<ConceptText>();
+        if(dataFromDb != null) {
+            dataFromDb.getContent().forEach(i -> data.add(i));
+        }
+        return data;
 	}
 
 	/**
@@ -72,14 +72,13 @@ public class ConceptTextService implements IConceptTextService {
 	@Override
 	public void updateText(ConceptText updatedForm, String modifiedBy) {
 
-		Optional<ConceptText> data = conceptTextDatabaseConnection.findById(updatedForm.getId());
-		ConceptText obj = data.get();
+        Optional<ConceptText> data = conceptTextDatabaseConnection.findById(updatedForm.getId());
+        ConceptText obj = data.get();
         obj.setText(updatedForm.getText());
         obj.setTitle(updatedForm.getTitle());
         obj.setAuthor(updatedForm.getAuthor());
         obj.setModifiedby(modifiedBy);
         obj.setModifiedOn(new Date().getTime()+"");
-        
         conceptTextDatabaseConnection.save(obj);
 	}
 	
