@@ -1,34 +1,34 @@
-package edu.asu.diging.wic.core.conceptText.controller;
+package edu.asu.diging.wic.core.controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Controller
-public class ShowConceptTextController {
-	
+public class DeleteConceptTextController {
+
 	@Autowired
 	private IConceptTextService conceptTextService;
 	
-	@RequestMapping(value="/admin/text/list/{pageNumber}", method=RequestMethod.GET)
-	public String findAll(@PathVariable("pageNumber")String pageNumber, Model model, Principal principal) {
+	
+	@RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<String> deleteText(@PathVariable("id") String id, 
+			@RequestParam(value = "pageNumber", required = true)String pageNumber, Model model) {
 		
+		conceptTextService.deleteText(id);
 		List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
 		model.addAttribute("allConceptText",allConceptText);
-		int pagesCount = conceptTextService.getCount() % 5 == 0 ? (conceptTextService.getCount()/5)
-				: (conceptTextService.getCount()/5) + 1;
-		model.addAttribute("totalPages", pagesCount);
-		model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
-		return "admin/text/list";
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
 }

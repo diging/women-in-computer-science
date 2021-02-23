@@ -11,9 +11,10 @@
 		<br>
 		${element.text}
 		<div class="pull-right">
-			<form onclick="deleteConceptText('${element.id}')">
+			<!-- <form onclick="deleteConceptText('${element.id}')">
 			     <input type="submit" value="Delete" class="btn btn-primary">
-		    </form>
+		    </form> -->
+		    <a onClick="deleteConceptText('${element.id}'); return true;" href="<c:url value="/admin/text/list?pageNumber=1"/>" class="btn btn-primary">Delete</a>
 		</div>
 		<div class="pull-right">
 			<a type="button" href="<c:url value="/admin/text/${element.id}/edit" />" class="btn btn-primary">edit</a>
@@ -45,17 +46,18 @@ $( document ).ready(function() {
 	    firstClass: 'first'
 	  }).on("page", function(event, num){
 		pageNumber = num;
-	    window.location.assign("./"+num);
+	    window.location.assign("./list?pageNumber="+num);
 	  });
 });
 	  
 function deleteConceptText(deleteValue) {
-	var url = "/wic/admin/text/delete/"+deleteValue+"/"+pageNumber+"/?${_csrf.parameterName}=${_csrf.token}";
+	var url = "/wic/admin/text/delete/"+deleteValue+"?pageNumber="+pageNumber+"&${_csrf.parameterName}=${_csrf.token}";
 	console.log(url);
 	$.ajax({
 		type:"DELETE",
 		url:url,
 		success: function(msg) {
+			alert("ConcepText deleted");
 		},
 		async:false
 	});

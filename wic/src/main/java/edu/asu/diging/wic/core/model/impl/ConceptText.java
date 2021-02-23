@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +17,8 @@ public class ConceptText {
     private String conceptId;
     private String title;
     private String author;
+    
+    @Lob
     private String text;
     private String addedOn;
     private String addedBy;

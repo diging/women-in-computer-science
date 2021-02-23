@@ -24,10 +24,9 @@ public class ConceptTextService implements IConceptTextService {
 	private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
 	
 	/**
-	 * <p>Method is used to add conceptText Object in database
+	 * <p>Method is used to add conceptText model/object in database
 	 * </p>
-	 * @param ConceptText Object
-	 * @return void
+	 * @param conceptText Model of conceptText which will be stored 
 	 */
 	@Override
 	public void addText(ConceptText conceptText) {
@@ -35,10 +34,10 @@ public class ConceptTextService implements IConceptTextService {
 	}
 
 	/**
-	 * <p>Method is used to find all conceptText to show on particular page
+	 * <p>Method is used to find all conceptText to be shown on a particular page
 	 * </p>
-	 * @param Pagenumber 
-	 * @return List of ConceptText belonging to that pageNumber
+	 * @param Pagenumber the pageNumber which is to be displayed
+	 * @return conceptText List of conceptText belonging to that pageNumber
 	 */
 	@Override
 	public List<ConceptText> findAll(String pageNumber) {
@@ -53,12 +52,23 @@ public class ConceptTextService implements IConceptTextService {
 		return allDataConverted;
 	}
 
+	/**
+	 * <p>Method used to delete a particular conceptText
+	 * </p>
+	 * @param id id of the conceptText model which is to be deleted
+	 */
 	@Override
 	public void deleteText(String id) {
 
 		conceptTextDatabaseConnection.deleteById(Long.parseLong(id));
 	}
 
+	/**
+	 * <p>Method used to update a particular conceptText
+	 * </p>
+	 * @param updatedForm conceptText Model with updated information
+	 * @param modifiedBy the user who modified the conceptText
+	 */
 	@Override
 	public void updateText(ConceptText updatedForm, String modifiedBy) {
 
@@ -73,13 +83,23 @@ public class ConceptTextService implements IConceptTextService {
         conceptTextDatabaseConnection.save(obj);
 	}
 	
+	/**
+	 * <p>Method used to update a particular single conceptText by id 
+	 * </p>
+	 * @param id id of the conceptText whose details you want to fetch
+	 * @return conceptText model of the conceptText fetched from id
+	 */
 	@Override
-	public ConceptText getConceptTextById(String id) {
-
+	public ConceptText getTextById(String id) {
 		Optional<ConceptText> data = conceptTextDatabaseConnection.findById(Long.parseLong(id));
 		return data.get();
 	}
 	
+	/**
+	 * <p>Method used to get total count from database
+	 * </p>
+	 * @return count of the number of conceptText in database
+	 */
 	@Override
 	public int getCount() {
 

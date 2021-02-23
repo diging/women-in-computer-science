@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.controller;
+package edu.asu.diging.wic.core.controller;
 
 import java.security.Principal;
 

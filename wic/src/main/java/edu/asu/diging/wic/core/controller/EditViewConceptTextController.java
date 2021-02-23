@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.controller;
+package edu.asu.diging.wic.core.controller;
 
 import java.security.Principal;
 
@@ -21,7 +21,7 @@ public class EditViewConceptTextController {
 	@RequestMapping(value="/admin/text/{id}/edit", method=RequestMethod.GET)
 	public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
 		
-		ConceptText dataObj = conceptTextService.getConceptTextById(id);
+		ConceptText dataObj = conceptTextService.getTextById(id);
 		model.addAttribute("idOfData", dataObj.getId());
 		model.addAttribute("title", dataObj.getTitle());
 		model.addAttribute("text", dataObj.getText());

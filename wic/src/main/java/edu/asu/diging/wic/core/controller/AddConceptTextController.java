@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.conceptText.controller;
+package edu.asu.diging.wic.core.controller;
 
 import java.security.Principal;
 import java.util.Date;
@@ -31,17 +31,17 @@ public class AddConceptTextController {
 			Principal principal, RedirectAttributes redirectAttrs) {
 	
 		if(formData.getConceptId() == null || formData.getConceptId().trim().isEmpty()) {
-			return new ResponseEntity<>("ConceptId missing",HttpStatus.NO_CONTENT).getBody();
+			return new ResponseEntity<String>("ConceptId missing",HttpStatus.NO_CONTENT).getBody();
 		}
 		if(formData.getAuthor() == null || formData.getAuthor().trim().isEmpty()) {
-			return new ResponseEntity<>("Author missing",HttpStatus.NO_CONTENT).getBody();
+			return new ResponseEntity<String>("Author missing",HttpStatus.NO_CONTENT).getBody();
 		}
 		if(formData.getTitle() == null || formData.getTitle().trim().isEmpty()) {
-			return new ResponseEntity<>("Title missing",HttpStatus.NO_CONTENT).getBody();
+			return new ResponseEntity<String>("Title missing",HttpStatus.NO_CONTENT).getBody();
 		}
 		formData.setAddedOn(new Date().getTime()+"");
 		formData.setAddedBy(principal.getName());
 		conceptTextService.addText(formData);
-	    return  "redirect:/admin/text/list/1";
+	    return  "redirect:/admin/text/list?pageNumber=1";
 	}
 }

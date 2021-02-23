@@ -14,7 +14,7 @@
 <textarea id="paragraph_text" cols="150" rows="3">${text}</textarea>
 <script>var easyMDE = new EasyMDE({element: document.getElementById('paragraph_text')});</script>
 
-<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/text/list/1"/>" class="btn btn-primary">Update</a>
+<a onClick="updateText(${idOfData}); return true;" href="<c:url value="/admin/text/list?pageNumber=1"/>" class="btn btn-primary">Update</a>
 <script>
 
 

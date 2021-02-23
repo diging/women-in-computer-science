@@ -14,7 +14,7 @@ public interface IConceptTextService {
 	
 	void updateText(ConceptText updatedForm, String modifiedBy);
 	
-	ConceptText getConceptTextById(String id);
+	ConceptText getTextById(String id);
 	
 	int getCount();
 }
