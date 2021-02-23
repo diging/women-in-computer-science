@@ -30,18 +30,18 @@ public class AddConceptTextController {
 	public String addTextData(ConceptText formData, 
 			Principal principal, RedirectAttributes redirectAttrs) {
 	
-		if(formData.getConceptId() == null || formData.getConceptId().trim().isEmpty()) {
+		if(formData.getConceptId() == null && formData.getConceptId().trim().isEmpty()) {
 			return new ResponseEntity<String>("ConceptId missing",HttpStatus.NO_CONTENT).getBody();
 		}
-		if(formData.getAuthor() == null || formData.getAuthor().trim().isEmpty()) {
+		if(formData.getAuthor() == null && formData.getAuthor().trim().isEmpty()) {
 			return new ResponseEntity<String>("Author missing",HttpStatus.NO_CONTENT).getBody();
 		}
-		if(formData.getTitle() == null || formData.getTitle().trim().isEmpty()) {
+		if(formData.getTitle() == null && formData.getTitle().trim().isEmpty()) {
 			return new ResponseEntity<String>("Title missing",HttpStatus.NO_CONTENT).getBody();
 		}
-		formData.setAddedOn(new Date().getTime()+"");
-		formData.setAddedBy(principal.getName());
-		conceptTextService.addText(formData);
-	    return  "redirect:/admin/text/list?pageNumber=1";
+        formData.setAddedOn(new Date().getTime()+"");
+        formData.setAddedBy(principal.getName());
+        conceptTextService.addText(formData);
+        return  "redirect:/admin/text/list?pageNumber=1";
 	}
 }
