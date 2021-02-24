@@ -18,19 +18,19 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Controller
 public class AddConceptTextController {
-	
-	@Autowired
-	private IConceptTextService conceptTextService;
-	
-	@RequestMapping(value="/admin/text/addTextView", method=RequestMethod.GET)
-	public String addText(Model model) {
-	    return "admin/text/addTextView";
-	}
-		
-	@RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
-	public String addTextData(@Valid ConceptText formData, BindingResult bindingResult, 
-			Principal principal, RedirectAttributes redirectAttrs) {
-	
+
+    @Autowired
+    private IConceptTextService conceptTextService;
+
+    @RequestMapping(value="/admin/text/addTextView", method=RequestMethod.GET)
+    public String addText(Model model) {
+        return "admin/text/addTextView";
+    }
+
+    @RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
+    public String addTextData(@Valid ConceptText formData, BindingResult bindingResult, 
+            Principal principal, RedirectAttributes redirectAttrs) {
+
         if(bindingResult.hasErrors()) {
             return "admin/text/addTextView";
         }
@@ -39,5 +39,5 @@ public class AddConceptTextController {
         formData.setAddedBy(principal.getName());
         conceptTextService.addText(formData);
         return  "redirect:/admin/text/list?pageNumber=1";
-	}
+    }
 }

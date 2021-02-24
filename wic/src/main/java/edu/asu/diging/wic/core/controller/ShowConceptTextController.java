@@ -22,14 +22,14 @@ public class ShowConceptTextController {
 	@RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
 	public String findAll(@RequestParam(value = "pageNumber", required = true)String pageNumber, Model model, Principal principal) {
 		
-		List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
-		model.addAttribute("allConceptText",allConceptText);
-		int totalEntriesInDb = conceptTextService.getTextCount();
-		int pagesCount = totalEntriesInDb % 5 == 0 ? 
-		        (totalEntriesInDb/5) : (totalEntriesInDb/5) + 1;
-		model.addAttribute("totalPages", pagesCount);
-		model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
-		return "admin/text/list";
+        List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
+        model.addAttribute("allConceptText",allConceptText);
+        int totalEntriesInDb = conceptTextService.getTextCount();
+        int pagesCount = totalEntriesInDb % 5 == 0 ? 
+                (totalEntriesInDb/5) : (totalEntriesInDb/5) + 1;
+        model.addAttribute("totalPages", pagesCount);
+        model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
+        return "admin/text/list";
 	}
 
 }
