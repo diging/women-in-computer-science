@@ -11,9 +11,6 @@
 		<br>
 		${element.text}
 		<div class="pull-right">
-			<!-- <form onclick="deleteConceptText('${element.id}')">
-			     <input type="submit" value="Delete" class="btn btn-primary">
-		    </form> -->
 		    <a onClick="deleteConceptText('${element.id}'); return true;" href="<c:url value="/admin/text/list?pageNumber=1"/>" class="btn btn-primary">Delete</a>
 		</div>
 		<div class="pull-right">
@@ -51,7 +48,7 @@ $( document ).ready(function() {
 });
 	  
 function deleteConceptText(deleteValue) {
-	var url = "/wic/admin/text/delete/"+deleteValue+"?pageNumber="+pageNumber+"&${_csrf.parameterName}=${_csrf.token}";
+	var url = "/wic/admin/text/delete/"+deleteValue+"?${_csrf.parameterName}=${_csrf.token}";
 	console.log(url);
 	$.ajax({
 		type:"DELETE",

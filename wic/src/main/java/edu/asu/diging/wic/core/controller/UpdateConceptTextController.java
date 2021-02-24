@@ -5,8 +5,6 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,13 +35,13 @@ public class UpdateConceptTextController {
     }
     
     @RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
-    public ResponseEntity<String> updateTextData(@Valid ConceptText updatedForm,
+    public String updateTextData(@Valid ConceptText updatedForm,
             BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
     	
         if(bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
         }
         conceptTextService.updateText(updatedForm, principal.getName());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "redirect:/admin/text/list?pageNumber=1";
     }
 }
