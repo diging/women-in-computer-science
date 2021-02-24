@@ -32,6 +32,7 @@
 var easyMDE = new EasyMDE({element: document.getElementById('paragraph_textInput')});
 </script>
 
+
 <form action="<c:url value='/admin/text/add' />" onsubmit="return verifyNonEmpty()" method='POST'>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<input type="hidden" id="title" name="title"/>
@@ -40,7 +41,7 @@ var easyMDE = new EasyMDE({element: document.getElementById('paragraph_textInput
 	<input type="hidden" id="text" name="text"/>
 	<input type="submit" id="Add Concept Text">
 </form>
-    
+
 <script>
 
 var conceptIdInput;
@@ -51,13 +52,13 @@ function verifyNonEmpty() {
 		alert("Concept is not selected");
 		return false;
 	} else if(document.getElementById('titleInput').value.trim() === "") {
-		alert("Title is null or empty");
+		alert("Title is empty");
 		return false;
 	} else if(document.getElementById('authorInput').value.trim() === "") {
-		alert("Author is null or empty");
+		alert("Author is empty");
 		return false;
 	} else if(easyMDE.value().trim() === "") {
-		alert("Concept Text is null or empty");
+		alert("Concept Text is empty");
 		return false;
 	} else {
 		 document.getElementById("conceptId").value = window.conceptIdInput;

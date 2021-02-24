@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "ConceptText")
@@ -13,11 +14,13 @@ public class ConceptText {
 	
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @NotBlank
     private String conceptId;
+    @NotBlank
     private String title;
+    @NotBlank
     private String author;
-    
+    @NotBlank
     @Lob
     private String text;
     private String addedOn;
