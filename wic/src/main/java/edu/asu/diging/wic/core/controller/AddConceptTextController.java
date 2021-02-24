@@ -31,9 +31,9 @@ public class AddConceptTextController {
 	public String addTextData(@Valid ConceptText formData, BindingResult bindingResult, 
 			Principal principal, RedirectAttributes redirectAttrs) {
 	
-	    if(bindingResult.hasErrors()) {
-	        return "admin/text/addTextView";
-	    }
+        if(bindingResult.hasErrors()) {
+            return "admin/text/addTextView";
+        }
 
         formData.setAddedOn(new Date().getTime()+"");
         formData.setAddedBy(principal.getName());
