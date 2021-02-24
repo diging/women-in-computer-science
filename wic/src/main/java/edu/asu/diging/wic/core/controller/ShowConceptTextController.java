@@ -24,8 +24,9 @@ public class ShowConceptTextController {
 		
 		List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
 		model.addAttribute("allConceptText",allConceptText);
-		int pagesCount = conceptTextService.getCount() % 5 == 0 ? 
-		        (conceptTextService.getCount()/5) : (conceptTextService.getCount()/5) + 1;
+		int totalEntriesInDb = conceptTextService.getTextCount();
+		int pagesCount = totalEntriesInDb % 5 == 0 ? 
+		        (totalEntriesInDb/5) : (totalEntriesInDb/5) + 1;
 		model.addAttribute("totalPages", pagesCount);
 		model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
 		return "admin/text/list";
