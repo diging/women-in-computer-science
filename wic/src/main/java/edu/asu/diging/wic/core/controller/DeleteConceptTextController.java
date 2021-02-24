@@ -14,14 +14,14 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 @Controller
 public class DeleteConceptTextController {
 
-	@Autowired
-	private IConceptTextService conceptTextService;
-	
-	
-	@RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<String> deleteText(@PathVariable("id") String id, Model model) {
-		
+    @Autowired
+    private IConceptTextService conceptTextService;
+
+
+    @RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<String> deleteText(@PathVariable("id") String id, Model model) {
+
         conceptTextService.deleteText(id);
         return new ResponseEntity<>(HttpStatus.OK);
-	}
+    }
 }

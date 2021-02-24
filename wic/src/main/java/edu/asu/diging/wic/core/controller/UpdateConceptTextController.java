@@ -18,13 +18,14 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Controller
 public class UpdateConceptTextController {
-	
+
     @Autowired
     private IConceptTextService conceptTextService;
 
     @RequestMapping(value="/admin/text/{id}/edit", method=RequestMethod.GET)
-    public String editConceptTextView( @PathVariable("id") String id, Model model,Principal principal) {
-        
+    public String editConceptTextView( @PathVariable("id") String id,
+            Model model,Principal principal) {
+
         ConceptText dataObj = conceptTextService.getTextById(id);
         model.addAttribute("idOfData", dataObj.getId());
         model.addAttribute("title", dataObj.getTitle());
@@ -33,11 +34,11 @@ public class UpdateConceptTextController {
         model.addAttribute("author", dataObj.getAuthor());
         return "admin/text/edit";
     }
-    
+
     @RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
     public String updateTextData(@Valid ConceptText updatedForm,
             BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
-    	
+
         if(bindingResult.hasErrors()) {
             return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
         }

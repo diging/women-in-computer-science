@@ -19,36 +19,36 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 @Service
 @Transactional
 public class ConceptTextService implements IConceptTextService {
-		
-	@Autowired
-	private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
-	
-	@Override
-	public void addText(ConceptText conceptText) {
-	    conceptTextDatabaseConnection.save(conceptText);
-	}
 
-	@Override
-	public List<ConceptText> findAll(String pageNumber) {
-		
+    @Autowired
+    private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
+
+    @Override
+    public void addText(ConceptText conceptText) {
+        conceptTextDatabaseConnection.save(conceptText);
+    }
+
+    @Override
+    public List<ConceptText> findAll(String pageNumber) {
+
         Pageable pagination = PageRequest.of(Integer.parseInt(pageNumber)-1, 5);
         Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
-        
+
         List<ConceptText> data = new ArrayList<ConceptText>();
         if(dataFromDb != null) {
             dataFromDb.getContent().forEach(i -> data.add(i));
         }
         return data;
-	}
+    }
 
-	@Override
-	public void deleteText(String id) {
+    @Override
+    public void deleteText(String id) {
 
-	    conceptTextDatabaseConnection.deleteById(Long.parseLong(id));
-	}
+        conceptTextDatabaseConnection.deleteById(Long.parseLong(id));
+    }
 
-	@Override
-	public void updateText(ConceptText updatedForm, String modifiedBy) {
+    @Override
+    public void updateText(ConceptText updatedForm, String modifiedBy) {
 
         Optional<ConceptText> data = conceptTextDatabaseConnection.findById(updatedForm.getId());
         ConceptText obj = data.get();
@@ -58,18 +58,18 @@ public class ConceptTextService implements IConceptTextService {
         obj.setModifiedby(modifiedBy);
         obj.setModifiedOn(new Date().getTime()+"");
         conceptTextDatabaseConnection.save(obj);
-	}
-	
-	@Override
-	public ConceptText getTextById(String id) {
+    }
+
+    @Override
+    public ConceptText getTextById(String id) {
         Optional<ConceptText> data = conceptTextDatabaseConnection.findById(Long.parseLong(id));
         return data.get();
-	}
-	
-	@Override
-	public int getTextCount() {
+    }
 
-	    return (int)conceptTextDatabaseConnection.count();
-	}
+    @Override
+    public int getTextCount() {
+
+        return (int)conceptTextDatabaseConnection.count();
+    }
 
 }

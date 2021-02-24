@@ -15,13 +15,14 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Controller
 public class ShowConceptTextController {
-	
-	@Autowired
-	private IConceptTextService conceptTextService;
-	
-	@RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
-	public String findAll(@RequestParam(value = "pageNumber", required = true)String pageNumber, Model model, Principal principal) {
-		
+
+    @Autowired
+    private IConceptTextService conceptTextService;
+
+    @RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
+    public String findAll(@RequestParam(value = "pageNumber", required = true)String pageNumber,
+            Model model, Principal principal) {
+
         List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
         model.addAttribute("allConceptText",allConceptText);
         int totalEntriesInDb = conceptTextService.getTextCount();
@@ -30,6 +31,6 @@ public class ShowConceptTextController {
         model.addAttribute("totalPages", pagesCount);
         model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
         return "admin/text/list";
-	}
+    }
 
 }

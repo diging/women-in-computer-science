@@ -11,10 +11,13 @@
 		<br>
 		${element.text}
 		<div class="pull-right">
-		    <a onClick="deleteConceptText('${element.id}'); return true;" href="<c:url value="/admin/text/list?pageNumber=1"/>" class="btn btn-primary">Delete</a>
+		    <a onClick="deleteConceptText('${element.id}'); return true;" 
+		    href="<c:url value="/admin/text/list?pageNumber=1"/>" class="btn btn-primary">
+		    Delete</a>
 		</div>
 		<div class="pull-right">
-			<a type="button" href="<c:url value="/admin/text/${element.id}/edit" />" class="btn btn-primary">edit</a>
+			<a type="button" href="<c:url value="/admin/text/${element.id}/edit" />" 
+			class="btn btn-primary">edit</a>
 		</div>
 		</li>
 	</c:forEach>
@@ -23,7 +26,6 @@
 <div id="page-selection"></div>
 
 <script>
-
 var pageNumber = 1;
 $( document ).ready(function() {
 	  $('#page-selection').bootpag({

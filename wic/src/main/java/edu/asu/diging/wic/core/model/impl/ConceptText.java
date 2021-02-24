@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "ConceptText")
 public class ConceptText {
-	
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
@@ -27,60 +27,60 @@ public class ConceptText {
     private String addedBy;
     private String modifiedOn;
     private String modifiedBy;
-    
-    
+
+
     public Long getId() {
-    	return id;
+        return id;
     }
     public void setId(Long id) {
-    	this.id = id;
+        this.id = id;
     }
     public String getConceptId() {
-    	return conceptId;
+        return conceptId;
     }
     public void setConceptId(String conceptId) {
-    	this.conceptId = conceptId;
+        this.conceptId = conceptId;
     }
     public String getText() {
-    	return text;
+        return text;
     }
     public void setText(String text) {
-    	this.text = text;
+        this.text = text;
     }
     public String getTitle() {
-    	return title;
+        return title;
     }
     public void setTitle(String title) {
-    	this.title = title;
+        this.title = title;
     }
     public String getAuthor() {
-    	return author;
+        return author;
     }
     public void setAuthor(String author) {
-    	this.author = author;
+        this.author = author;
     }
     public String getAddedBy() {
-    	return addedBy;
+        return addedBy;
     }
     public void setAddedBy(String addedBy) {
-    	this.addedBy = addedBy;
+        this.addedBy = addedBy;
     }
     public String getAddedOn() {
-    	return addedOn;
+        return addedOn;
     }
     public void setAddedOn(String addedOn) {
-    	this.addedOn = addedOn;
+        this.addedOn = addedOn;
     }
     public String getModifiedOn() {
-    	return modifiedOn;
+        return modifiedOn;
     }
     public void setModifiedOn(String modifiedOn) {
-    	this.modifiedOn = modifiedOn;
+        this.modifiedOn = modifiedOn;
     }
     public String getModifiedby() {
-    	return modifiedBy;
+        return modifiedBy;
     }
     public void setModifiedby(String modifiedby) {
-    	this.modifiedBy = modifiedby;
+        this.modifiedBy = modifiedby;
     }
 }
