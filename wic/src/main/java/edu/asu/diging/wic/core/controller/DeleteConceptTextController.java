@@ -21,7 +21,7 @@ public class DeleteConceptTextController {
 	@RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<String> deleteText(@PathVariable("id") String id, Model model) {
 		
-		conceptTextService.deleteText(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+        conceptTextService.deleteText(id);
+        return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
