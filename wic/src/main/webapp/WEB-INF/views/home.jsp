@@ -50,25 +50,22 @@ var globalData;
 	});
 })()
 
-var data = [];
-var apiResult;
-var stringifiedResult;
 
 function addDropDown() {
 	for (i = 0; i < globalData.length; i++) {
 		$('#dropdown').append("<option value=\"" + globalData[i]['uri'] + "\">" + globalData[i]['name'] + "</option>");	
 	}
-	
+	$('#dropdown').append("<option value=\"" + "" + "\">" + "Hide Node without type" + "</option>");	
 	var configurationSet = {
-		 onChange: function(element, checked) {
-	            var brands = $('#dropdown option:selected');
-	            var selected = [];
-	            $(brands).each(function(index, brand){
-	                selected.push($(this).val());
-	            });
-				data = selected;
-				loadCytoScape(stringifiedResult,apiResult,data);
-	        }
+		onChange: function(element, checked) {
+					var brands = $('#dropdown option:selected');
+					var selected = [];
+					$(brands).each(function(index, brand){
+					    selected.push($(this).val());
+					});
+					data = selected;
+					loadCytoScape(stringifiedResult,apiResult,data);
+     				}
     };
 	$('#dropdown').multiselect(configurationSet);
 }

@@ -104,22 +104,18 @@ function loadCytoScape(data,result,removeNodes) {
     });
 
     if(removeNodes !== null) {
-    	
-    	for (i = 0; i < removeNodes.length; i++) {
-    		
-		  var selectorData1 = 'node[type = "';
-		  var selectorData2 = '"]';
-		  
-		  var finalSelector = selectorData1.concat(removeNodes[i],selectorData2);
-
-		  cy.style().selector(finalSelector)
+    	for (i = 0; i < removeNodes.length; i++) {	
+    		var selectorData1 = 'node[type = "';
+    		var selectorData2 = '"]';
+    		var finalSelector = selectorData1.concat(removeNodes[i],selectorData2);
+    		cy.style().selector(finalSelector)
 	    	.style({
 	    		opacity : 0.4
 	    	})
 	    	.update();
 	    	cy.$(finalSelector).connectedEdges().style({
-	    		  'line-color': '#e1e6e5'
-	    		});
+	    		'line-color': '#e1e6e5'
+	    	});
 		}
     }
 }
