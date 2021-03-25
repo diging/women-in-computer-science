@@ -57,26 +57,34 @@ function addDropDown() {
 	}
 	$('#dropdown').append("<option value=\"" + "" + "\">" + "Hide Node without type" + "</option>");	
 	var configurationSet = {
+		maxHeight: 200,
+		nonSelectedText: 'Hide Node Types',
 		onChange: function(element, checked) {
-					var brands = $('#dropdown option:selected');
-					var selected = [];
-					$(brands).each(function(index, brand){
-					    selected.push($(this).val());
-					});
-					data = selected;
-					loadCytoScape(stringifiedResult,apiResult,data);
+						var brands = $('#dropdown option:selected');
+						var selected = [];
+						$(brands).each(function(index, brand){
+						    selected.push($(this).val());
+						});
+						data = selected;
+						loadCytoScape(stringifiedResult,apiResult,data);
      				}
     };
 	$('#dropdown').multiselect(configurationSet);
 }
 </script>
-
 <style>
-button.multiselect {
-    background-color: #4CAF50;
-    color: white;
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: #d80e0e00;
+    border: 0;
 }
 </style>
-
 <div id="network" class="graph" style="min-width: 500px; min-height: 500px;">
 </div>
