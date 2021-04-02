@@ -20,6 +20,13 @@
 <div id="searchResults" class="list-group">
 </div>
 
+<style> 
+.list-group {
+	overflow: auto;
+}
+
+</style>
+
 <h3> Add title for the text</h3>
 <textarea id="titleInput" cols="150"></textarea>
 
@@ -85,19 +92,27 @@ $( document ).ready(function() {
 });
 
 function search(searchTerm) {
+	var counter = 0;
+	$.ajaxSetup({async: false});
     $.get( "<c:url value='/admin/import/person/search' />?searchTerm=" + searchTerm, function( data ) {
-    	   var container = $("#searchResults");
-    	   container.empty();
+    	
+   	   var container = $("#searchResults");
+   	   container.empty();
        data.forEach(function(element) {
-    	    var li = $('<a href="#" class="list-group-item"></a>');
+    	    var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    li.append('<small>' + element.description + '</small>');
     	    li.on('click', function() {
+    	    	var color = $( this ).css( "background-color" );
+    	    	console.log(color);
+    	    	$(this).css('background-color', '#ffff00');
     	    	window.conceptIdInput = element.id;
     	    });
     	    container.append(li);
+    	    counter = counter+1;
     	   });
     });
+    document.getElementById("searchResults").style.height = "195px";
 }
 
 $( document ).ready(function() {
