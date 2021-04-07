@@ -1,9 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
+<link type="text/css" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 
-<h3>Search Concept</h3>
-
+<label>Search and Select Concept</label>
 <form class="form-inline">
 <div class="row">
 <div class="col-md-12">
@@ -16,64 +17,46 @@
 </div>
 </div>
 </form>
-
 <div id="searchResults" class="list-group">
 </div>
 
+<form action="<c:url value='/admin/text/add' />"  onsubmit="return verifyNonEmpty()" method='POST'>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<div class="form-group">
+	  <label for="title">Title</label>
+	  <input type="text" class="form-control is-valid" id="title" name="title" placeholder="Enter Title">
+	  <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+	</div>
+	<div class="form-group">
+	  <label for="author">Author</label>
+	  <input type="text" class="form-control" name="author" id="author" placeholder="Enter Author">
+	</div>
+	<div class="form-group">
+	  <label for="text">Add Text in Markdown</label>
+	  <input type="text" class="form-control" id="text" name="text"  placeholder="Enter Text">
+	</div>
+	<input type="hidden" id="conceptId" name="conceptId"/>
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 <style> 
+#searchResults {
+	max-height:195px;
+}
 .list-group {
 	overflow: auto;
 }
-
 </style>
 
-<h3> Add title for the text</h3>
-<textarea id="titleInput" cols="150"></textarea>
-
-<h3> Add author for the text</h3>
-<textarea id="authorInput" cols="150"></textarea>
-
-<h3>Add Text in markdown</h3>
-<textarea id="paragraph_textInput" cols="150" rows="8"></textarea>
 <script>
-var easyMDE = new EasyMDE({element: document.getElementById('paragraph_textInput')});
-</script>
-
-
-<form action="<c:url value='/admin/text/add' />" onsubmit="return verifyNonEmpty()" method='POST'>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="hidden" id="title" name="title"/>
-	<input type="hidden" id="author" name="author"/>
-	<input type="hidden" id="conceptId" name="conceptId"/>
-	<input type="hidden" id="text" name="text"/>
-	<input type="submit" id="Add Concept Text">
-</form>
-
-<script>
-
+var easyMDE = new EasyMDE({element: document.getElementById('text')});
 var conceptIdInput;
 
 function verifyNonEmpty() {
-	
-	if(window.conceptIdInput === undefined) {
-		alert("Concept is not selected");
-		return false;
-	} else if(document.getElementById('titleInput').value.trim() === "") {
-		alert("Title is empty");
-		return false;
-	} else if(document.getElementById('authorInput').value.trim() === "") {
-		alert("Author is empty");
-		return false;
-	} else if(easyMDE.value().trim() === "") {
-		alert("Concept Text is empty");
-		return false;
-	} else {
-		 document.getElementById("conceptId").value = window.conceptIdInput;
-		 document.getElementById("title").value = document.getElementById("titleInput").value;
-		 document.getElementById("author").value = document.getElementById("authorInput").value;
-		 document.getElementById("text").value = easyMDE.value().trim();
-		 return true;
-	}
+	 document.getElementById("conceptId").value = window.conceptIdInput;
+	 return true;
 }
 
 $( document ).ready(function() {
@@ -112,7 +95,6 @@ function search(searchTerm) {
     	    counter = counter+1;
     	   });
     });
-    document.getElementById("searchResults").style.height = "195px";
 }
 
 $( document ).ready(function() {

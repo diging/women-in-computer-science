@@ -1,7 +1,6 @@
 package edu.asu.diging.wic.core.controller;
 
 import java.security.Principal;
-import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -22,22 +21,20 @@ public class AddConceptTextController {
     @Autowired
     private IConceptTextService conceptTextService;
 
-    @RequestMapping(value="/admin/text/addTextView", method=RequestMethod.GET)
+    @RequestMapping(value="/admin/text/add", method=RequestMethod.GET)
     public String addText(Model model) {
-        return "admin/text/addTextView";
+        return "admin/text/add";
     }
 
     @RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
-    public String addTextData(@Valid ConceptText formData, BindingResult bindingResult, 
-            Principal principal, RedirectAttributes redirectAttrs) {
+    public String addTextData(Model model, @Valid ConceptText formData, 
+            BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
-            return "admin/text/addTextView";
+            model.addAttribute("conceptText", formData);
+            return "admin/text/add";
         }
-
-        formData.setAddedOn(new Date().getTime()+"");
-        formData.setAddedBy(principal.getName());
-        conceptTextService.addText(formData);
-        return  "redirect:/admin/text/list?pageNumber=1";
+        conceptTextService.addText(formData, principal.getName());
+        return  "redirect:/admin/text/list?page=1";
     }
 }

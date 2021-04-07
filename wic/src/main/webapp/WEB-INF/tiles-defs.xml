@@ -48,7 +48,7 @@
         <put-attribute name="content" value="/WEB-INF/views/admin/import/list.jsp" />    
     </definition>
     
-    <definition name="admin/text/addTextView" extends="base.definition"> 
+    <definition name="admin/text/add" extends="base.definition"> 
     	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/addConceptText.jsp" />
     </definition>
     

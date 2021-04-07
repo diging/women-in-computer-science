@@ -66,8 +66,8 @@
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Texts <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="<c:url value="/admin/text/addTextView" />">Add Texts</a></li>
-	            <li><a href="<c:url value="/admin/text/list?pageNumber=1" />">Show Texts</a></li>
+	            <li><a href="<c:url value="/admin/text/add" />">Add Texts</a></li>
+	            <li><a href="<c:url value="/admin/text/list?page=1" />">Show Texts</a></li>
 	          </ul>
 	        </li>
             </sec:authorize>

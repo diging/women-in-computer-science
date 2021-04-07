@@ -20,16 +20,16 @@ public class ShowConceptTextController {
     private IConceptTextService conceptTextService;
 
     @RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
-    public String findAll(@RequestParam(value = "pageNumber", required = true)String pageNumber,
+    public String findAll(@RequestParam(value = "page", required = true)String page,
             Model model, Principal principal) {
 
-        List<ConceptText> allConceptText = conceptTextService.findAll(pageNumber);
+        List<ConceptText> allConceptText = conceptTextService.findAll(page);
         model.addAttribute("allConceptText",allConceptText);
-        int totalEntriesInDb = conceptTextService.getTextCount();
-        int pagesCount = totalEntriesInDb % 5 == 0 ? 
+        long totalEntriesInDb = conceptTextService.getTextCount();
+        long pagesCount = totalEntriesInDb % 5 == 0 ? 
                 (totalEntriesInDb/5) : (totalEntriesInDb/5) + 1;
         model.addAttribute("totalPages", pagesCount);
-        model.addAttribute("currentPageNumber", Integer.parseInt(pageNumber));
+        model.addAttribute("currentPageNumber", Long.parseLong(page));
         return "admin/text/list";
     }
 

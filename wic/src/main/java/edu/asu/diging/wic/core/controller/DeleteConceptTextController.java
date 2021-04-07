@@ -18,7 +18,7 @@ public class DeleteConceptTextController {
     private IConceptTextService conceptTextService;
 
 
-    @RequestMapping(value="/admin/text/delete/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/admin/text/{id}/delete", method=RequestMethod.DELETE)
     public ResponseEntity<String> deleteText(@PathVariable("id") String id, Model model) {
 
         conceptTextService.deleteText(id);

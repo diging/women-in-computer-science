@@ -11,7 +11,7 @@ public interface IConceptTextService {
      * </p>
      * @param conceptText Model of conceptText which will be stored 
      */
-    void addText(ConceptText conceptText);
+    void addText(ConceptText conceptText, String name);
 
     /**
      * <p>Method is used to find all conceptText to be shown on a particular page
@@ -19,7 +19,7 @@ public interface IConceptTextService {
      * @param Pagenumber the pageNumber which is to be displayed
      * @return conceptText List of conceptText belonging to that pageNumber
      */
-    List<ConceptText> findAll(String pageNumber);
+    List<ConceptText> findAll(String page);
 
     /**
      * <p>Method used to delete a particular conceptText
@@ -49,5 +49,5 @@ public interface IConceptTextService {
      * </p>
      * @return count of the number of conceptText in database
      */
-    int getTextCount();
+    long getTextCount();
 }

@@ -26,12 +26,12 @@ public class UpdateConceptTextController {
     public String editConceptTextView( @PathVariable("id") String id,
             Model model,Principal principal) {
 
-        ConceptText dataObj = conceptTextService.getTextById(id);
-        model.addAttribute("idOfData", dataObj.getId());
-        model.addAttribute("title", dataObj.getTitle());
-        model.addAttribute("text", dataObj.getText());
-        model.addAttribute("conceptId", dataObj.getConceptId());
-        model.addAttribute("author", dataObj.getAuthor());
+        ConceptText conceptText = conceptTextService.getTextById(id);
+        model.addAttribute("idOfData", conceptText.getId());
+        model.addAttribute("title", conceptText.getTitle());
+        model.addAttribute("text", conceptText.getText());
+        model.addAttribute("conceptId", conceptText.getConceptId());
+        model.addAttribute("author", conceptText.getAuthor());
         return "admin/text/edit";
     }
 
@@ -43,6 +43,6 @@ public class UpdateConceptTextController {
             return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
         }
         conceptTextService.updateText(updatedForm, principal.getName());
-        return "redirect:/admin/text/list?pageNumber=1";
+        return "redirect:/admin/text/list?page=1";
     }
 }

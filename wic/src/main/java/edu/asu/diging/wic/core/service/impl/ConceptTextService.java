@@ -24,14 +24,17 @@ public class ConceptTextService implements IConceptTextService {
     private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
 
     @Override
-    public void addText(ConceptText conceptText) {
+    public void addText(ConceptText conceptText, String name) {
+
+        conceptText.setAddedOn(new Date().getTime()+"");
+        conceptText.setAddedBy(name);
         conceptTextDatabaseConnection.save(conceptText);
     }
 
     @Override
-    public List<ConceptText> findAll(String pageNumber) {
+    public List<ConceptText> findAll(String page) {
 
-        Pageable pagination = PageRequest.of(Integer.parseInt(pageNumber)-1, 5);
+        Pageable pagination = PageRequest.of(Integer.parseInt(page)-1, 5);
         Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
 
         List<ConceptText> data = new ArrayList<ConceptText>();
@@ -51,25 +54,24 @@ public class ConceptTextService implements IConceptTextService {
     public void updateText(ConceptText updatedForm, String modifiedBy) {
 
         Optional<ConceptText> data = conceptTextDatabaseConnection.findById(updatedForm.getId());
-        ConceptText obj = data.get();
-        obj.setText(updatedForm.getText());
-        obj.setTitle(updatedForm.getTitle());
-        obj.setAuthor(updatedForm.getAuthor());
-        obj.setModifiedby(modifiedBy);
-        obj.setModifiedOn(new Date().getTime()+"");
-        conceptTextDatabaseConnection.save(obj);
+        ConceptText conceptTextUpdate = data.get();
+        conceptTextUpdate.setText(updatedForm.getText());
+        conceptTextUpdate.setTitle(updatedForm.getTitle());
+        conceptTextUpdate.setAuthor(updatedForm.getAuthor());
+        conceptTextUpdate.setModifiedby(modifiedBy);
+        conceptTextUpdate.setModifiedOn(new Date().getTime()+"");
+        conceptTextDatabaseConnection.save(conceptTextUpdate);
     }
 
     @Override
     public ConceptText getTextById(String id) {
-        Optional<ConceptText> data = conceptTextDatabaseConnection.findById(Long.parseLong(id));
-        return data.get();
+        return conceptTextDatabaseConnection.findById(Long.parseLong(id)).get();
     }
 
     @Override
-    public int getTextCount() {
+    public long getTextCount() {
 
-        return (int)conceptTextDatabaseConnection.count();
+        return conceptTextDatabaseConnection.count();
     }
 
 }
