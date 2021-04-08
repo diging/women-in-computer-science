@@ -15,7 +15,7 @@
 				${element.text}
 			</div>
 			
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">
+			<button type="button" class="btn btn-primary" data-elementId="${element.id}" data-toggle="modal" data-target="#deleteModal">
 			  <span class="icon-trash-alt" ></span>
 			</button>
 			
@@ -65,6 +65,13 @@
 </style>
 
 <script>
+
+$('#deleteModal').on('show.bs.modal', function (event) {
+  let elementId = $(event.relatedTarget).data('elementId') 
+  $(this).find('.modal-body input').val(bookId)
+})
+
+	
 var pageNumber = 1;
 $( document ).ready(function() {
 	  $('#page-selection').bootpag({

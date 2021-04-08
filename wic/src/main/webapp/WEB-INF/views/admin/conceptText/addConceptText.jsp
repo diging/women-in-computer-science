@@ -1,45 +1,59 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
 <link type="text/css" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 
-<label>Search and Select Concept</label>
-<form class="form-inline">
-<div class="row">
-<div class="col-md-12">
-  <div class="input-group col-md-12">
-    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
-    <span class="input-group-btn">
-      <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
-    </span>
-  </div>
-</div>
-</div>
-</form>
-<div id="searchResults" class="list-group">
-</div>
 
-<form action="<c:url value='/admin/text/add' />"  onsubmit="return verifyNonEmpty()" method='POST'>
+<form:form method='POST' action="/wic/admin/text/add" modelAttribute="conceptTextFormData" onsubmit="return verifyNonEmpty()">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<div class="form-group">
+	
+	<spring:bind path="conceptId">
+	<label>Search and Select Concept</label>
+	<div class="row">
+	<div class="col-md-12">
+	  <div class="input-group ${status.error ? 'has-error' : ''} col-md-12">
+	    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
+	    <form:input path="conceptId" type="hidden" id="conceptId" name="conceptId"/>
+	    <form:errors path="conceptId" />
+	    <span class="input-group-btn">
+	      <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
+	    </span>
+	  </div>
+	</div>
+	</div>
+	<div id="searchResults" class="list-group">
+	</div>
+	</spring:bind>
+
+	<spring:bind path="title">
+	<div class="form-group ${status.error ? 'has-error' : ''}">
 	  <label for="title">Title</label>
-	  <input type="text" class="form-control is-valid" id="title" name="title" placeholder="Enter Title">
-	  <div class="invalid-feedback">
-        Please provide a valid city.
-      </div>
+	  <form:input type="text" path="title" class="form-control" id="title" name="title" placeholder="Enter Title"/>
+	  <form:errors path="title" />
 	</div>
-	<div class="form-group">
-	  <label for="author">Author</label>
-	  <input type="text" class="form-control" name="author" id="author" placeholder="Enter Author">
+	</spring:bind>
+	
+	<spring:bind path="author">
+	<div class="form-group ${status.error ? 'has-error' : ''}">
+		<label for="author">Author</label>
+		<form:input type="text" path="author" class="form-control" name="author" id="author" placeholder="Enter Author"/>
+		<form:errors path="author" />
 	</div>
-	<div class="form-group">
-	  <label for="text">Add Text in Markdown</label>
-	  <input type="text" class="form-control" id="text" name="text"  placeholder="Enter Text">
+	</spring:bind>
+	
+	<spring:bind path="text">
+	<div class="form-group ${status.error ? 'has-error' : ''}">
+		<label for="text">Add Text in Markdown</label>
+	  	<form:input type="text" path="text" class="form-control" id="text" name="text"  placeholder="Enter Text"/>
+	  	<form:errors path="text" />
 	</div>
-	<input type="hidden" id="conceptId" name="conceptId"/>
+	</spring:bind>
+	
 	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</form:form>
 
 <style> 
 #searchResults {
@@ -48,11 +62,17 @@
 .list-group {
 	overflow: auto;
 }
+.has-error .form-control {
+    border-color: #dc3545;
+}
+span[id*='errors']{
+	color: #dc3545;
+}
 </style>
 
 <script>
 var easyMDE = new EasyMDE({element: document.getElementById('text')});
-var conceptIdInput;
+var conceptIdInput = null;
 
 function verifyNonEmpty() {
 	 document.getElementById("conceptId").value = window.conceptIdInput;

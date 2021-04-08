@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,15 +33,18 @@ public class UpdateConceptTextController {
         model.addAttribute("text", conceptText.getText());
         model.addAttribute("conceptId", conceptText.getConceptId());
         model.addAttribute("author", conceptText.getAuthor());
+        model.addAttribute("conceptTextFormData", conceptText);
         return "admin/text/edit";
     }
 
     @RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
-    public String updateTextData(@Valid ConceptText updatedForm,
+    public String updateTextData(Model model,@ModelAttribute("conceptTextFormData") @Valid ConceptText updatedForm,
             BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
+            model.addAttribute("conceptTextFormData", updatedForm);
+            return "admin/text/edit";
+//            return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
         }
         conceptTextService.updateText(updatedForm, principal.getName());
         return "redirect:/admin/text/list?page=1";
