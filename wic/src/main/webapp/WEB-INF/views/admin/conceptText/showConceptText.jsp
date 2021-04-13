@@ -15,7 +15,7 @@
 				${element.text}
 			</div>
 			
-			<button type="button" class="btn btn-primary" data-elementId="${element.id}" data-toggle="modal" data-target="#deleteModal">
+			<button type="button" class="btn btn-primary" data-whatever="${element.id}" data-toggle="modal" data-target="#deleteModal">
 			  <span class="icon-trash-alt" ></span>
 			</button>
 			
@@ -27,8 +27,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <a onClick="deleteConceptText('${element.id}')" 
-			    	href="<c:url value="/admin/text/list?page=1"/>" class="btn btn-primary">
+			        <a id='deleteAPI' href="<c:url value="/admin/text/list?page=1"/>" class="btn btn-primary">
 			    	Delete</a>
 			      </div>
 			    </div>
@@ -67,10 +66,14 @@
 <script>
 
 $('#deleteModal').on('show.bs.modal', function (event) {
-  let elementId = $(event.relatedTarget).data('elementId') 
-  $(this).find('.modal-body input').val(bookId)
+	var button = $(event.relatedTarget)
+	var recipient = button.data('whatever')
+	var modal = $(this)
+	modal.find('.modal-footer').find('a').removeAttr('onclick');
+	console.log(modal.find('.modal-footer').find('a'));
+	var func = "deleteConceptText("+recipient+");";
+	modal.find('.modal-footer').find('a').attr('onClick', func);
 })
-
 	
 var pageNumber = 1;
 $( document ).ready(function() {
@@ -96,6 +99,7 @@ $( document ).ready(function() {
 });
 	  
 function deleteConceptText(deleteValue) {
+	console.log(deleteValue);
 	var url = "/wic/admin/text/"+deleteValue+"/delete?${_csrf.parameterName}=${_csrf.token}";
 	console.log(url);
 	$.ajax({

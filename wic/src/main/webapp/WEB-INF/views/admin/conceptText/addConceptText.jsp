@@ -5,6 +5,7 @@
 <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
 <link type="text/css" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<link type="text/css" href="<c:url value="/resources/DigInGIconPack/diging-icon-pack.css" />" rel="stylesheet">
 
 
 <form:form method='POST' action="/wic/admin/text/add" modelAttribute="conceptTextFormData" onsubmit="return verifyNonEmpty()">
@@ -56,6 +57,15 @@
 </form:form>
 
 <style> 
+
+.abcd {
+	display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+.leftMove {
+	width:90%
+}
 #searchResults {
 	max-height:195px;
 }
@@ -104,19 +114,29 @@ function search(searchTerm) {
        data.forEach(function(element) {
     	    var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
-    	    li.append('<small>' + element.description + '</small>');
+    	    
+    	    var newLi = $('<div class=abcd>');
+    	    newLi.append('<small class=leftMove>' + element.description + '</small>');
     	    li.on('click', function() {
-    	    	var color = $( this ).css( "background-color" );
-    	    	console.log(color);
-    	    	$(this).css('background-color', '#ffff00');
-    	    	window.conceptIdInput = element.id;
+    	    	if($('#remove1298').length === 1) {
+    	    		window.conceptIdInput = null;
+    	    		$('#remove1298').remove();
+    	    	}
+   	    		newLi.append('<button type="button" id="remove1298" class="btn btn-warning"><span class="icon-circle-close" ></span></button>');
+       	    	
+       	    	window.conceptIdInput = element.id;	
     	    });
+    	    newLi.append('</div>');
+    	    li.append(newLi);
     	    container.append(li);
     	    counter = counter+1;
     	   });
     });
 }
-
+$('#remove1298').click(function(){
+	window.conceptIdInput = null;
+	$(this).remove();
+});
 $( document ).ready(function() {
 	$('#selectConcept').click(function() {
 		add($("#searchbox").val());
