@@ -5,7 +5,14 @@
 <script src="<c:url value="/resources/bootpag/jquery.bootpag.min.js" />"></script>
 <link type="text/css" href="<c:url value="/resources/DigInGIconPack/diging-icon-pack.css" />" rel="stylesheet">
 
-<h3>List of Texts</h3>
+<div class="headerData">
+	<h3>List of Texts</h3>
+	<a type="button" href="<c:url value="/admin/text/add" />" 
+		class="btn btn-primary"  id="addConcept">
+		<span class="icon-circle-add" ></span>
+	</a>
+</div>
+
 <ul class="list-group">
 	<c:forEach items="${allConceptText}" var="element">
 		<li class="list-group-item">
@@ -61,6 +68,12 @@
 .buttons {
 	margin: 2px;
 }
+.headerData {
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+}
 </style>
 
 <script>
@@ -70,7 +83,6 @@ $('#deleteModal').on('show.bs.modal', function (event) {
 	var recipient = button.data('whatever')
 	var modal = $(this)
 	modal.find('.modal-footer').find('a').removeAttr('onclick');
-	console.log(modal.find('.modal-footer').find('a'));
 	var func = "deleteConceptText("+recipient+");";
 	modal.find('.modal-footer').find('a').attr('onClick', func);
 })
@@ -99,9 +111,9 @@ $( document ).ready(function() {
 });
 	  
 function deleteConceptText(deleteValue) {
-	console.log(deleteValue);
+
 	var url = "/wic/admin/text/"+deleteValue+"/delete?${_csrf.parameterName}=${_csrf.token}";
-	console.log(url);
+
 	$.ajax({
 		type:"DELETE",
 		url:url,

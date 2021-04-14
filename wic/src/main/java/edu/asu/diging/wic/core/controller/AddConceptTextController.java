@@ -36,6 +36,7 @@ public class AddConceptTextController {
             model.addAttribute("conceptTextFormData", formData);
             return "admin/text/add";
         }
+
         conceptTextService.addText(formData, principal.getName());
         return  "redirect:/admin/text/list?page=1";
     }

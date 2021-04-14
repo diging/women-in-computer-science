@@ -1,9 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
-<link type="text/css" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <link type="text/css" href="<c:url value="/resources/DigInGIconPack/diging-icon-pack.css" />" rel="stylesheet">
 
@@ -58,13 +57,16 @@
 
 <style> 
 
-.abcd {
+.textAndCheckMark {
 	display: flex;
     flex-direction: row;
     align-items: stretch;
 }
-.leftMove {
-	width:90%
+.textOfSub {
+	width:95%
+}
+.CodeMirror-scroll {
+	max-height: 300px;
 }
 #searchResults {
 	max-height:195px;
@@ -115,16 +117,16 @@ function search(searchTerm) {
     	    var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    
-    	    var newLi = $('<div class=abcd>');
-    	    newLi.append('<small class=leftMove>' + element.description + '</small>');
+    	    var newLi = $('<div class=textAndCheckMark>');
+    	    newLi.append('<small class=textOfSub>' + element.description + '</small>');
     	    li.on('click', function() {
-    	    	if($('#remove1298').length === 1) {
+    	    	if($('#selectionMark').length === 1) {
     	    		window.conceptIdInput = null;
-    	    		$('#remove1298').remove();
+    	    		$('#selectionMark').remove();
     	    	}
-   	    		newLi.append('<button type="button" id="remove1298" class="btn btn-warning"><span class="icon-circle-close" ></span></button>');
-       	    	
+   	    		newLi.append('<span id=selectionMark>&#9989;</span>');
        	    	window.conceptIdInput = element.id;	
+
     	    });
     	    newLi.append('</div>');
     	    li.append(newLi);
@@ -133,10 +135,7 @@ function search(searchTerm) {
     	   });
     });
 }
-$('#remove1298').click(function(){
-	window.conceptIdInput = null;
-	$(this).remove();
-});
+
 $( document ).ready(function() {
 	$('#selectConcept').click(function() {
 		add($("#searchbox").val());

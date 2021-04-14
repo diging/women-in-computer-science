@@ -32,9 +32,9 @@ public class ConceptTextService implements IConceptTextService {
     }
 
     @Override
-    public List<ConceptText> findAll(String page) {
+    public List<ConceptText> findAll(String page, Integer itemsPerPage) {
 
-        Pageable pagination = PageRequest.of(Integer.parseInt(page)-1, 5);
+        Pageable pagination = PageRequest.of(Integer.parseInt(page)-1, itemsPerPage);
         Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
 
         List<ConceptText> data = new ArrayList<ConceptText>();

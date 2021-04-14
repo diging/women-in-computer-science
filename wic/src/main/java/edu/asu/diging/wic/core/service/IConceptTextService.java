@@ -19,7 +19,7 @@ public interface IConceptTextService {
      * @param Pagenumber the pageNumber which is to be displayed
      * @return conceptText List of conceptText belonging to that pageNumber
      */
-    List<ConceptText> findAll(String page);
+    List<ConceptText> findAll(String page, Integer itemsPerPage);
 
     /**
      * <p>Method used to delete a particular conceptText
