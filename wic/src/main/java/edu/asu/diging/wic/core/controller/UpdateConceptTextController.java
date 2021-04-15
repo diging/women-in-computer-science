@@ -28,11 +28,6 @@ public class UpdateConceptTextController {
             Model model,Principal principal) {
 
         ConceptText conceptText = conceptTextService.getTextById(id);
-        model.addAttribute("idOfData", conceptText.getId());
-        model.addAttribute("title", conceptText.getTitle());
-        model.addAttribute("text", conceptText.getText());
-        model.addAttribute("conceptId", conceptText.getConceptId());
-        model.addAttribute("author", conceptText.getAuthor());
         model.addAttribute("conceptTextFormData", conceptText);
         return "admin/text/edit";
     }
@@ -42,6 +37,7 @@ public class UpdateConceptTextController {
             BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
+            System.out.println(model.getAttribute("text"));
             model.addAttribute("conceptTextFormData", updatedForm);
             return "admin/text/edit";
 //            return "redirect:/admin/text/"+updatedForm.getId()+"/edit";

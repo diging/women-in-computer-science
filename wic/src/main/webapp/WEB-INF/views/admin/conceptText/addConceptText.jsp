@@ -47,7 +47,7 @@
 	<spring:bind path="text">
 	<div class="form-group ${status.error ? 'has-error' : ''}">
 		<label for="text">Add Text in Markdown</label>
-	  	<form:input type="text" path="text" class="form-control" id="text" name="text"  placeholder="Enter Text"/>
+	  	<form:textarea type="text" path="text" class="form-control" id="text" name="text"  placeholder="Enter Text"/>
 	  	<form:errors path="text" />
 	</div>
 	</spring:bind>
