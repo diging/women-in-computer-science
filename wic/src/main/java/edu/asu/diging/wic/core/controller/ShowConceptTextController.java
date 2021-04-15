@@ -26,7 +26,7 @@ public class ShowConceptTextController {
     private Integer itemsPerPage;
 
     @RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
-    public String findAll(@RequestParam(value = "page", required = false)String page,
+    public String findAll(@RequestParam(value = "page", required = false) String page,
             Model model, Principal principal) {
 
         if(page == null || page.trim().equals("")) {

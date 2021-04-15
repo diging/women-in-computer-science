@@ -28,7 +28,6 @@ public class ConceptText {
     private String modifiedOn;
     private String modifiedBy;
 
-
     public Long getId() {
         return id;
     }

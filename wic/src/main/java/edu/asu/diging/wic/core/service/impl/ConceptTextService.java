@@ -36,7 +36,6 @@ public class ConceptTextService implements IConceptTextService {
 
         Pageable pagination = PageRequest.of(Integer.parseInt(page)-1, itemsPerPage);
         Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
-
         List<ConceptText> data = new ArrayList<ConceptText>();
         if(dataFromDb != null) {
             dataFromDb.getContent().forEach(i -> data.add(i));
@@ -65,6 +64,7 @@ public class ConceptTextService implements IConceptTextService {
 
     @Override
     public ConceptText getTextById(String id) {
+        
         return conceptTextDatabaseConnection.findById(Long.parseLong(id)).get();
     }
 

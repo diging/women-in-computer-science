@@ -29,8 +29,9 @@ public class AddConceptTextController {
     }
 
     @RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
-    public String addTextData(Model model,@ModelAttribute("conceptTextFormData") @Valid ConceptText formData, 
-            BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
+    public String addTextData(Model model,@ModelAttribute("conceptTextFormData") 
+        @Valid ConceptText formData, BindingResult bindingResult, Principal principal, 
+        RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("conceptTextFormData", formData);

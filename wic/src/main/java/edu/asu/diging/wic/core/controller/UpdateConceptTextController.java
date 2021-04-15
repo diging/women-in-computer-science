@@ -33,14 +33,13 @@ public class UpdateConceptTextController {
     }
 
     @RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
-    public String updateTextData(Model model,@ModelAttribute("conceptTextFormData") @Valid ConceptText updatedForm,
-            BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
+    public String updateTextData(Model model,@ModelAttribute("conceptTextFormData")
+        @Valid ConceptText updatedForm, BindingResult bindingResult, Principal principal, 
+        RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
-            System.out.println(model.getAttribute("text"));
             model.addAttribute("conceptTextFormData", updatedForm);
             return "admin/text/edit";
-//            return "redirect:/admin/text/"+updatedForm.getId()+"/edit";
         }
         conceptTextService.updateText(updatedForm, principal.getName());
         return "redirect:/admin/text/list?page=1";
