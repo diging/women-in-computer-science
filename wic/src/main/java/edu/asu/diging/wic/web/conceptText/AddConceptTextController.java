@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.controller;
+package edu.asu.diging.wic.web.conceptText;
 
 import java.security.Principal;
 
@@ -39,6 +39,6 @@ public class AddConceptTextController {
         }
 
         conceptTextService.addText(formData, principal.getName());
-        return  "redirect:/admin/text/list?page=1";
+        return  "redirect:/admin/text/list";
     }
 }

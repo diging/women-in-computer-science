@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.controller;
+package edu.asu.diging.wic.web.conceptText;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +17,8 @@ public class DeleteConceptTextController {
     @Autowired
     private IConceptTextService conceptTextService;
 
-
     @RequestMapping(value="/admin/text/{id}/delete", method=RequestMethod.DELETE)
-    public ResponseEntity<String> deleteText(@PathVariable("id") String id, Model model) {
+    public ResponseEntity<String> deleteText(@PathVariable("id") Long id, Model model) {
         conceptTextService.deleteText(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

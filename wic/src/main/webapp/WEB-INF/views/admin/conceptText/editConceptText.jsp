@@ -4,7 +4,7 @@
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 
-<form:form action="/wic/admin/text/update" modelAttribute="conceptTextFormData" method='POST'>
+<form:form action="/wic/admin/text/${conceptTextFormData.id}/edit" modelAttribute="conceptTextFormData" method='POST'>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<input type="hidden" name="id" value="${conceptTextFormData.id}" />
 	

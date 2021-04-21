@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.controller;
+package edu.asu.diging.wic.web.conceptText;
 
 import java.security.Principal;
 import java.util.List;
@@ -26,19 +26,16 @@ public class ShowConceptTextController {
     private Integer itemsPerPage;
 
     @RequestMapping(value="/admin/text/list", method=RequestMethod.GET)
-    public String findAll(@RequestParam(value = "page", required = false) String page,
-            Model model, Principal principal) {
+    public String findAll(@RequestParam(value = "page",  defaultValue = "1", required = false)
+        Integer page, Model model, Principal principal) {
 
-        if(page == null || page.trim().equals("")) {
-            page = "1";
-        }
         List<ConceptText> allConceptText = conceptTextService.findAll(page, itemsPerPage);
         model.addAttribute("allConceptText",allConceptText);
         long totalEntriesInDb = conceptTextService.getTextCount();
         long pagesCount = totalEntriesInDb % itemsPerPage == 0 ? 
                 (totalEntriesInDb/itemsPerPage) : (totalEntriesInDb/itemsPerPage) + 1;
         model.addAttribute("totalPages", pagesCount);
-        model.addAttribute("currentPageNumber", Long.parseLong(page));
+        model.addAttribute("currentPageNumber", page);
         return "admin/text/list";
     }
 

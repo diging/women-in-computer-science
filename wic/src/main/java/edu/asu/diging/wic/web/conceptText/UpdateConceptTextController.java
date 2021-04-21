@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.controller;
+package edu.asu.diging.wic.web.conceptText;
 
 import java.security.Principal;
 
@@ -24,7 +24,7 @@ public class UpdateConceptTextController {
     private IConceptTextService conceptTextService;
 
     @RequestMapping(value="/admin/text/{id}/edit", method=RequestMethod.GET)
-    public String editConceptTextView( @PathVariable("id") String id,
+    public String editConceptTextView( @PathVariable("id") Long id,
             Model model,Principal principal) {
 
         ConceptText conceptText = conceptTextService.getTextById(id);
@@ -32,16 +32,16 @@ public class UpdateConceptTextController {
         return "admin/text/edit";
     }
 
-    @RequestMapping(value="/admin/text/update", method=RequestMethod.POST)
-    public String updateTextData(Model model,@ModelAttribute("conceptTextFormData")
-        @Valid ConceptText updatedForm, BindingResult bindingResult, Principal principal, 
-        RedirectAttributes redirectAttrs) {
+    @RequestMapping(value="/admin/text/{id}/edit", method=RequestMethod.POST)
+    public String updateTextData( @PathVariable("id") Long id, Model model,
+            @ModelAttribute("conceptTextFormData") @Valid ConceptText updatedForm, 
+            BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("conceptTextFormData", updatedForm);
             return "admin/text/edit";
         }
-        conceptTextService.updateText(updatedForm, principal.getName());
+        conceptTextService.updateText(updatedForm, principal.getName(), id);
         return "redirect:/admin/text/list?page=1";
     }
 }

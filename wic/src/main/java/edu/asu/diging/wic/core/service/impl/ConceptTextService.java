@@ -1,6 +1,5 @@
 package edu.asu.diging.wic.core.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,35 +23,32 @@ public class ConceptTextService implements IConceptTextService {
     private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
 
     @Override
-    public void addText(ConceptText conceptText, String name) {
+    public ConceptText addText(ConceptText conceptText, String name) {
 
         conceptText.setAddedOn(new Date().getTime()+"");
         conceptText.setAddedBy(name);
-        conceptTextDatabaseConnection.save(conceptText);
+        ConceptText savedEntity = conceptTextDatabaseConnection.save(conceptText);
+        return savedEntity;
     }
 
     @Override
-    public List<ConceptText> findAll(String page, Integer itemsPerPage) {
+    public List<ConceptText> findAll(Integer page, Integer itemsPerPage) {
 
-        Pageable pagination = PageRequest.of(Integer.parseInt(page)-1, itemsPerPage);
+        Pageable pagination = PageRequest.of(page-1, itemsPerPage);
         Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
-        List<ConceptText> data = new ArrayList<ConceptText>();
-        if(dataFromDb != null) {
-            dataFromDb.getContent().forEach(i -> data.add(i));
-        }
-        return data;
+        return dataFromDb.getContent();
     }
 
     @Override
-    public void deleteText(String id) {
+    public void deleteText(Long id) {
 
-        conceptTextDatabaseConnection.deleteById(Long.parseLong(id));
+        conceptTextDatabaseConnection.deleteById(id);
     }
 
     @Override
-    public void updateText(ConceptText updatedForm, String modifiedBy) {
+    public void updateText(ConceptText updatedForm, String modifiedBy, Long id) {
 
-        Optional<ConceptText> data = conceptTextDatabaseConnection.findById(updatedForm.getId());
+        Optional<ConceptText> data = conceptTextDatabaseConnection.findById(id);
         ConceptText conceptTextUpdate = data.get();
         conceptTextUpdate.setText(updatedForm.getText());
         conceptTextUpdate.setTitle(updatedForm.getTitle());
@@ -63,9 +59,9 @@ public class ConceptTextService implements IConceptTextService {
     }
 
     @Override
-    public ConceptText getTextById(String id) {
+    public ConceptText getTextById(Long id) {
         
-        return conceptTextDatabaseConnection.findById(Long.parseLong(id)).get();
+        return conceptTextDatabaseConnection.findById(id).get();
     }
 
     @Override
