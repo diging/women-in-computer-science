@@ -17,7 +17,7 @@ public interface IConceptTextService {
     /**
      * <p>Method is used to find all conceptText from database.
      * </p>
-     * @param Pagenumber the pageNumber which is to be displayed
+     * @param page the pageNumber which is to be displayed
      * @param itemsPerPage Integer of number of items to display on a single page
      * @return conceptText List of conceptText belonging to that pageNumber
      */

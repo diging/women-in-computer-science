@@ -69,12 +69,24 @@ public class ConceptText {
     public String getAddedOn() {
         return addedOn;
     }
+    
+    /**
+     * <p>Setter will convert the OffsetDateTime Object to ISO 8601 string format
+     * </p>
+     * @param addedOn Object of OffsetDateTime
+     */
     public void setAddedOn(OffsetDateTime addedOn) {
         this.addedOn = addedOn.toString();
     }
     public String getModifiedOn() {
         return modifiedOn;
     }
+    
+    /**
+     * <p>Setter will convert the OffsetDateTime Object to ISO 8601 string format
+     * </p>
+     * @param modifiedOn Object of OffsetDateTime
+     */
     public void setModifiedOn(OffsetDateTime modifiedOn) {
         this.modifiedOn = modifiedOn.toString();
     }
