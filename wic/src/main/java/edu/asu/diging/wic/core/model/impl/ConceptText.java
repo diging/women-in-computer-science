@@ -1,5 +1,7 @@
 package edu.asu.diging.wic.core.model.impl;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -67,14 +69,14 @@ public class ConceptText {
     public String getAddedOn() {
         return addedOn;
     }
-    public void setAddedOn(String addedOn) {
-        this.addedOn = addedOn;
+    public void setAddedOn(OffsetDateTime addedOn) {
+        this.addedOn = addedOn.toString();
     }
     public String getModifiedOn() {
         return modifiedOn;
     }
-    public void setModifiedOn(String modifiedOn) {
-        this.modifiedOn = modifiedOn;
+    public void setModifiedOn(OffsetDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn.toString();
     }
     public String getModifiedby() {
         return modifiedBy;

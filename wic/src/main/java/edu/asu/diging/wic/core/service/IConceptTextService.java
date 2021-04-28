@@ -37,7 +37,7 @@ public interface IConceptTextService {
      * @param modifiedBy the user who modified the conceptText
      * @param id of the conceptText which will be updated
      */
-    void updateText(ConceptText updatedForm, String modifiedBy, Long id);
+    ConceptText updateText(ConceptText updatedForm, String modifiedBy, Long id);
 
     /**
      * <p>Method used to update a particular single conceptText by id 

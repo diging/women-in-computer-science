@@ -1,11 +1,10 @@
 package edu.asu.diging.wic.core.service.impl;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,28 +24,27 @@ public class ConceptTextService implements IConceptTextService {
     @Override
     public ConceptText addText(ConceptText conceptText, String name) {
 
-        conceptText.setAddedOn(new Date().getTime()+"");
+        conceptText.setAddedOn(OffsetDateTime.now());
         conceptText.setAddedBy(name);
-        ConceptText savedEntity = conceptTextDatabaseConnection.save(conceptText);
-        return savedEntity;
+        return conceptTextDatabaseConnection.save(conceptText);
     }
 
     @Override
     public List<ConceptText> findAll(Integer page, Integer itemsPerPage) {
 
         Pageable pagination = PageRequest.of(page-1, itemsPerPage);
-        Page<ConceptText> dataFromDb = conceptTextDatabaseConnection.findAll(pagination);
-        return dataFromDb.getContent();
+        return conceptTextDatabaseConnection.findAll(pagination).getContent();
     }
 
     @Override
     public void deleteText(Long id) {
-
-        conceptTextDatabaseConnection.deleteById(id);
+        if(id != null) {
+            conceptTextDatabaseConnection.deleteById(id);
+        }
     }
 
     @Override
-    public void updateText(ConceptText updatedForm, String modifiedBy, Long id) {
+    public ConceptText updateText(ConceptText updatedForm, String modifiedBy, Long id) {
 
         Optional<ConceptText> data = conceptTextDatabaseConnection.findById(id);
         ConceptText conceptTextUpdate = data.get();
@@ -54,8 +52,10 @@ public class ConceptTextService implements IConceptTextService {
         conceptTextUpdate.setTitle(updatedForm.getTitle());
         conceptTextUpdate.setAuthor(updatedForm.getAuthor());
         conceptTextUpdate.setModifiedby(modifiedBy);
-        conceptTextUpdate.setModifiedOn(new Date().getTime()+"");
+        conceptTextUpdate.setModifiedOn(OffsetDateTime.now());
         conceptTextDatabaseConnection.save(conceptTextUpdate);
+        
+        return conceptTextUpdate;
     }
 
     @Override
