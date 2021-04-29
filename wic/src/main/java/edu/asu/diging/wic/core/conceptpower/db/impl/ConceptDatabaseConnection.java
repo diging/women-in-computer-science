@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,5 +216,12 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ConceptType> getAllConceptTypes() {
+
+        TypedQuery<ConceptType> query = em.createQuery("from ConceptType", ConceptType.class);
+        return query.getResultList();
     }
 }

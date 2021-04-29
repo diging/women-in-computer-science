@@ -1,7 +1,10 @@
 package edu.asu.diging.wic.core.conceptpower.db;
 
+import java.util.List;
+
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.IConceptType;
+import edu.asu.diging.wic.core.model.impl.ConceptType;
 
 public interface IConceptDatabaseConnection {
 
@@ -14,5 +17,6 @@ public interface IConceptDatabaseConnection {
     IConceptType getType(String uri);
 
     IConcept getConceptByUri(String uri);
-
+    
+    List<ConceptType> getAllConceptTypes();
 }

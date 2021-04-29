@@ -1,6 +1,5 @@
 package edu.asu.diging.wic.core.conceptpower.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
 import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.model.impl.ConceptType;
 
 @Service
 public class ConceptpowerCache implements IConceptpowerCache {
@@ -53,5 +53,11 @@ public class ConceptpowerCache implements IConceptpowerCache {
             conceptDB.createOrUpdate(concept);
         }
         return concept; 
+    }
+
+    @Override
+    public List<ConceptType> getAllConceptTypes() {
+        
+        return conceptDB.getAllConceptTypes();
     }
 }
