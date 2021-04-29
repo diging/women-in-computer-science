@@ -39,7 +39,6 @@ var globalData;
 		type:"GET",
 		success: function(data) {	
 			globalData = data;
-			console.log(data);
 		},
 		error: function() {
 			$("#network").append("Error while fetching concept types")
@@ -47,14 +46,12 @@ var globalData;
 	});
 })()
 function addDropDown() {
-	console.log("In add dropdown");
 	for (i = 0; i < globalData.length; i++) {
-		console.log(globalData[i]['name']);
 		$('#dropdown').append("<option value=\"" + globalData[i]['uri'] + "\">" + 
 				globalData[i]['name'] + "</option>");	
-		console.log("bye");
 	}
-	$('#dropdown').append("<option value=\"" + "" + "\">" + "Hide Node without type" + "</option>");	
+	$('#dropdown').append("<option value=\"" + "" + "\">" + 
+			"Hide Node without type" + "</option>");	
 	var configurationSet = {
 		maxHeight: 200,
 		nonSelectedText: 'Hide Node Types',
