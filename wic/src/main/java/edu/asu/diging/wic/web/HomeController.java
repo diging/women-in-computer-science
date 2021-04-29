@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.model.impl.ConceptType;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.Node;
@@ -117,5 +119,13 @@ public class HomeController {
             element.getData().setColor(generalNodeColor);
         }
         return element;
+    }
+    
+    @RequestMapping(value="/getAllConceptsTypes", method=RequestMethod.GET)
+    public ResponseEntity<Collection<ConceptType>> getAllConceptsTypes(Model model) {
+
+        List<ConceptType> allConceptTypes = conceptCache.getAllConceptTypes();
+        model.addAttribute("data", allConceptTypes);
+        return new ResponseEntity<Collection<ConceptType>>(allConceptTypes, HttpStatus.OK);
     }
 }
