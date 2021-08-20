@@ -49,15 +49,15 @@
     </definition>
     
     <definition name="admin/text/add" extends="base.definition"> 
-    	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/addConceptText.jsp" />
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/addConceptText.jsp" />
     </definition>
     
     <definition name="admin/text/list" extends="base.definition"> 
-    	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/showConceptText.jsp" />
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/showConceptText.jsp" />
     </definition>
     
     <definition name="admin/text/edit" extends="base.definition"> 
-    	<put-attribute name="content" value="/WEB-INF/views/admin/conceptText/editConceptText.jsp" />
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/editConceptText.jsp" />
     </definition>
 	
     <definition name="person" extends="base.definition.public">

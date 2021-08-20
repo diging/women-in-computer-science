@@ -14,7 +14,7 @@
 </div>
 
 <ul class="list-group">
-	<c:forEach items="${allConceptText}" var="element">
+	<c:forEach items="${conceptTexts}" var="element">
 		<li class="list-group-item">
 			<div id="coneptText">
 				<b>${element.title}</b>

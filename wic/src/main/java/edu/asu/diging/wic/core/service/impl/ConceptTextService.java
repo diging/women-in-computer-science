@@ -7,11 +7,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.model.impl.ConceptText;
-import edu.asu.diging.wic.core.repository.ConceptTextDatabaseRepository;
+import edu.asu.diging.wic.core.repository.ConceptTextRepository;
 import edu.asu.diging.wic.core.service.IConceptTextService;
 
 @Service
@@ -19,55 +21,45 @@ import edu.asu.diging.wic.core.service.IConceptTextService;
 public class ConceptTextService implements IConceptTextService {
 
     @Autowired
-    private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
+    private ConceptTextRepository conceptRepository;
 
     @Override
     public ConceptText addText(ConceptText conceptText, String name) {
-
         conceptText.setAddedOn(OffsetDateTime.now());
         conceptText.setAddedBy(name);
-        return conceptTextDatabaseConnection.save(conceptText);
+        return conceptRepository.save(conceptText);
     }
 
     @Override
-    public List<ConceptText> findAll(Integer page, Integer itemsPerPage) {
-
-        Pageable pagination = PageRequest.of(page-1, itemsPerPage);
-        return conceptTextDatabaseConnection.findAll(pagination).getContent();
+    public List<ConceptText> findAll(Integer page, Integer itemsPerPage, String sortBy, Direction order) {
+        Pageable pagination = PageRequest.of(page - 1, itemsPerPage, Sort.by(order, sortBy));
+        return conceptRepository.findAll(pagination).getContent();
     }
 
     @Override
     public void deleteText(Long id) {
-        if(id != null) {
-            conceptTextDatabaseConnection.deleteById(id);
+        if (id != null) {
+            conceptRepository.deleteById(id);
         }
     }
 
     @Override
-    public ConceptText updateText(ConceptText updatedForm, String modifiedBy, Long id) {
-
-        Optional<ConceptText> data = conceptTextDatabaseConnection.findById(id);
-        ConceptText conceptTextUpdate = data.get();
-        conceptTextUpdate.setText(updatedForm.getText());
-        conceptTextUpdate.setTitle(updatedForm.getTitle());
-        conceptTextUpdate.setAuthor(updatedForm.getAuthor());
-        conceptTextUpdate.setModifiedby(modifiedBy);
-        conceptTextUpdate.setModifiedOn(OffsetDateTime.now());
-        conceptTextDatabaseConnection.save(conceptTextUpdate);
-        
-        return conceptTextUpdate;
+    public ConceptText updateText(ConceptText conceptText, String modifiedBy, Long id) {
+        conceptText.setId(id);
+        conceptText.setModifiedby(modifiedBy);
+        conceptText.setModifiedOn(OffsetDateTime.now());
+        return conceptRepository.save(conceptText);
     }
 
     @Override
     public ConceptText getTextById(Long id) {
-        
-        return conceptTextDatabaseConnection.findById(id).get();
+        Optional<ConceptText> conceptTextOptional = conceptRepository.findById(id);
+        return conceptTextOptional.orElseGet(null);
     }
 
     @Override
     public long getTextCount() {
-
-        return conceptTextDatabaseConnection.count();
+        return conceptRepository.count();
     }
 
 }

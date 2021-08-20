@@ -8,8 +8,6 @@ import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 @Repository
 @JaversSpringDataAuditable
-public interface ConceptTextDatabaseRepository extends PagingAndSortingRepository<ConceptText, Long> {
-
-
+public interface ConceptTextRepository extends PagingAndSortingRepository<ConceptText, Long> {
 
 }

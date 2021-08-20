@@ -7,7 +7,7 @@
 <link type="text/css" href="<c:url value="/resources/DigInGIconPack/diging-icon-pack.css" />" rel="stylesheet">
 
 
-<form:form method='POST' action="/wic/admin/text/add" modelAttribute="conceptTextFormData" onsubmit="return verifyNonEmpty()">
+<form:form method='POST' action="${pageContext.request.contextPath}/admin/text/add" modelAttribute="conceptTextFormData" onsubmit="return verifyNonEmpty()">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	
 	<spring:bind path="conceptId">

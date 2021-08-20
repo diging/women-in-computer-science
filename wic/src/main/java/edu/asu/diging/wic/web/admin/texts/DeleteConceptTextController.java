@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.web.conceptText;
+package edu.asu.diging.wic.web.admin.texts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

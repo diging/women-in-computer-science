@@ -2,6 +2,8 @@ package edu.asu.diging.wic.core.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort.Direction;
+
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 public interface IConceptTextService {
@@ -21,7 +23,7 @@ public interface IConceptTextService {
      * @param itemsPerPage Integer of number of items to display on a single page
      * @return conceptText List of conceptText belonging to that pageNumber
      */
-    List<ConceptText> findAll(Integer page, Integer itemsPerPage);
+    List<ConceptText> findAll(Integer page, Integer itemsPerPage, String sortBy, Direction order);
 
     /**
      * <p>Method used to delete a particular conceptText
@@ -37,7 +39,7 @@ public interface IConceptTextService {
      * @param modifiedBy the user who modified the conceptText
      * @param id of the conceptText which will be updated
      */
-    ConceptText updateText(ConceptText updatedForm, String modifiedBy, Long id);
+    ConceptText updateText(ConceptText conceptText, String modifiedBy, Long id);
 
     /**
      * <p>Method used to update a particular single conceptText by id 
