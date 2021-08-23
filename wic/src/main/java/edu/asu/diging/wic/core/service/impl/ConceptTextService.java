@@ -45,6 +45,10 @@ public class ConceptTextService implements IConceptTextService {
 
     @Override
     public ConceptText updateText(ConceptText conceptText, String modifiedBy, Long id) {
+        Optional<ConceptText> optionalText = conceptRepository.findById(id);
+        if (!optionalText.isPresent()) {
+            return null;
+        }
         conceptText.setId(id);
         conceptText.setModifiedby(modifiedBy);
         conceptText.setModifiedOn(OffsetDateTime.now());
@@ -54,7 +58,10 @@ public class ConceptTextService implements IConceptTextService {
     @Override
     public ConceptText getTextById(Long id) {
         Optional<ConceptText> conceptTextOptional = conceptRepository.findById(id);
-        return conceptTextOptional.orElseGet(null);
+        if (conceptTextOptional.isPresent()) {
+            return conceptTextOptional.get();
+        }
+        return null;
     }
 
     @Override

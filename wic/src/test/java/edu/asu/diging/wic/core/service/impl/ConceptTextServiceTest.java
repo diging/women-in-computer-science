@@ -2,12 +2,10 @@ package edu.asu.diging.wic.core.service.impl;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,124 +19,124 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 
 import edu.asu.diging.wic.core.model.impl.ConceptText;
-import edu.asu.diging.wic.core.repository.ConceptTextDatabaseRepository;
-import edu.asu.diging.wic.core.service.impl.ConceptTextService;
+import edu.asu.diging.wic.core.repository.ConceptTextRepository;
 
 public class ConceptTextServiceTest {
 
     @Mock
-    private ConceptTextDatabaseRepository conceptTextDatabaseConnection;
-    
+    private ConceptTextRepository conceptRepository;
+
     @InjectMocks
     private ConceptTextService conceptTextService;
-    
+
+    private ConceptText conceptText1;
+    private ConceptText conceptText2;
+    private Long id;
+
+    private static final String SORTBY_ATTR = "title";
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-    }
-    @Test
-    public void testAddText() {
-        
-        ConceptText conceptText = new ConceptText();
-        conceptText.setAuthor("Smit");
-        conceptText.setConceptId("WC123");
-        conceptText.setText("The great Scientist");
-        conceptText.setTitle("Information");
+        id = new Long(1L);
 
-        when(conceptTextDatabaseConnection.save(conceptText)).thenReturn(conceptText);
-        ConceptText savedText = conceptTextService.addText(conceptText, "admin");
-        
-        Assert.assertEquals(conceptText, savedText);
-        Assert.assertEquals(conceptText.getAddedBy(), "admin");
-        Assert.assertNotNull(conceptText.getAddedOn());
-        
-        verify(conceptTextDatabaseConnection).save(conceptText);
+        conceptText1 = new ConceptText();
+        conceptText1.setId(id);
+        conceptText1.setAuthor("Smit");
+        conceptText1.setConceptId("WC123");
+        conceptText1.setText("The great Scientist");
+        conceptText1.setTitle("A Title");
+
+        conceptText2 = new ConceptText();
+        conceptText2.setAuthor("Smit");
+        conceptText2.setConceptId("WC124");
+        conceptText2.setText("The great Researcher");
+        conceptText2.setTitle("B Title");
     }
 
     @Test
-    public void testFindAll() {
-        
+    public void test_addText() {
+        when(conceptRepository.save(conceptText1)).thenReturn(conceptText1);
+        ConceptText savedText = conceptTextService.addText(conceptText1, "admin");
+
+        Assert.assertEquals(conceptText1, savedText);
+        Assert.assertEquals(conceptText1.getAddedBy(), "admin");
+        Assert.assertNotNull(conceptText1.getAddedOn());
+    }
+
+    @Test
+    public void test_findAll() {
+
         List<ConceptText> dataObj = new ArrayList<>();
-        dataObj.add(new ConceptText());
-        dataObj.add(new ConceptText());
-        
+        dataObj.add(conceptText1);
+        dataObj.add(conceptText2);
+
         Page<ConceptText> dataFromDb = new PageImpl<ConceptText>(dataObj);
-        when(conceptTextDatabaseConnection.findAll(any(Pageable.class)))
-            .thenReturn(dataFromDb);
-        
-        List<ConceptText> objFromDb = conceptTextService.findAll(1, 2);
-        Assert.assertEquals(objFromDb.size(), 2);
-        verify(conceptTextDatabaseConnection).findAll(any(Pageable.class));
+        when(conceptRepository.findAll(any(Pageable.class))).thenReturn(dataFromDb);
+
+        List<ConceptText> responseList = conceptTextService.findAll(1, 2, SORTBY_ATTR, Direction.ASC);
+        Assert.assertEquals(2, responseList.size());
+        Assert.assertEquals(conceptText1, responseList.get(0));
+        Assert.assertEquals(conceptText2, responseList.get(1));
     }
 
     @Test
-    public void testDeleteText_forSuccess() {
+    public void test_deleteText_forSuccess() {
         conceptTextService.deleteText(1L);
-        verify(conceptTextDatabaseConnection, times(1)).deleteById(eq(1L));
-    }
-    
-    @Test
-    public void testDeleteText_whenIdIsNull() {
-        conceptTextService.deleteText(null);
-        verify(conceptTextDatabaseConnection, never()).deleteById(null);
+        verify(conceptRepository, times(1)).deleteById(eq(1L));
     }
 
     @Test
-    public void testUpdateText() {
-        ConceptText updatedForm = new ConceptText();
-        updatedForm.setText("Updated text");
-        updatedForm.setTitle("Updated title");
-        updatedForm.setAuthor("Updated author");
-        
-        ConceptText oldForm = new ConceptText();
-        oldForm.setText("Old text");
-        oldForm.setTitle("Old title");
-        oldForm.setAuthor("Old Author");
-        oldForm.setModifiedby("Admin");
-        
-        OffsetDateTime dateOnWhichModified = OffsetDateTime.now();
-        oldForm.setModifiedOn(dateOnWhichModified);
-        
-        Optional<ConceptText> oldObjFromDb = Optional.of(oldForm);
-        when(conceptTextDatabaseConnection.findById(1L)).thenReturn(oldObjFromDb);
-        
-        ConceptText updatedSavedObj = conceptTextService.updateText(updatedForm, "Smit", 1L);
-        
-        Assert.assertEquals(updatedSavedObj.getText(), "Updated text");
-        Assert.assertEquals(updatedSavedObj.getTitle(), "Updated title");
-        Assert.assertEquals(updatedSavedObj.getAuthor(), "Updated author");
-        Assert.assertEquals(updatedSavedObj.getModifiedby(), "Smit");
-        
-        verify(conceptTextDatabaseConnection, times(1)).findById(1L);
-        verify(conceptTextDatabaseConnection, times(1)).save(oldForm);
+    public void test_updateText_textExists() {
+        ConceptText updatedText = new ConceptText();
+        updatedText.setText("Updated text");
+        updatedText.setTitle("Updated title");
+        updatedText.setAuthor("Updated author");
+
+        ConceptText oldText = new ConceptText();
+        when(conceptRepository.findById(id)).thenReturn(Optional.of(oldText));
+        when(conceptRepository.save(updatedText)).thenReturn(updatedText);
+        ConceptText updatedSavedObj = conceptTextService.updateText(updatedText, "Smit", id);
+
+        Assert.assertEquals(updatedText.getText(), updatedSavedObj.getText());
+        Assert.assertEquals(updatedText.getTitle(), updatedSavedObj.getTitle());
+        Assert.assertEquals(updatedText.getAuthor(), updatedSavedObj.getAuthor());
+        Assert.assertEquals(updatedText.getModifiedby(), updatedSavedObj.getModifiedby());
     }
 
     @Test
-    public void testGetTextById() {
-        ConceptText dataInDb = new ConceptText();
-        dataInDb.setId(1L);
-        Optional<ConceptText> data = Optional.of(dataInDb);
-        
-        when(conceptTextDatabaseConnection.findById(1L)).thenReturn(data);
-        
-        ConceptText dataFromGetById = conceptTextService.getTextById(1L);
-        
-        Assert.assertEquals(dataInDb, dataFromGetById);
-        verify(conceptTextDatabaseConnection, times(1)).findById(1L);
+    public void test_updateText_textDoesNotExist() {
+        Long id2 = new Long(2L);
+        ConceptText updatedText = new ConceptText();
+
+        when(conceptRepository.findById(id2)).thenReturn(Optional.empty());
+        ConceptText updatedSavedObj = conceptTextService.updateText(updatedText, "Smit", id2);
+        Assert.assertNull(updatedSavedObj);
+    }
+
+    @Test
+    public void test_getTextById_exists() {
+        when(conceptRepository.findById(id)).thenReturn(Optional.of(conceptText1));
+
+        ConceptText response = conceptTextService.getTextById(id);
+        Assert.assertEquals(conceptText1, response);
+    }
+
+    @Test
+    public void test_getTextById_doesNotExists() {
+        when(conceptRepository.findById(2L)).thenReturn(Optional.empty());
+        ConceptText emptyResponse = conceptTextService.getTextById(2L);
+        Assert.assertNull(emptyResponse);
     }
 
     @Test
     public void testGetTextCount() {
-        
-        when(conceptTextDatabaseConnection.count()).thenReturn(10L);
-        
-        long totalCountInDb = conceptTextService.getTextCount();
-        
-        Assert.assertEquals(10L, totalCountInDb);
-        verify(conceptTextDatabaseConnection,times(1)).count();
+        when(conceptRepository.count()).thenReturn(10L);
+        Assert.assertEquals(10L, conceptTextService.getTextCount());
     }
 
 }
