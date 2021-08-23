@@ -22,18 +22,17 @@ public class AddConceptTextController {
     @Autowired
     private IConceptTextService conceptTextService;
 
-    @RequestMapping(value="/admin/text/add", method=RequestMethod.GET)
+    @RequestMapping(value = "/admin/text/add", method = RequestMethod.GET)
     public String addText(Model model) {
         model.addAttribute("conceptTextFormData", new ConceptText());
         return "admin/text/add";
     }
 
-    @RequestMapping(value="/admin/text/add", method=RequestMethod.POST)
-    public String addTextData(Model model,@ModelAttribute("conceptTextFormData") 
-        @Valid ConceptText formData, BindingResult bindingResult, Principal principal, 
-        RedirectAttributes redirectAttrs) {
+    @RequestMapping(value = "/admin/text/add", method = RequestMethod.POST)
+    public String addTextData(Model model, @ModelAttribute("conceptTextFormData") @Valid ConceptText formData,
+            BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttrs) {
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("conceptTextFormData", formData);
             return "admin/text/add";
         }
