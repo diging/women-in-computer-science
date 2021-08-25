@@ -105,7 +105,13 @@ public class HomeController {
         
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
-
+    
+    @RequestMapping(value="/concepts/type/all", method=RequestMethod.GET)
+    public ResponseEntity<Collection<ConceptType>> getAllConceptsTypes() {
+        List<ConceptType> allConceptTypes = conceptCache.getAllConceptTypes();
+        return new ResponseEntity<Collection<ConceptType>>(allConceptTypes, HttpStatus.OK);
+    }
+    
     private GraphElement createElement(Node node, IConcept concept) {
         GraphElement element = new GraphElement(new Data(concept.getId(), node.getLabel()));
         element.getData().setType(concept.getTypeId());
@@ -119,13 +125,5 @@ public class HomeController {
             element.getData().setColor(generalNodeColor);
         }
         return element;
-    }
-    
-    @RequestMapping(value="/getAllConceptsTypes", method=RequestMethod.GET)
-    public ResponseEntity<Collection<ConceptType>> getAllConceptsTypes(Model model) {
-
-        List<ConceptType> allConceptTypes = conceptCache.getAllConceptTypes();
-        model.addAttribute("data", allConceptTypes);
-        return new ResponseEntity<Collection<ConceptType>>(allConceptTypes, HttpStatus.OK);
     }
 }

@@ -1,44 +1,20 @@
-$(document).ready(function() {
-    $.ajax({
-        url : url,
-        type : "GET",
-        success : function(result) {
-        	apiResult = result;
-            if (result == null || result.length == 0) {
-                $("#spinner").hide();
-                $("#network").append("Sorry, no network to display.")
-            } else {
-                $("#spinner").hide();
-                data = JSON.stringify(result);
-                stringifiedResult = data;
-                loadCytoScape(data,result,null);
-                addDropDown();
-            }
-        },
-        error: function() {
-            $("#spinner").hide();
-            $("#network").append("Sorry, could not load network.")
-        }
-    });
-})
-    
 function highlightPersonInGraph() {
+	var highlightSize = "50px";
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
-    if(animate == true) {
-        cy.animate({
-            fit: {
-                eles: node,
-                padding: 230,
-            }
-        });
-    }
+    cy.animate({
+        fit: {
+            eles: node,
+            padding: 230,
+        }
+    });
     node.animate({
         css: { 'width': highlightSize, 'height' : highlightSize},
     });     
 }
 
 function removeHighlight() {
+	var nodeSize = "15px";
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     node.animate({
@@ -46,9 +22,9 @@ function removeHighlight() {
     });
 }
 
-function loadCytoScape(data,result,removeNodes) {
-	var cy;
-	cy = cytoscape({
+function loadCytoScape(data, result, removeNodes) {
+	var nodeSize = "15px";
+	var cy = cytoscape({
         container: $('#network'),
         zoom: 1,
         pan: { x: 0, y: 0 },
@@ -96,7 +72,7 @@ function loadCytoScape(data,result,removeNodes) {
     });
     
     cy.on('tap', 'node', function(){
-        window.location.href = hrefLocation + this.data('id');
+        window.location.href = "concept/" + this.data('id');
     })
     
     cy.ready(function() {
