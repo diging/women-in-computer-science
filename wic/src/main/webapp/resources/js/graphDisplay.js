@@ -78,8 +78,20 @@ function loadCytoScape(data, result, removeNodes) {
     cy.ready(function() {
         $(".person-entry").hover(highlightPersonInGraph, removeHighlight);
     });
-    
-    if(removeNodes !== null) {
+	
+	filterNodes(cy, removeNodes);
+	return cy;
+}
+
+function filterNodes(cy, removeNodes) {
+	cy.style()
+	.selector('node')
+		.style('opacity', 1)
+	.selector('edge')
+		.style('line-color', '#b0c7c3')
+	.update();
+	
+	if(removeNodes !== null) {
     	for (i = 0; i < removeNodes.length; i++) {	
     		var selectorData1 = 'node[type = "';
     		var selectorData2 = '"]';
@@ -94,4 +106,6 @@ function loadCytoScape(data, result, removeNodes) {
 	    	});
 		}
     }
+	
+	return cy;
 }

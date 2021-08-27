@@ -34,8 +34,8 @@ $(document).ready(function() {
                 $("#spinner").hide();
                 data = JSON.stringify(result);
                 stringifiedResult = data;
-                loadCytoScape(data, result, null);
-                addDropDown();
+                var cy = loadCytoScape(data, result, null);
+                addDropDown(cy);
             }
         },
         error: function() {
@@ -45,7 +45,7 @@ $(document).ready(function() {
     });
 })
 
-function addDropDown() {
+function addDropDown(cy) {
 	$.ajax({
 		url : '<c:url value="/concepts/type/all" />',
 		type: "GET",
@@ -66,7 +66,7 @@ function addDropDown() {
 					    selected.push($(this).val());
 					});
 					data = selected;
-					loadCytoScape(stringifiedResult, apiResult, data);
+					cy = filterNodes(cy, data);
 				}
 		    };
 			$('#dropdown').multiselect(configurationSet);
