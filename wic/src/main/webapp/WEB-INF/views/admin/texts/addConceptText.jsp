@@ -24,8 +24,8 @@
 	  </div>
 	</div>
 	</div>
-	<div id="searchResults" class="list-group">
-	</div>
+	<div id="searchResults" class="list-group"></div>
+    <div id="selectedConcept"></div>
 	</spring:bind>
 
 	<spring:bind path="title">
@@ -120,13 +120,9 @@ function search(searchTerm) {
     	    var newLi = $('<div class=textAndCheckMark>');
     	    newLi.append('<small class=textOfSub>' + element.description + '</small>');
     	    li.on('click', function() {
-    	    	if($('#selectionMark').length === 1) {
-    	    		window.conceptIdInput = null;
-    	    		$('#selectionMark').remove();
-    	    	}
-   	    		newLi.append('<span id=selectionMark>&#9989;</span>');
-       	    	window.conceptIdInput = element.id;	
-
+	    		window.conceptIdInput = null;
+	    		displayConcept(element);
+	    		container.empty();
     	    });
     	    newLi.append('</div>');
     	    li.append(newLi);
@@ -134,6 +130,14 @@ function search(searchTerm) {
     	    counter = counter+1;
     	   });
     });
+}
+
+function displayConcept(concept) {
+	$('#selectedConcept').empty();
+	window.conceptIdInput = concept.id;
+	var selectedConcept = '<i class="fas fa-tag"></i> <strong>'+concept.word+'</strong><br>';
+	selectedConcept += '<small>'+concept.description+'</small><span id=selectionMark>&#9989;</span>';
+	$('#selectedConcept').append(selectedConcept);
 }
 
 $( document ).ready(function() {

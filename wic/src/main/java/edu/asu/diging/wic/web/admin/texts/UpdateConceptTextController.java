@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.asu.diging.wic.core.exceptions.CannotFindConceptTextException;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.service.IConceptTextService;
 
@@ -36,7 +37,7 @@ public class UpdateConceptTextController {
     @PostMapping(value = "/admin/text/{id}/edit")
     public String updateTextData(@PathVariable("id") Long id, Model model,
             @ModelAttribute("conceptTextFormData") @Valid ConceptText updatedForm, BindingResult bindingResult,
-            Principal principal, RedirectAttributes redirectAttrs) {
+            Principal principal, RedirectAttributes redirectAttrs) throws CannotFindConceptTextException {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("conceptTextFormData", updatedForm);

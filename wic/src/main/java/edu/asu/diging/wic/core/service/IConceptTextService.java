@@ -1,9 +1,9 @@
 package edu.asu.diging.wic.core.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 
+import edu.asu.diging.wic.core.exceptions.CannotFindConceptTextException;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 
 public interface IConceptTextService {
@@ -23,9 +23,9 @@ public interface IConceptTextService {
      * @param itemsPerPage Max items per page
      * @param sortBy       Attribute to sort by
      * @param order        Sorting order i.e., ASC or DESC
-     * @return List of concept texts on the given page
+     * @return Page of concept texts
      */
-    List<ConceptText> findAll(Integer page, Integer itemsPerPage, String sortBy, Direction order);
+    Page<ConceptText> findAll(Integer page, Integer itemsPerPage, String sortBy, Direction order);
 
     /**
      * Method used to delete a particular conceptText
@@ -41,7 +41,7 @@ public interface IConceptTextService {
      * @param modifiedBy  the user who modified the conceptText
      * @param id          of the conceptText which will be updated
      */
-    ConceptText updateText(ConceptText conceptText, String modifiedBy, Long id);
+    ConceptText updateText(ConceptText conceptText, String modifiedBy, Long id) throws CannotFindConceptTextException;
 
     /**
      * Method used to update a particular single conceptText by id
@@ -50,11 +50,4 @@ public interface IConceptTextService {
      * @return conceptText model of the conceptText fetched from id
      */
     ConceptText getTextById(Long id);
-
-    /**
-     * Method used to get total count of conceptText from database
-     * 
-     * @return count of the number of conceptText in database
-     */
-    long getTextCount();
 }
