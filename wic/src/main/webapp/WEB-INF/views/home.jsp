@@ -47,7 +47,7 @@ $(document).ready(function() {
 
 function addDropDown(cy) {
 	$.ajax({
-		url : '<c:url value="/concepts/type/all" />',
+		url : '<c:url value="/concepts/types/all" />',
 		type: "GET",
 		success: function(data) {	
 			for (i = 0; i < data.length; i++) {
