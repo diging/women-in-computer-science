@@ -2,9 +2,6 @@ package edu.asu.diging.wic.core.exceptions;
 
 public class CannotFindConceptTextException extends Exception {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     public CannotFindConceptTextException() {

@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 
+import edu.asu.diging.wic.core.exceptions.CannotFindConceptTextException;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.repository.ConceptTextRepository;
 
@@ -78,7 +79,7 @@ public class ConceptTextServiceTest {
         Page<ConceptText> dataFromDb = new PageImpl<ConceptText>(dataObj);
         when(conceptRepository.findAll(any(Pageable.class))).thenReturn(dataFromDb);
 
-        List<ConceptText> responseList = conceptTextService.findAll(1, 2, SORTBY_ATTR, Direction.ASC);
+        List<ConceptText> responseList = conceptTextService.findAll(1, 2, SORTBY_ATTR, Direction.ASC).getContent();
         Assert.assertEquals(2, responseList.size());
         Assert.assertEquals(conceptText1, responseList.get(0));
         Assert.assertEquals(conceptText2, responseList.get(1));
@@ -91,7 +92,7 @@ public class ConceptTextServiceTest {
     }
 
     @Test
-    public void test_updateText_textExists() {
+    public void test_updateText_textExists() throws CannotFindConceptTextException {
         ConceptText updatedText = new ConceptText();
         updatedText.setText("Updated text");
         updatedText.setTitle("Updated title");
@@ -108,14 +109,13 @@ public class ConceptTextServiceTest {
         Assert.assertEquals(updatedText.getModifiedby(), updatedSavedObj.getModifiedby());
     }
 
-    @Test
-    public void test_updateText_textDoesNotExist() {
+    @Test(expected = CannotFindConceptTextException.class)
+    public void test_updateText_textDoesNotExist() throws CannotFindConceptTextException {
         Long id2 = new Long(2L);
         ConceptText updatedText = new ConceptText();
 
         when(conceptRepository.findById(id2)).thenReturn(Optional.empty());
-        ConceptText updatedSavedObj = conceptTextService.updateText(updatedText, "Smit", id2);
-        Assert.assertNull(updatedSavedObj);
+        conceptTextService.updateText(updatedText, "Smit", id2);
     }
 
     @Test
@@ -131,12 +131,6 @@ public class ConceptTextServiceTest {
         when(conceptRepository.findById(2L)).thenReturn(Optional.empty());
         ConceptText emptyResponse = conceptTextService.getTextById(2L);
         Assert.assertNull(emptyResponse);
-    }
-
-    @Test
-    public void testGetTextCount() {
-        when(conceptRepository.count()).thenReturn(10L);
-        Assert.assertEquals(10L, conceptTextService.getTextCount());
     }
 
 }

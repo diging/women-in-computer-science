@@ -113,16 +113,21 @@ function search(searchTerm) {
     	
    	   var container = $("#searchResults");
    	   container.empty();
+   	   container.show();
        data.forEach(function(element) {
     	    var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
     	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    
     	    var newLi = $('<div class=textAndCheckMark>');
     	    newLi.append('<small class=textOfSub>' + element.description + '</small>');
+    	    if(element.id == window.conceptIdInput) {
+    	    	newLi.append('<span id=selectionMark>&#9989;</span>');
+    	    }
     	    li.on('click', function() {
 	    		window.conceptIdInput = null;
 	    		displayConcept(element);
 	    		container.empty();
+	    		container.hide();
     	    });
     	    newLi.append('</div>');
     	    li.append(newLi);
@@ -136,7 +141,7 @@ function displayConcept(concept) {
 	$('#selectedConcept').empty();
 	window.conceptIdInput = concept.id;
 	var selectedConcept = '<i class="fas fa-tag"></i> <strong>'+concept.word+'</strong><br>';
-	selectedConcept += '<small>'+concept.description+'</small><span id=selectionMark>&#9989;</span>';
+	selectedConcept += '<small>'+concept.description+'</small><span class="pull-right" id=selectionMark>&#9989;</span><br><br>';
 	$('#selectedConcept').append(selectedConcept);
 }
 
