@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <script src="<c:url value="/resources/bootpag/jquery.bootpag.min.js" />"></script>
+<script src="<c:url value="/resources/notify/bootstrap-notify.min.js" />"></script>
+<link type="text/css" href="<c:url value="/resources/notify/animate.css" />" rel="stylesheet"/>
 <link type="text/css" href="<c:url value="/resources/DigInGIconPack/diging-icon-pack.css" />" rel="stylesheet">
 
 <div class="headerData">
@@ -15,14 +15,14 @@
 
 <ul class="list-group">
 	<c:forEach items="${conceptTexts}" var="element">
-		<li class="list-group-item">
+		<li id="tr-${element.id}" class="list-group-item">
 			<div id="coneptText">
 				<b>${element.title}</b>
 				<br>
 				<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${element.htmlRenderedText()}</span>
 			</div>
 			
-			<button type="button" class="btn btn-primary" data-whatever="${element.id}" data-toggle="modal" data-target="#deleteModal">
+			<button type="button" class="btn btn-primary" data-id="${element.id}" data-toggle="modal" data-target="#deleteModal">
 			  <span class="icon-trash-alt" ></span>
 			</button>
 			
@@ -34,8 +34,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <a id='deleteAPI' href="<c:url value="/admin/text/list?page=1"/>" class="btn btn-primary">
-			    	Delete</a>
+			        <a id='deleteAPI' class="btn btn-primary">Delete</a>
 			      </div>
 			    </div>
 			  </div>
@@ -80,7 +79,7 @@
 
 $('#deleteModal').on('show.bs.modal', function (event) {
 	var button = $(event.relatedTarget)
-	var recipient = button.data('whatever')
+	var recipient = button.data('id')
 	var modal = $(this)
 	modal.find('.modal-footer').find('a').removeAttr('onclick');
 	var func = "deleteConceptText("+recipient+");";
@@ -110,16 +109,29 @@ $( document ).ready(function() {
 	  });
 });
 	  
-function deleteConceptText(deleteValue) {
+function deleteConceptText(id) {
 
-	var url = "/wic/admin/text/"+deleteValue+"/delete?${_csrf.parameterName}=${_csrf.token}";
+	var url = "${pageContext.request.contextPath}/admin/text/"+id+"/delete?${_csrf.parameterName}=${_csrf.token}";
 
 	$.ajax({
 		type:"DELETE",
 		url:url,
 		success: function(msg) {
+			$("#tr-"+id).remove();
+			$.notify('<i class="icon-checkmark-alt"></i> Concept successfully deleted!', {
+				type: 'success',
+				offset: {
+					x: 50,
+					y: 90
+				},
+				animate: {
+					enter: 'animated fadeInRight',
+					exit: 'animated fadeOutRight'
+				}
+			});
 		},
 		async:false
 	});
+	$('#deleteModal').modal("hide");
 }
 </script>
