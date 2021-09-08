@@ -19,7 +19,7 @@
 			<div id="coneptText">
 				<b>${element.title}</b>
 				<br>
-				<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${element.text}</div>
+				<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${element.htmlRenderedText()}</span>
 			</div>
 			
 			<button type="button" class="btn btn-primary" data-whatever="${element.id}" data-toggle="modal" data-target="#deleteModal">

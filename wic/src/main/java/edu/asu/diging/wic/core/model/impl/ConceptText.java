@@ -8,7 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 @Entity
 @Table(name = "ConceptText")
@@ -109,5 +114,13 @@ public class ConceptText {
 
     public void setModifiedby(String modifiedby) {
         this.modifiedBy = modifiedby;
+    }
+    
+    @Transient
+    public String htmlRenderedText() {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(this.text);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        return renderer.render(document);
     }
 }

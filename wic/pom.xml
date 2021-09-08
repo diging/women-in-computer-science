@@ -99,6 +99,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- MarkDown -->
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.15.0</version>
+        </dependency>
+        
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
