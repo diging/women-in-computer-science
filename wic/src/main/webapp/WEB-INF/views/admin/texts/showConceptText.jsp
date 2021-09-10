@@ -133,5 +133,6 @@ function deleteConceptText(id) {
 		async:false
 	});
 	$('#deleteModal').modal("hide");
+	$('.modal-backdrop').remove();
 }
 </script>
