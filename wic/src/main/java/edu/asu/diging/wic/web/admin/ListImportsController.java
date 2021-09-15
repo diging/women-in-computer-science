@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
-import edu.asu.diging.wic.core.conceptpower.impl.ConceptpowerConcept;
 import edu.asu.diging.wic.core.dataimport.impl.TransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.model.ImportProgress;
 import edu.asu.diging.wic.core.model.IConcept;
