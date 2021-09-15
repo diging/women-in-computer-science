@@ -14,25 +14,25 @@
 	<label>Search and Select Concept</label>
 	<div class="row">
 	<div class="col-md-12">
-	  <div class="input-group ${status.error ? 'has-error' : ''} col-md-12">
-	    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
-	    <form:input path="conceptId" type="hidden" id="conceptId" name="conceptId"/>
-	    <form:errors path="conceptId" />
-	    <span class="input-group-btn">
-	      <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
-	    </span>
-	  </div>
+		<div class="input-group ${status.error ? 'has-error' : ''} col-md-12">
+		    <input type="text" id="searchbox" class="form-control" placeholder="Search Conceptpower...">
+		    <form:input path="conceptId" type="hidden" id="conceptId" name="conceptId"/>
+		    <form:errors path="conceptId" />
+		    <span class="input-group-btn">
+		        <button class="btn btn-default" type="button" id="searchGo"><i class="fas fa-search"></i></button>
+		    </span>
+		</div>
 	</div>
 	</div>
 	<div id="searchResults" class="list-group"></div>
-    <div id="selectedConcept"></div>
+     <div id="selectedConcept"></div>
 	</spring:bind>
 
 	<spring:bind path="title">
 	<div class="form-group ${status.error ? 'has-error' : ''}">
-	  <label for="title">Title</label>
-	  <form:input type="text" path="title" class="form-control" id="title" name="title" placeholder="Enter Title"/>
-	  <form:errors path="title" />
+		<label for="title">Title</label>
+		<form:input type="text" path="title" class="form-control" id="title" name="title" placeholder="Enter Title"/>
+		<form:errors path="title" />
 	</div>
 	</spring:bind>
 	
@@ -58,27 +58,27 @@
 <style> 
 
 .textAndCheckMark {
-	display: flex;
+    display: flex;
     flex-direction: row;
     align-items: stretch;
 }
 .textOfSub {
-	width:95%
+    width:95%
 }
 .CodeMirror-scroll {
-	max-height: 300px;
+    max-height: 300px;
 }
 #searchResults {
-	max-height:195px;
+    max-height:195px;
 }
 .list-group {
-	overflow: auto;
+    overflow: auto;
 }
 .has-error .form-control {
     border-color: #dc3545;
 }
 span[id*='errors']{
-	color: #dc3545;
+    color: #dc3545;
 }
 </style>
 
@@ -98,7 +98,7 @@ $( document ).ready(function() {
 	});
 	
 	$('#searchbox').keypress(function(event){
-		var keycode = (event.keyCode ? event.keyCode : event.which);
+	    var keycode = (event.keyCode ? event.keyCode : event.which);
 	    if(keycode == '13'){
 	        search($("#searchbox").val());
 	        return false;
@@ -109,32 +109,31 @@ $( document ).ready(function() {
 function search(searchTerm) {
 	var counter = 0;
 	$.ajaxSetup({async: false});
-    $.get( "<c:url value='/admin/import/person/search' />?searchTerm=" + searchTerm, function( data ) {
-    	
-   	   var container = $("#searchResults");
-   	   container.empty();
-   	   container.show();
-       data.forEach(function(element) {
-    	    var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
-    	    li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
+	$.get( "<c:url value='/admin/import/person/search' />?searchTerm=" + searchTerm, function( data ) {
+	    var container = $("#searchResults");
+	    container.empty();
+	    container.show();
+	    data.forEach(function(element) {
+	        var li = $('<a href="#" class="list-group-item" id='+counter+'></a>');
+	        li.append('<i class="fas fa-tag"></i> <strong> ' + element.word + '</strong><br>');
     	    
-    	    var newLi = $('<div class=textAndCheckMark>');
-    	    newLi.append('<small class=textOfSub>' + element.description + '</small>');
-    	    if(element.id == window.conceptIdInput) {
+	        var newLi = $('<div class=textAndCheckMark>');
+	        newLi.append('<small class=textOfSub>' + element.description + '</small>');
+	        if(element.id == window.conceptIdInput) {
     	    	newLi.append('<span id=selectionMark>&#9989;</span>');
-    	    }
-    	    li.on('click', function() {
+    		    }
+	        li.on('click', function() {
 	    		window.conceptIdInput = null;
 	    		displayConcept(element);
 	    		container.empty();
 	    		container.hide();
-    	    });
-    	    newLi.append('</div>');
-    	    li.append(newLi);
-    	    container.append(li);
-    	    counter = counter+1;
-    	   });
-    });
+	    	    });
+	        newLi.append('</div>');
+	        li.append(newLi);
+	        container.append(li);
+	        counter = counter+1;
+	    });
+	});
 }
 
 function displayConcept(concept) {
@@ -147,21 +146,15 @@ function displayConcept(concept) {
 
 $( document ).ready(function() {
 	$('#selectConcept').click(function() {
-		add($("#searchbox").val());
 		return false;
 	});
 	
 	$('#searchbox').keypress(function(event){
 		var keycode = (event.keyCode ? event.keyCode : event.which);
 	    if(keycode == '13'){
-	    	add($("#searchbox").val());
 	        return false;
 	    }
 	});
 });
-
-function add(textToAdd) {
-	$("#confirmModal").modal('show');
-}
 
 </script>
