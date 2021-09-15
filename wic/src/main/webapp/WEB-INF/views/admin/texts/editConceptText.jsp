@@ -41,10 +41,10 @@
     border-color: #dc3545;
 }
 span[id*='errors']{
-	color: #dc3545;
+    color: #dc3545;
 }
 .CodeMirror-scroll {
-	max-height: 300px;
+    max-height: 300px;
 }
 </style>
 

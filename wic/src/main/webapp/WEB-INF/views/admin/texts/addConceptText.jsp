@@ -25,7 +25,7 @@
 	</div>
 	</div>
 	<div id="searchResults" class="list-group"></div>
-     <div id="selectedConcept"></div>
+	<div id="selectedConcept"></div>
 	</spring:bind>
 
 	<spring:bind path="title">
@@ -93,13 +93,13 @@ function verifyNonEmpty() {
 
 $( document ).ready(function() {
 	$('#searchGo').click(function() {
-		search($("#searchbox").val());
-		return false;
+	    search($("#searchbox").val());
+	    return false;
 	});
 	
 	$('#searchbox').keypress(function(event){
 	    var keycode = (event.keyCode ? event.keyCode : event.which);
-	    if(keycode == '13'){
+	    if(keycode == '13') {
 	        search($("#searchbox").val());
 	        return false;
 	    }
@@ -120,14 +120,14 @@ function search(searchTerm) {
 	        var newLi = $('<div class=textAndCheckMark>');
 	        newLi.append('<small class=textOfSub>' + element.description + '</small>');
 	        if(element.id == window.conceptIdInput) {
-    	    	newLi.append('<span id=selectionMark>&#9989;</span>');
-    		    }
+		        newLi.append('<span id=selectionMark>&#9989;</span>');
+    		}
 	        li.on('click', function() {
-	    		window.conceptIdInput = null;
-	    		displayConcept(element);
-	    		container.empty();
-	    		container.hide();
-	    	    });
+		        window.conceptIdInput = null;
+		        displayConcept(element);
+		        container.empty();
+		        container.hide();
+		});
 	        newLi.append('</div>');
 	        li.append(newLi);
 	        container.append(li);
@@ -146,11 +146,11 @@ function displayConcept(concept) {
 
 $( document ).ready(function() {
 	$('#selectConcept').click(function() {
-		return false;
+	    return false;
 	});
 	
-	$('#searchbox').keypress(function(event){
-		var keycode = (event.keyCode ? event.keyCode : event.which);
+	$('#searchbox').keypress(function(event) {
+	    var keycode = (event.keyCode ? event.keyCode : event.which);
 	    if(keycode == '13'){
 	        return false;
 	    }
