@@ -11,10 +11,10 @@
     <properties>
         <org.slf4j-version>1.7.30</org.slf4j-version>
         <org.springframework-version>5.2.9.RELEASE</org.springframework-version>
-        <spring-security-version>5.3.5.RELEASE</spring-security-version>
+        <spring-security-version>5.3.10.RELEASE</spring-security-version>
         <spring.version>5.2.9.RELEASE</spring.version>
         <spring-data.version>Neumann-RELEASE</spring-data.version>
-        <apache-tiles.version>3.0.8</apache-tiles.version> 
+        <apache-tiles.version>3.0.8</apache-tiles.version>
         <admin.password>admin</admin.password>
 
         <hibernate.version>5.4.22.Final</hibernate.version>
@@ -99,6 +99,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- MarkDown -->
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.15.0</version>
+        </dependency>
+        
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -184,6 +191,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-spring-jpa -->
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring-jpa</artifactId>
+            <version>5.13.2</version>
+        </dependency>
+
         <!-- Tiles -->
         <dependency>
             <groupId>org.apache.tiles</groupId>
@@ -242,7 +256,7 @@
             <artifactId>HikariCP</artifactId>
             <version>3.4.5</version>
         </dependency>
-        
+
         <!-- MySQL database driver -->
         <dependency>
             <groupId>mysql</groupId>
@@ -297,6 +311,30 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.1.6.Final</version>
         </dependency>
+        
+        <!-- Testing -->
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- @Inject -->
         <dependency>
@@ -314,27 +352,22 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
 
-	<dependency>
-	    <groupId>org.eclipse.persistence</groupId>
-	    <artifactId>eclipselink</artifactId>
-	    <version>2.7.7</version>
-	</dependency>
-	<dependency>
-	    <groupId>javax.transaction</groupId>
-	    <artifactId>jta</artifactId>
-	    <version>1.1</version>
-	</dependency>
-	<dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
-	</dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
         </dependency>
-        
+
         <!-- Spring Data -->
         <dependency>
             <groupId>org.springframework.data</groupId>
