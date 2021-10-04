@@ -2,9 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet">
+<%-- <link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet"> --%>
 <link href="<c:url value="/resources/css/multiselect/bootstrap-multiselect.min.css" />" rel="stylesheet"/>
-
+<style>
+.align-right {
+    text-align: right;
+    padding-right: 200px;
+}
+</style>
 <script src="https://unpkg.com/layout-base/layout-base.js"></script>
 <script src="https://unpkg.com/cose-base/cose-base.js"></script>
 <script src="<c:url value="/resources/js/cytoscape-3.16.3/cytoscape.min.js" />"></script>
@@ -16,9 +21,10 @@
 <div id="spinner" class="text-center">
     <div class="fas fa-spinner fa-spin"></div> Loading graph...
 </div>
-
+<div class="align-right">
 <select id="dropdown" multiple="multiple" hidden>
 </select>
+</div>
 
 <script>
 $(document).ready(function() {
@@ -43,11 +49,21 @@ $(document).ready(function() {
             $("#network").append("Sorry, could not load network.")
         }
     });
-})
+});
+
+function hideNodes(cy) {
+	var brands = $('#dropdown option:selected');
+	var selected = [];
+	$(brands).each(function(index, brand){
+	    selected.push($(this).val());
+	});
+	data = selected;
+	return filterNodes(cy, data);
+}
 
 function addDropDown(cy) {
 	$.ajax({
-		url : '<c:url value="/concepts/types/all" />',
+		url : '<c:url value="/concept/types/all" />',
 		type: "GET",
 		success: function(data) {	
 			for (i = 0; i < data.length; i++) {
@@ -58,8 +74,33 @@ function addDropDown(cy) {
 					"Hide Node without type" + "</option>");	
 			var configurationSet = {
 				maxHeight: 200,
-				nonSelectedText: 'Hide Node Types',
+				nonSelectedText: 'Hide Nodes',
+				includeSelectAllOption: true,
+				buttonText: function(options) {
+					return '';
+				},
+				buttonTitle: function(options, select) {
+	                return 'Hide Nodes';
+	            },
 				onChange: function(element, checked) {
+					var brands = $('#dropdown option:selected');
+					var selected = [];
+					$(brands).each(function(index, brand){
+					    selected.push($(this).val());
+					});
+					data = selected;
+					cy = filterNodes(cy, data);
+				},
+				onSelectAll: function(options) {
+					var brands = $('#dropdown option:selected');
+					var selected = [];
+					$(brands).each(function(index, brand){
+					    selected.push($(this).val());
+					});
+					data = selected;
+					cy = filterNodes(cy, data);
+				},
+				onDeselectAll: function(options) {
 					var brands = $('#dropdown option:selected');
 					var selected = [];
 					$(brands).each(function(index, brand){
@@ -70,6 +111,7 @@ function addDropDown(cy) {
 				}
 		    };
 			$('#dropdown').multiselect(configurationSet);
+			$(".multiselect").addClass("fas fa-eye-slash");
 		},
 		error: function() {
 			$("#network").append("Error while fetching concept types")

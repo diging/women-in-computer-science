@@ -107,7 +107,7 @@ public class HomeController {
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/concepts/types/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/concept/types/all", method = RequestMethod.GET)
     public ResponseEntity<Collection<ConceptType>> getAllConceptsTypes() {
         List<ConceptType> allConceptTypes = conceptCache.getAllConceptTypes();
         return new ResponseEntity<Collection<ConceptType>>(allConceptTypes, HttpStatus.OK);
