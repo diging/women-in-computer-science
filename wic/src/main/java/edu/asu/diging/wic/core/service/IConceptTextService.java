@@ -26,6 +26,15 @@ public interface IConceptTextService {
      * @return Page of concept texts
      */
     Page<ConceptText> findAll(Integer page, Integer itemsPerPage, String sortBy, Direction order);
+    
+    /**
+     * Fetches the texts linked to the given concept
+     * @param page         Request page number
+     * @param itemsPerPage Max items per page
+     * @param conceptId    Concept for which the texts are searched
+     * @return Page of found concept texts
+     */
+    Page<ConceptText> findByConceptId(Integer page, Integer itemsPerPage, String conceptId);
 
     /**
      * Method used to delete a particular conceptText

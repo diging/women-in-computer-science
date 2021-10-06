@@ -42,6 +42,14 @@ public class ConceptTextService implements IConceptTextService {
         Pageable pagination = PageRequest.of(page - 1, itemsPerPage, Sort.by(order, sortBy));
         return conceptRepository.findAll(pagination);
     }
+    
+    /* (non-Javadoc)
+     * @see edu.asu.diging.wic.core.service.IConceptTextService#findByConceptId(java.lang.Integer, java.lang.Integer, java.lang.Integer)
+     */
+    @Override
+    public Page<ConceptText> findByConceptId(Integer page, Integer itemsPerPage, String conceptId) {
+        return conceptRepository.findByConceptId(conceptId, PageRequest.of(page - 1, itemsPerPage));
+    }
 
     /* (non-Javadoc)
      * @see edu.asu.diging.wic.core.service.IConceptTextService#deleteText(java.lang.Long)
