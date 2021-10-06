@@ -1,5 +1,5 @@
 function highlightPersonInGraph() {
-	var highlightSize = "50px";
+    var highlightSize = "50px";
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     cy.animate({
@@ -14,7 +14,7 @@ function highlightPersonInGraph() {
 }
 
 function removeHighlight() {
-	var nodeSize = "15px";
+    var nodeSize = "15px";
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     node.animate({
@@ -79,8 +79,8 @@ function loadCytoScape(data, result, removeNodes) {
         $(".person-entry").hover(highlightPersonInGraph, removeHighlight);
     });
 	
-	filterNodes(cy, removeNodes);
-	return cy;
+    filterNodes(cy, removeNodes);
+    return cy;
 }
 
 function filterNodes(cy, removeNodes) {
