@@ -80,36 +80,18 @@ function addDropDown(cy) {
 					return '';
 				},
 				buttonTitle: function(options, select) {
-	                return 'Hide Nodes';
-	            },
+					return 'Hide Nodes';
+				},
 				onChange: function(element, checked) {
-					var brands = $('#dropdown option:selected');
-					var selected = [];
-					$(brands).each(function(index, brand){
-					    selected.push($(this).val());
-					});
-					data = selected;
-					cy = filterNodes(cy, data);
+					cy = hideNodes(cy);
 				},
 				onSelectAll: function(options) {
-					var brands = $('#dropdown option:selected');
-					var selected = [];
-					$(brands).each(function(index, brand){
-					    selected.push($(this).val());
-					});
-					data = selected;
-					cy = filterNodes(cy, data);
+					cy = hideNodes(cy);
 				},
 				onDeselectAll: function(options) {
-					var brands = $('#dropdown option:selected');
-					var selected = [];
-					$(brands).each(function(index, brand){
-					    selected.push($(this).val());
-					});
-					data = selected;
-					cy = filterNodes(cy, data);
+					cy = hideNodes(cy);
 				}
-		    };
+			};
 			$('#dropdown').multiselect(configurationSet);
 			$(".multiselect").addClass("fas fa-eye-slash");
 		},
