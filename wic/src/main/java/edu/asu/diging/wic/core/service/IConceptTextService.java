@@ -1,5 +1,7 @@
 package edu.asu.diging.wic.core.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -29,12 +31,10 @@ public interface IConceptTextService {
     
     /**
      * Fetches the texts linked to the given concept
-     * @param page         Request page number
-     * @param itemsPerPage Max items per page
      * @param conceptId    Concept for which the texts are searched
-     * @return Page of found concept texts
+     * @return List of found concept texts
      */
-    Page<ConceptText> findByConceptId(Integer page, Integer itemsPerPage, String conceptId);
+    List<ConceptText> findByConceptId(String conceptId);
 
     /**
      * Method used to delete a particular conceptText

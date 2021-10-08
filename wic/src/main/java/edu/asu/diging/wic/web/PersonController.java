@@ -28,7 +28,6 @@ import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Node;
 import edu.asu.diging.wic.core.service.IConceptTextService;
-import edu.asu.diging.wic.core.util.ISourceUriPatternUtil;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;
 import edu.asu.diging.wic.web.cytoscape.GraphElement;
@@ -77,7 +76,7 @@ public class PersonController {
         if (concept != null) {
             model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
             model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personTypeId));
-            List<ConceptText> conceptTexts = conceptTextService.findByConceptId(1, 10, personId).getContent();
+            List<ConceptText> conceptTexts = conceptTextService.findByConceptId(personId);
             model.addAttribute("texts", conceptTexts);
         }
         

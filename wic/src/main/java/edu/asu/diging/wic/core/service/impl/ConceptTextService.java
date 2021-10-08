@@ -1,6 +1,7 @@
 package edu.asu.diging.wic.core.service.impl;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,11 @@ public class ConceptTextService implements IConceptTextService {
     }
     
     /* (non-Javadoc)
-     * @see edu.asu.diging.wic.core.service.IConceptTextService#findByConceptId(java.lang.Integer, java.lang.Integer, java.lang.Integer)
+     * @see edu.asu.diging.wic.core.service.IConceptTextService#findByConceptId(java.lang.String)
      */
     @Override
-    public Page<ConceptText> findByConceptId(Integer page, Integer itemsPerPage, String conceptId) {
-        return conceptRepository.findByConceptId(conceptId, PageRequest.of(page - 1, itemsPerPage));
+    public List<ConceptText> findByConceptId(String conceptId) {
+        return conceptRepository.findByConceptId(conceptId);
     }
 
     /* (non-Javadoc)
