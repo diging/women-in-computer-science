@@ -64,7 +64,7 @@
 <br/>
 
 <div class="col-md-7 text-left">
-<c:if test="${isPerson and texts != null and not texts.isEmpty()}">
+<c:if test="${texts != null and not texts.isEmpty()}">
     <ul class="list-unstyled">
     <c:forEach items="${texts}" var="text">
     <li>
@@ -74,7 +74,7 @@
     </c:forEach>
     </ul>
 </c:if>
-<c:if test="${not isPerson or texts == null or texts.isEmpty()}">
+<c:if test="${texts == null or texts.isEmpty()}">
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
@@ -85,7 +85,7 @@
     <div id="spinner" class="text-center"><div class="fa fa-spinner fa-spin"></div> Loading graph...</div>
     <div id="network" style="min-width: 200px; min-height: 200px; "></div>
     
-    <c:if test="${isPerson and texts != null and not texts.isEmpty()}">
+    <c:if test="${texts != null and not texts.isEmpty()}">
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
