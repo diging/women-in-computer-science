@@ -75,7 +75,7 @@ public class PersonController {
         model.addAttribute("concept", concept);
         if (concept != null) {
             model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
-            model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personTypeId));
+            model.addAttribute("isPerson", concept.getType() != null && concept.getTypeId().equals(personTypeId));
             List<ConceptText> conceptTexts = conceptTextService.findByConceptId(personId);
             model.addAttribute("texts", conceptTexts);
         }
