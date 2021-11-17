@@ -100,3 +100,31 @@ function filterNodes(cy, removeNodes) {
 	
 	return cy;
 }
+
+function searchNodes(cy, searchTerm) {
+	searchTerm = searchTerm.toLowerCase();
+	cy.$('node').removeStyle('opacity');
+	cy.$('edge').removeStyle('line-color');
+	cy.style().selector('node').style('opacity', 1).update();
+	cy.style().selector('edge').style('line-color', '#b0c7c3').update();
+	
+	if (searchTerm) {
+		cy.style().selector('node').style('opacity', 0.4).update();
+		cy.style().selector('edge').style('line-color', '#e1e6e5').update();
+//		cy.$('edge').style('line-color', '#e1e6e5');
+		
+		cy.nodes().forEach(function(node) {
+			if (node.data('label').toLowerCase().includes(searchTerm)) {
+				node.style('opacity', 1);
+				node.neighborhood().forEach(function(ele) {
+					if (ele.isNode()) {
+						ele.style('opacity', 1);
+					} else {
+						ele.style('line-color', '#b0c7c3');
+					}
+				});
+			}
+		});
+	}
+	
+}

@@ -15,8 +15,6 @@
 <script src="<c:url value="/resources/js/cytoscape-3.16.3/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
 <script src="<c:url value="/resources/js/multiselect/bootstrap-multiselect.min.js"/>"></script>
-<script type="text/javascript">
-</script>
 <script src="<c:url value="/resources/js/graphDisplay.js" />"></script>
 <div id="spinner" class="text-center">
     <div class="fas fa-spinner fa-spin"></div> Loading graph...
@@ -41,6 +39,9 @@ $(document).ready(function() {
                 data = JSON.stringify(result);
                 stringifiedResult = data;
                 var cy = loadCytoScape(data, result, null);
+                $('#search').on('input', function() {
+                	searchNodes(cy, $(this).val());
+                })
                 addDropDown(cy);
             }
         },
@@ -115,7 +116,7 @@ function addDropDown(cy) {
     border: 0;
 }
 </style>
-
+<input id="search" type="text" width="200px"> <i class="fas fa-search"></i>
 <div id="network" class="graph" style="min-width: 500px; min-height: 500px;">
 
 </div>
