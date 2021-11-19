@@ -83,6 +83,60 @@ function loadCytoScape(data, result, removeNodes) {
     return cy;
 }
 
+function filterNodes(cy, removeNodes, searchTerm) {
+	cy.$('node').removeStyle('opacity');
+	cy.$('edge').removeStyle('line-color');
+	
+	let hideNodes = new Set();
+	let partialHideNodes = new Set(); 
+	
+	if (removeNodes !== null || searchTerm) {
+		searchTerm = searchTerm.toLowerCase();
+		
+		cy.nodes.forEach(function(node) {
+			if ((removeNodes == null && !node.data('label').toLowerCase().includes(searchTerm))
+				|| (!searchTerm && removeNodes.contains(node.data('type')))
+				|| (removeNodes.contains(node.data('type')) && !node.data('label').toLowerCase().includes(searchTerm))) {
+					hideNodes.add(node);
+			} else if (searchTerm) {
+				nodes.neighborhood().forEach(function(ele) {
+					if (ele.isNode()) {
+						partialHideNodes.add(ele);
+					}
+				}
+			}
+		});
+		
+		hideNodes.forEach(function(node) {
+			node.style('opacity', 0.4);
+			node.connectedEdges().forEach(ele => ele.style('line-color', '#e1e6e5'));
+		});
+		
+		partialHideNodes.forEach(function(node) {
+			node.style('opacity', 0.8);
+			node.connectedEdges().forEach(ele => ele.style('line-color', '#bccfcb'));
+		});
+	}
+	
+//	if (removeNodes !== null || searchTerm) {
+//		searchTerm = searchTerm.toLowerCase();
+//		cy.$('node').style('opacity', 0.4);
+//		cy.$('edge').style('line-color', '#e1e6e5');
+//		cy.nodes().forEach(function(node) {
+//			if ((removeNodes == null || !removeNodes.contains(node.data('type'))) && (!searchTerm || node.data('label').toLowerCase().includes(searchTerm))) {
+//				node.style('opacity', 1);
+//				node.neighborhood().forEach(function(ele) {
+//					if (ele.isNode()) {
+//						ele.style('opacity', 1);
+//					} else {
+//						ele.style('line-color', '#b0c7c3');
+//					}
+//				});
+//			}
+//		}
+//	}
+}
+
 function filterNodes(cy, removeNodes) {
 	cy.style().selector('node').style('opacity', 1).update();
 	cy.$('edge').removeStyle('line-color');
