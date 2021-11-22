@@ -83,102 +83,50 @@ function loadCytoScape(data, result, removeNodes) {
     return cy;
 }
 
-function filterNodes(cy, removeNodes, searchTerm) {
+function filterNodes(cy, hideTypes, searchTerm) {
+	//Removes any pre-existing filters
 	cy.$('node').removeStyle('opacity');
 	cy.$('edge').removeStyle('line-color');
 	
+	let isHideTypesEmpty = hideTypes == null || hideTypes.length == 0;
 	let hideNodes = new Set();
-	let partialHideNodes = new Set(); 
+	let partialHideNodes = new Set();
 	
-	if (removeNodes !== null || searchTerm) {
+	if (!isHideTypesEmpty || searchTerm) {
 		searchTerm = searchTerm.toLowerCase();
 		
-		cy.nodes.forEach(function(node) {
-			if ((removeNodes == null && !node.data('label').toLowerCase().includes(searchTerm))
-				|| (!searchTerm && removeNodes.contains(node.data('type')))
-				|| (removeNodes.contains(node.data('type')) && !node.data('label').toLowerCase().includes(searchTerm))) {
+		cy.nodes().forEach(function(node) {
+			//Selects nodes which do not meet one of the following selection criteria:
+			//(1) No hide types criteria provided and does not contain search term
+			//(2) No search term provided and belongs to a type which is to be hidden
+			//(3) Belongs to a type to be hidden and does not contain the search term
+			if ((isHideTypesEmpty && !node.data('label').toLowerCase().includes(searchTerm))
+				|| (!searchTerm && hideTypes.includes(node.data('type')))
+				|| (hideTypes.includes(node.data('type')) || !node.data('label').toLowerCase().includes(searchTerm))) {
 					hideNodes.add(node);
-			} else if (searchTerm) {
-				nodes.neighborhood().forEach(function(ele) {
-					if (ele.isNode()) {
+			} else if (searchTerm && node.data('label').toLowerCase().includes(searchTerm)) {
+			//As the current node meets the crtieria, select its neighbors to hide partially
+				node.neighborhood().forEach(function(ele) {
+					if (ele.isNode() && (!ele.data('label').toLowerCase().includes(searchTerm) 
+							|| (!isHideTypesEmpty && hideTypes.includes(ele.data('type'))))) {
 						partialHideNodes.add(ele);
 					}
-				}
+				});
 			}
 		});
 		
+		//Hide elements
 		hideNodes.forEach(function(node) {
 			node.style('opacity', 0.4);
 			node.connectedEdges().forEach(ele => ele.style('line-color', '#e1e6e5'));
 		});
 		
+		//Partially highlight the hidden nodes which are immediate neighbors of selected nodes(Selected only if there is a search term involved)
 		partialHideNodes.forEach(function(node) {
-			node.style('opacity', 0.8);
+			node.style('opacity', 0.7);
 			node.connectedEdges().forEach(ele => ele.style('line-color', '#bccfcb'));
 		});
 	}
 	
-//	if (removeNodes !== null || searchTerm) {
-//		searchTerm = searchTerm.toLowerCase();
-//		cy.$('node').style('opacity', 0.4);
-//		cy.$('edge').style('line-color', '#e1e6e5');
-//		cy.nodes().forEach(function(node) {
-//			if ((removeNodes == null || !removeNodes.contains(node.data('type'))) && (!searchTerm || node.data('label').toLowerCase().includes(searchTerm))) {
-//				node.style('opacity', 1);
-//				node.neighborhood().forEach(function(ele) {
-//					if (ele.isNode()) {
-//						ele.style('opacity', 1);
-//					} else {
-//						ele.style('line-color', '#b0c7c3');
-//					}
-//				});
-//			}
-//		}
-//	}
-}
-
-function filterNodes(cy, removeNodes) {
-	cy.style().selector('node').style('opacity', 1).update();
-	cy.$('edge').removeStyle('line-color');
-	
-	if(removeNodes !== null) {
-	    for (i = 0; i < removeNodes.length; i++) {
-    		var selectorData1 = 'node[type = "';
-    		var selectorData2 = '"]';
-    		var finalSelector = selectorData1.concat(removeNodes[i],selectorData2);
-			cy.style().selector(finalSelector).style('opacity', 0.4)
-				.update();
-	    	cy.$(finalSelector).connectedEdges().style('line-color', '#e1e6e5');
-	    }
-    }
-	
 	return cy;
-}
-
-function searchNodes(cy, searchTerm) {
-	searchTerm = searchTerm.toLowerCase();
-	cy.$('node').removeStyle('opacity');
-	cy.$('edge').removeStyle('line-color');
-	cy.style().selector('node').style('opacity', 1).update();
-	cy.style().selector('edge').style('line-color', '#b0c7c3').update();
-	
-	if (searchTerm) {
-		cy.style().selector('node').style('opacity', 0.4).update();
-		cy.style().selector('edge').style('line-color', '#e1e6e5').update();
-//		cy.$('edge').style('line-color', '#e1e6e5');
-		
-		cy.nodes().forEach(function(node) {
-			if (node.data('label').toLowerCase().includes(searchTerm)) {
-				node.style('opacity', 1);
-				node.neighborhood().forEach(function(ele) {
-					if (ele.isNode()) {
-						ele.style('opacity', 1);
-					} else {
-						ele.style('line-color', '#b0c7c3');
-					}
-				});
-			}
-		});
-	}
-	
 }

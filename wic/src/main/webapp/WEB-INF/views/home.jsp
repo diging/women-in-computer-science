@@ -40,7 +40,7 @@ $(document).ready(function() {
                 stringifiedResult = data;
                 var cy = loadCytoScape(data, result, null);
                 $('#search').on('input', function() {
-                	searchNodes(cy, $(this).val());
+                	hideNodes(cy);
                 })
                 addDropDown(cy);
             }
@@ -59,7 +59,8 @@ function hideNodes(cy) {
 	    selected.push($(this).val());
 	});
 	data = selected;
-	return filterNodes(cy, data);
+	var searchTerm = $("#search").val()
+	return filterNodes(cy, data, searchTerm);
 }
 
 function addDropDown(cy) {
