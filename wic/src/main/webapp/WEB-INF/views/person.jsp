@@ -7,6 +7,10 @@
     overflow: auto;
     max-height:700px;
 }
+
+#relationships {
+    padding-top: 25px;
+}
 </style>
 <script type="text/javascript">
 //# sourceURL=getGraph.js
@@ -68,13 +72,15 @@
     <ul class="list-unstyled">
     <c:forEach items="${texts}" var="text">
     <li>
-        <strong>${text.title}</strong>
+        <h3><strong>${text.title}</strong></h3>
+        <figcaption>By ${text.author}</figcaption>
         <p>${text.htmlRenderedText()}</p>
     </li>
     </c:forEach>
     </ul>
 </c:if>
 <c:if test="${texts == null or texts.isEmpty()}">
+    <h5 id="relationships">Relationships</h5>
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
@@ -86,6 +92,7 @@
     <div id="network" style="min-width: 200px; min-height: 200px; "></div>
     
     <c:if test="${texts != null and not texts.isEmpty()}">
+    <h5 id="relationships">Relationships</h5>
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
