@@ -47,6 +47,18 @@
     <definition name="admin/import/list" extends="base.definition">
         <put-attribute name="content" value="/WEB-INF/views/admin/import/list.jsp" />    
     </definition>
+    
+    <definition name="admin/text/add" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/addConceptText.jsp" />
+    </definition>
+    
+    <definition name="admin/text/list" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/showConceptText.jsp" />
+    </definition>
+    
+    <definition name="admin/text/edit" extends="base.definition"> 
+    	<put-attribute name="content" value="/WEB-INF/views/admin/texts/editConceptText.jsp" />
+    </definition>
 	
     <definition name="person" extends="base.definition.public">
         <put-attribute name="content" value="/WEB-INF/views/person.jsp" />    
