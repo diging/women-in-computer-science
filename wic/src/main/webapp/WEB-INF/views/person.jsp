@@ -80,7 +80,7 @@
     </ul>
 </c:if>
 <c:if test="${texts == null or texts.isEmpty()}">
-    <h5 id="relationships">Relationships</h5>
+    <h4 id="relationships">Relationships</h4>
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
@@ -92,7 +92,7 @@
     <div id="network" style="min-width: 200px; min-height: 200px; "></div>
     
     <c:if test="${texts != null and not texts.isEmpty()}">
-    <h5 id="relationships">Relationships</h5>
+    <h4 id="relationships">Relationships</h4>
     <ul id="graphList" class="list-group">
         <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
