@@ -3,11 +3,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
-.list-unstyled {
-    overflow: auto;
-    max-height:700px;
-}
-
 #relationships {
     padding-top: 25px;
 }
