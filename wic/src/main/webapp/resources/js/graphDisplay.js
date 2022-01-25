@@ -1,3 +1,13 @@
+function hideNodes(cy) {
+	var brands = $('#dropdown option:selected');
+	var selected = [];
+	$(brands).each(function(index, brand){
+	    selected.push($(this).val());
+	});
+	data = selected;
+	return filterNodes(cy, data);
+}
+
 function highlightPersonInGraph() {
     var highlightSize = "50px";
     var id = $(this).data("concept-id");
@@ -22,7 +32,7 @@ function removeHighlight() {
     });
 }
 
-function loadCytoScape(data, result, removeNodes) {
+function loadCytoScape(data, result, highlightNodes) {
 	var nodeSize = "15px";
 	var cy = cytoscape({
         container: $('#network'),
@@ -79,23 +89,25 @@ function loadCytoScape(data, result, removeNodes) {
         $(".person-entry").hover(highlightPersonInGraph, removeHighlight);
     });
 	
-    filterNodes(cy, removeNodes);
+    filterNodes(cy, highlightNodes);
     return cy;
 }
 
-function filterNodes(cy, removeNodes) {
-	cy.style().selector('node').style('opacity', 1).update();
-	cy.$('edge').removeStyle('line-color');
-	
-	if(removeNodes !== null) {
-	    for (i = 0; i < removeNodes.length; i++) {
+function filterNodes(cy, highlightNodes) {
+	if(highlightNodes !== null && highlightNodes.length != 0) {
+		cy.style().selector('node').style('opacity', 0.4).update();
+		cy.$('edge').style('line-color', '#e1e6e5');
+	    for (i = 0; i < highlightNodes.length; i++) {
     		var selectorData1 = 'node[type = "';
     		var selectorData2 = '"]';
-    		var finalSelector = selectorData1.concat(removeNodes[i],selectorData2);
-			cy.style().selector(finalSelector).style('opacity', 0.4)
+    		var finalSelector = selectorData1.concat(highlightNodes[i],selectorData2);
+			cy.style().selector(finalSelector).style('opacity', 1)
 				.update();
-	    	cy.$(finalSelector).connectedEdges().style('line-color', '#e1e6e5');
+	    	cy.$(finalSelector).connectedEdges().style('line-color', '#b0c7c3');
 	    }
+    } else {
+		cy.style().selector('node').style('opacity', 1).update();
+		cy.$('edge').removeStyle('line-color');
     }
 	
 	return cy;

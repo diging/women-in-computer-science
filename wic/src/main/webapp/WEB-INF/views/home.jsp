@@ -25,14 +25,12 @@
 <select id="dropdown" multiple="multiple" hidden>
 </select>
 </div>
-
 <script>
 $(document).ready(function() {
     $.ajax({
         url : "<c:url value='/network' />",
         type : "GET",
         success : function(result) {
-        	apiResult = result;
             if (result == null || result.length == 0) {
                 $("#spinner").hide();
                 $("#network").append("Sorry, no network to display.")
@@ -50,16 +48,6 @@ $(document).ready(function() {
         }
     });
 });
-
-function hideNodes(cy) {
-	var brands = $('#dropdown option:selected');
-	var selected = [];
-	$(brands).each(function(index, brand){
-	    selected.push($(this).val());
-	});
-	data = selected;
-	return filterNodes(cy, data);
-}
 
 function addDropDown(cy) {
 	$.ajax({
