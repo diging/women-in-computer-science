@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Represents and holds the concept entries from conceptpower XML response
+ * Maps and holds the Conceptpower XML API response for fetching Concept entries
  * @author Maulik Limbadiya
  *
  */
