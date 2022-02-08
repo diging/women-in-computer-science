@@ -9,9 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
+import edu.asu.diging.wic.core.conceptpower.IConceptEntry;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "conceptEntry", namespace = "http://www.digitalhps.org/")
-public class ConceptEntry {
+public class ConceptEntry implements IConceptEntry {
     
     @XmlElement(name = "id", namespace = "http://www.digitalhps.org/")
     private ConceptEntryId coneptEntryId;
@@ -53,6 +55,7 @@ public class ConceptEntry {
     @XmlElement(name = "id", namespace = "http://www.digitalhps.org/")
     private List<ConceptEntryId> alternativeIds;
     
+    @Override
     public String getCreatorId() {
         return creatorId;
     }
@@ -69,6 +72,7 @@ public class ConceptEntry {
         this.coneptEntryId = coneptEntryId;
     }
 
+    @Override
     public String getLemma() {
         return lemma;
     }
@@ -77,6 +81,7 @@ public class ConceptEntry {
         this.lemma = lemma;
     }
 
+    @Override
     public String getPos() {
         return pos;
     }
@@ -85,6 +90,7 @@ public class ConceptEntry {
         this.pos = pos;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -93,6 +99,7 @@ public class ConceptEntry {
         this.description = description;
     }
 
+    @Override
     public String getConceptList() {
         return conceptList;
     }
@@ -109,6 +116,7 @@ public class ConceptEntry {
         this.deleted = deleted;
     }
 
+    @Override
     public List<String> getEqualTo() {
         if (equalTo == null) {
             return null;
@@ -120,6 +128,7 @@ public class ConceptEntry {
         this.equalTo = equalTo;
     }
 
+    @Override
     public List<String> getSimilarTo() {
         if (similarTo == null) {
             return null;
@@ -139,6 +148,7 @@ public class ConceptEntry {
         this.synonymIds = synonymIds;
     }
 
+    @Override
     public ConceptpowerEntryType getType() {
         return type;
     }
@@ -147,6 +157,7 @@ public class ConceptEntry {
         this.type = type;
     }
 
+    @Override
     public List<String> getWordnetIds() {
         return wordnetIds;
     }
@@ -154,13 +165,24 @@ public class ConceptEntry {
     public void setWordnetIds(List<String> wordnetIds) {
         this.wordnetIds = wordnetIds;
     }
-
+    
+    @Override
     public List<ConceptEntryId> getAlternativeIds() {
         return alternativeIds;
     }
 
     public void setAlternativeIds(List<ConceptEntryId> alternativeIds) {
         this.alternativeIds = alternativeIds;
+    }
+
+    @Override
+    public String getConceptId() {
+        return this.coneptEntryId.getConceptId();
+    }
+
+    @Override
+    public String getConceptUri() {
+        return this.coneptEntryId.getConceptUri();
     }
 
 }
