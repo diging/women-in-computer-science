@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%-- <link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet"> --%>
 <link href="<c:url value="/resources/css/multiselect/bootstrap-multiselect.min.css" />" rel="stylesheet"/>
 <style>
 .align-right {
