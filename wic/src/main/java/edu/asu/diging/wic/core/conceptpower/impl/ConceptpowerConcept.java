@@ -5,9 +5,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import edu.asu.diging.wic.core.conceptpower.IConceptEntry;
 import edu.asu.diging.wic.core.model.IConceptType;
 
-public class ConceptpowerConcept { 
+public class ConceptpowerConcept implements IConceptEntry { 
 	
     @Override
     public int hashCode() {
@@ -42,6 +43,9 @@ public class ConceptpowerConcept {
     private String lemma;
     private String pos;
     private String description;
+    @JsonProperty("creator_id")
+    private String creatorId;
+
     private String conceptList;
     private boolean deleted;
     @JsonProperty("equal_to")
@@ -58,11 +62,17 @@ public class ConceptpowerConcept {
     public String getId() {
         return id;
     }
+    
+    @Override
+    public String getConceptId() {
+        return id;
+    }
 
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getConceptUri() {
         return conceptUri;
     }
@@ -71,6 +81,7 @@ public class ConceptpowerConcept {
         this.conceptUri = conceptUri;
     }
 
+    @Override
     public String getLemma() {
         return lemma;
     }
@@ -79,6 +90,7 @@ public class ConceptpowerConcept {
         this.lemma = lemma;
     }
 
+    @Override
     public String getPos() {
         return pos;
     }
@@ -87,6 +99,7 @@ public class ConceptpowerConcept {
         this.pos = pos;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -95,6 +108,7 @@ public class ConceptpowerConcept {
         this.description = description;
     }
 
+    @Override
     public String getConceptList() {
         return conceptList;
     }
@@ -111,6 +125,7 @@ public class ConceptpowerConcept {
         this.deleted = deleted;
     }
 
+    @Override
     public List<String> getEqualTo() {
         if (equalTo == null) {
             return null;
@@ -122,8 +137,12 @@ public class ConceptpowerConcept {
         this.equalTo = equalTo;
     }
 
-    public String getSimilarTo() {
-        return similarTo;
+    @Override
+    public List<String> getSimilarTo() {
+        if (similarTo == null) {
+            return null;
+        }
+        return Arrays.asList(similarTo.split(","));
     }
 
     public void setSimilarTo(String similarTo) {
@@ -138,6 +157,7 @@ public class ConceptpowerConcept {
         this.synonymIds = synonymIds;
     }
 
+    @Override
     public IConceptType getType() {
         return type;
     }
@@ -146,6 +166,7 @@ public class ConceptpowerConcept {
         this.type = type;
     }
     
+    @Override
     public List<ConceptpowerAlternativeId> getAlternativeIds() {
         return alternativeIds;
     }
@@ -154,16 +175,20 @@ public class ConceptpowerConcept {
         this.alternativeIds = alternativeIds;
     }
 
-    public List<String> getWordnetId() {
+    @Override
+    public List<String> getWordnetIds() {
         return wordnetIds;
     }
 	
-    public void setWordnetId(List<String> wordnetIds) {
+    public void setWordnetIds(List<String> wordnetIds) {
         this.wordnetIds = wordnetIds;
     }
 
     public String getCreatorId() {
-        // TODO Auto-generated method stub
-        return null;
+        return creatorId;
+    }
+    
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }
