@@ -17,7 +17,7 @@
         <apache-tiles.version>3.0.8</apache-tiles.version>
         <admin.password>admin</admin.password>
 
-        <hibernate.version>5.4.22.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
         <hibernate.dialect.storage_engine>InnoDB</hibernate.dialect.storage_engine>
 
@@ -105,7 +105,7 @@
             <artifactId>commonmark</artifactId>
             <version>0.15.0</version>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -198,6 +198,13 @@
             <version>5.13.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+		
         <!-- Tiles -->
         <dependency>
             <groupId>org.apache.tiles</groupId>

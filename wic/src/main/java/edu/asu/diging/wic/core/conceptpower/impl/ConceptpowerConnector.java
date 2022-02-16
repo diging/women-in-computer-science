@@ -50,19 +50,10 @@ public class ConceptpowerConnector implements IConceptpowerConnector {
     @Override
     @Cacheable(value = "concepts")
     public IConcept getConcept(String id) {
-    	
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setAccept(
-                Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
-        HttpEntity<?> entity = new HttpEntity<Object>(requestHeaders);
-
-        ResponseEntity<ConceptpowerConcepts> response = restTemplate.exchange(
-                String.format("%s%s%s", conceptpowerUrl, conceptEndpoint, id),
-                HttpMethod.GET, entity, ConceptpowerConcepts.class);
-        ConceptpowerConcepts concepts = response.getBody();
-        if (concepts.getConceptEntries() != null
-                && !concepts.getConceptEntries().isEmpty()) {
-            ConceptpowerConcept cpc = concepts.getConceptEntries().get(0);
+        ConceptpowerReply concepts = restTemplate
+                .getForObject(String.format("%s%s%s", conceptpowerUrl, conceptEndpoint, id), ConceptpowerReply.class);
+        if (concepts.getConceptEntries() != null && !concepts.getConceptEntries().isEmpty()) {
+            ConceptEntry cpc = concepts.getConceptEntries().get(0);
             return conceptMapper.mapConceptpowerConceptToConcept(cpc);
         }
         return null;

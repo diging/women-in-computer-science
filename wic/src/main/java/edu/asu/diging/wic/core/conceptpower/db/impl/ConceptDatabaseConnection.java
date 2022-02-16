@@ -97,7 +97,7 @@ public class ConceptDatabaseConnection implements IConceptDatabaseConnection {
             concept.setLastUpdated(OffsetDateTime.now());
 
             if (objConcept != null) {
-                em.detach(objConcept);
+                em.remove(objConcept);
             }
             em.persist(concept);
         }

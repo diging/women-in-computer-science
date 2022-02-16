@@ -24,9 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Node;
-import edu.asu.diging.wic.core.util.ISourceUriPatternUtil;
+import edu.asu.diging.wic.core.service.IConceptTextService;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;
 import edu.asu.diging.wic.web.cytoscape.GraphElement;
@@ -42,6 +43,9 @@ public class PersonController {
     
     @Autowired
     private IConceptpowerCache cache;
+    
+    @Autowired
+    private IConceptTextService conceptTextService;
     
     @Value("${general.node.color}")
     private String generalNodeColor;
@@ -71,6 +75,8 @@ public class PersonController {
         model.addAttribute("concept", concept);
         if (concept != null) {
             model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
+            List<ConceptText> conceptTexts = conceptTextService.findByConceptId(personId);
+            model.addAttribute("texts", conceptTexts);
         }
         
         return "person";
@@ -86,7 +92,6 @@ public class PersonController {
         
         model.addAttribute("concept", concept);
         model.addAttribute("alternativeIdsString", String.join(",", concept.getAlternativeUris()));
-        model.addAttribute("isPerson", concept.getType() != null && concept.getType().getId().equals(personTypeId));
         return "person/statements";
     }
     
