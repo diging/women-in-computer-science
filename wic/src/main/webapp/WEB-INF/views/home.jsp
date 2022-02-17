@@ -36,7 +36,6 @@ $(document).ready(function() {
             } else {
                 $("#spinner").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
                 var highlightSize = "50px";
                 var nodeSize = "15px";
                 var hrefLocation = "concept/";

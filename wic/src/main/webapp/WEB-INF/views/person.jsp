@@ -19,7 +19,6 @@ $(document).ready(function() {
             } else {
                 $("#spinner").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
