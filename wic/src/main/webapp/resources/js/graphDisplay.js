@@ -8,8 +8,7 @@ function hideNodes(cy) {
 	return filterNodes(cy, data);
 }
 
-function highlightPersonInGraph() {
-    var highlightSize = "50px";
+function highlightPersonInGraph(highlightSize) {
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     cy.animate({
@@ -23,8 +22,7 @@ function highlightPersonInGraph() {
     });     
 }
 
-function removeHighlight() {
-    var nodeSize = "15px";
+function removeHighlight(nodeSize) {
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     node.animate({
@@ -32,8 +30,7 @@ function removeHighlight() {
     });
 }
 
-function loadCytoScape(data, result, highlightNodes) {
-	var nodeSize = "15px";
+function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
 	var cy = cytoscape({
         container: $('#network'),
         zoom: 1,
@@ -82,11 +79,11 @@ function loadCytoScape(data, result, highlightNodes) {
     });
     
     cy.on('tap', 'node', function(){
-        window.location.href = "concept/" + this.data('id');
+        window.location.href = hrefLocation + this.data('id');
     })
     
     cy.ready(function() {
-        $(".person-entry").hover(highlightPersonInGraph, removeHighlight);
+        $(".person-entry").hover(highlightPersonInGraph(highlightSize), removeHighlight(nodeSize));
     });
 	
     filterNodes(cy, highlightNodes);

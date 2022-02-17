@@ -36,8 +36,10 @@ $(document).ready(function() {
             } else {
                 $("#spinner").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
-                var cy = loadCytoScape(data, result, null);
+                var highlightSize = "50px";
+                var nodeSize = "15px";
+                var hrefLocation = "concept/";
+                var cy = loadCytoScape(data, result, null, highlightSize, nodeSize, hrefLocation);
                 addDropDown(cy);
             }
         },
