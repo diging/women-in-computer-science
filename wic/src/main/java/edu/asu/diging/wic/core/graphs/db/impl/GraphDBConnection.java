@@ -76,4 +76,10 @@ public class GraphDBConnection implements IGraphDBConnection {
             em.remove(graph);
         }
     }
+    
+    @Override
+    public List<String> getAlternativeUris(String conceptUri) {
+        Query query = em.createNativeQuery("select alternativeUris from tbl_conceptpower_alternativeuris where id = '" + conceptUri + "'");
+        return query.getResultList();
+    }
 }

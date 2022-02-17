@@ -123,6 +123,48 @@ public class PersonController {
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/concept/{personId}/secondary-network")
+    public ResponseEntity<Collection<GraphElement>> getPersonSecondaryNetwork(@PathVariable("personId") String personId) {
+        IConcept sourceConcept = cache.getConceptById(personId);
+        HashSet<String> sourceNodeUris = new HashSet<>(graphDbConnector.getAlternativeUris(sourceConcept.getUri()));
+        Map<String, GraphElement> elements = new HashMap<>();
+        
+        List<Edge> primaryEdges = getEdges(sourceConcept.getUri());
+        for (Edge edge : primaryEdges) {
+            Node sourceNode;
+            Node edgeNode;
+            Node targetNode;
+            if (sourceNodeUris.contains(edge.getSourceNode().getUri())) {
+                sourceNode = edge.getSourceNode();
+                edgeNode = edge.getTargetNode();
+            } else {
+                sourceNode = edge.getTargetNode();
+                edgeNode = edge.getSourceNode();
+            }
+            GraphElement sourceElem = elements.get(sourceNode.getConceptId());
+            if (sourceElem == null) {
+                IConcept concept = cache.getConceptById(sourceNode.getConceptId());
+                sourceElem = createElement(sourceNode, concept);
+                elements.put(sourceNode.getConceptId(), sourceElem);
+            }
+            List<Edge> secondaryEdges = getEdges(edgeNode.getUri());
+            for (Edge secondaryEdge : secondaryEdges) {
+                targetNode = secondaryEdge.getTargetNode();
+                GraphElement targetElem = elements.get(targetNode.getConceptId());
+                if (targetElem == null) {
+                    IConcept concept = cache.getConceptById(targetNode.getConceptId());
+                    targetElem = createElement(targetNode, concept);
+                    elements.put(targetNode.getConceptId(), targetElem);
+                }
+                elements.put(sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
+                        new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(),
+                                sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
+                                edgeNode.getLabel())));
+            }
+        }
+        return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
+    }
+    
     private List<Edge> getEdges(String uri) {
         List<Edge> edgeList = graphDbConnector.getEdges(uri);
         List<Edge> uniqueEdges = new ArrayList<Edge>();
