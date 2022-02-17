@@ -17,7 +17,7 @@
         <apache-tiles.version>3.0.8</apache-tiles.version>
         <admin.password>admin</admin.password>
 
-        <hibernate.version>5.4.22.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
         <hibernate.dialect.storage_engine>InnoDB</hibernate.dialect.storage_engine>
 

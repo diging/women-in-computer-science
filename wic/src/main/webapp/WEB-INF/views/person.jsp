@@ -3,16 +3,35 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
-.list-unstyled {
-    overflow: auto;
-    max-height:700px;
-}
-
 #relationships {
     padding-top: 25px;
 }
 </style>
 <script type="text/javascript">
+$(document).ready(function() {
+    $.ajax({
+        url : '<c:url value="/concept/${concept.id}/network" />',
+        type : "GET",
+        success : function(result) {
+            if (result == null || result.length == 0) {
+                $("#spinner").hide();
+                $("#network").append("Sorry, no network to display.")
+            } else {
+                $("#spinner").hide();
+                data = JSON.stringify(result);
+                var highlightSize = "20px";
+                var nodeSize = "10px";
+                var hrefLocation = '';
+                var cy = loadCytoScape(data, result, null, highlightSize, nodeSize, hrefLocation);
+            }
+        },
+        error: function() {
+            $("#spinner").hide();
+            $("#network").append("Sorry, could not load network.")
+        }
+    });
+});
+
 //# sourceURL=getGraph.js
 	$(function() {
 	    getGraph();
@@ -43,13 +62,6 @@
 <script src="<c:url value="/resources/js/cytoscape-3.16.3/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
 <c:if test="${not empty concept.id}" >
-<script type="text/javascript">
-    var highlightSize = "20px";
-    var nodeSize = "10px";
-    var url = '<c:url value="/concept/${concept.id}/network" />';
-    var hrefLocation = '';
-    var animate = false;
-</script>
 </c:if>
 <script src="<c:url value="/resources/js/graphDisplay.js" />"></script>
 

@@ -39,7 +39,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
  	<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/bootstrap/js/main.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-dateformat.min.js" />"></script>
