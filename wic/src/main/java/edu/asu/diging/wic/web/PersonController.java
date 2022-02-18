@@ -130,16 +130,16 @@ public class PersonController {
         Map<String, GraphElement> elements = new HashMap<>();
         
         List<Edge> primaryEdges = getEdges(sourceConcept.getUri());
-        for (Edge edge : primaryEdges) {
+        for (Edge primaryEdge : primaryEdges) {
             Node sourceNode;
             Node edgeNode;
             Node targetNode;
-            if (sourceNodeUris.contains(edge.getSourceNode().getUri())) {
-                sourceNode = edge.getSourceNode();
-                edgeNode = edge.getTargetNode();
+            if (sourceNodeUris.contains(primaryEdge.getSourceNode().getUri())) {
+                sourceNode = primaryEdge.getSourceNode();
+                edgeNode = primaryEdge.getTargetNode();
             } else {
-                sourceNode = edge.getTargetNode();
-                edgeNode = edge.getSourceNode();
+                sourceNode = primaryEdge.getTargetNode();
+                edgeNode = primaryEdge.getSourceNode();
             }
             GraphElement sourceElem = elements.get(sourceNode.getConceptId());
             if (sourceElem == null) {
@@ -147,19 +147,26 @@ public class PersonController {
                 sourceElem = createElement(sourceNode, concept);
                 elements.put(sourceNode.getConceptId(), sourceElem);
             }
+            HashSet<String> edgeNodeUris = new HashSet<>(graphDbConnector.getAlternativeUris(edgeNode.getUri()));
             List<Edge> secondaryEdges = getEdges(edgeNode.getUri());
             for (Edge secondaryEdge : secondaryEdges) {
-                targetNode = secondaryEdge.getTargetNode();
-                GraphElement targetElem = elements.get(targetNode.getConceptId());
-                if (targetElem == null) {
-                    IConcept concept = cache.getConceptById(targetNode.getConceptId());
-                    targetElem = createElement(targetNode, concept);
-                    elements.put(targetNode.getConceptId(), targetElem);
+                if (edgeNodeUris.contains(secondaryEdge.getSourceNode().getUri())) {
+                    targetNode = secondaryEdge.getTargetNode();
+                } else {
+                    targetNode = secondaryEdge.getSourceNode();
                 }
-                elements.put(sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
-                        new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(),
-                                sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
-                                edgeNode.getLabel())));
+                if (targetNode.getType().equals(sourceNode.getType())) {
+                    GraphElement targetElem = elements.get(targetNode.getConceptId());
+                    if (targetElem == null) {
+                        IConcept concept = cache.getConceptById(targetNode.getConceptId());
+                        targetElem = createElement(targetNode, concept);
+                        elements.put(targetNode.getConceptId(), targetElem);
+                    }
+                    elements.put(sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
+                            new GraphElement(new EdgeData(sourceElem.getData().getId(), targetElem.getData().getId(),
+                                    sourceElem.getData().getId() + "-" + targetElem.getData().getId(),
+                                    edgeNode.getLabel())));
+                }
             }
         }
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
