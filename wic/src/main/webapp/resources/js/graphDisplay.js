@@ -30,9 +30,9 @@ function removeHighlight(cy, nodeSize) {
     });
 }
 
-function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
+function loadCytoScape(containerName, data, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
 	var cy = cytoscape({
-        container: $('#network'),
+        container: $('#' + containerName),
         zoom: 1,
         pan: { x: 0, y: 0 },
         elements: result,
