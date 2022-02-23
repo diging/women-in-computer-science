@@ -19,7 +19,6 @@ $(document).ready(function() {
             } else {
                 $("#spinner1").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
@@ -45,7 +44,6 @@ $(document).ready(function() {
             } else {
                 $("#spinner2").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
