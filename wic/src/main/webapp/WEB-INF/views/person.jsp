@@ -52,7 +52,7 @@ $(document).ready(function() {
                 var cy = loadCytoScape('network2', data, result, null, highlightSize, nodeSize, hrefLocation);
                 $("a[href='#secondaryNetwork']").on('shown.bs.tab', function(e) {
                     cy.resize();
-               });
+                });
             }
         },
         error: function() {
@@ -135,7 +135,7 @@ $(document).ready(function() {
         <li class="active"><a data-target="#primaryNetwork" data-toggle="tab">Primary Network</a></li>
         <li><a data-target="#secondaryNetwork" data-toggle="tab">Secondary Network</a></li>
       </ul>
-      <div class="tab-content">
+      <div class="tab-content" style="text-align:left;">
         <div class="tab-pane active" id="primaryNetwork">
           <div id="spinner1" class="text-center"><div class="fa fa-spinner fa-spin"></div> Loading graph...</div>
           <div id="network1" style="min-width: 200px; min-height: 200px; "></div>
