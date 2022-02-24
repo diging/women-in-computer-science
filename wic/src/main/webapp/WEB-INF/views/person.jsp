@@ -120,7 +120,6 @@ $(document).ready(function() {
 </div>
 
 <div class="col-md-5">
-    <div class="ui-layout-center">
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a data-target="#primaryNetwork" data-toggle="tab">Primary Network</a></li>
         <li><a data-target="#secondaryNetwork" data-toggle="tab">Secondary Network</a></li>
@@ -135,7 +134,6 @@ $(document).ready(function() {
           <div id="network2" style="min-width: 200px; min-height: 200px; "></div>
         </div>
       </div>
-    </div>
         
     <c:if test="${texts != null and not texts.isEmpty()}">
     <h4 id="relationships">Relationships</h4>
