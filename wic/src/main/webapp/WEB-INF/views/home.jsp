@@ -35,11 +35,10 @@ $(document).ready(function() {
                 $("#network").append("Sorry, no network to display.")
             } else {
                 $("#spinner").hide();
-                data = JSON.stringify(result);
                 var highlightSize = "50px";
                 var nodeSize = "15px";
                 var hrefLocation = "concept/";
-                var cy = loadCytoScape('network', data, result, null, highlightSize, nodeSize, hrefLocation);
+                var cy = loadCytoScape('network', result, null, highlightSize, nodeSize, hrefLocation);
                 addDropDown(cy);
             }
         },

@@ -18,11 +18,10 @@ $(document).ready(function() {
                 $("#network1").append("Sorry, no network to display.")
             } else {
                 $("#spinner1").hide();
-                data = JSON.stringify(result);
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
-                var cy = loadCytoScape('network1', data, result, null, highlightSize, nodeSize, hrefLocation);
+                var cy = loadCytoScape('network1', result, null, highlightSize, nodeSize, hrefLocation);
                 $("a[href='#primaryNetwork']").on('shown.bs.tab', function(e) {
                     cy.resize();
                });
@@ -43,11 +42,10 @@ $(document).ready(function() {
                 $("#network2").append("Sorry, no network to display.")
             } else {
                 $("#spinner2").hide();
-                data = JSON.stringify(result);
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
-                var cy = loadCytoScape('network2', data, result, null, highlightSize, nodeSize, hrefLocation);
+                var cy = loadCytoScape('network2', result, null, highlightSize, nodeSize, hrefLocation);
                 $("a[href='#secondaryNetwork']").on('shown.bs.tab', function(e) {
                     cy.resize();
                 });
