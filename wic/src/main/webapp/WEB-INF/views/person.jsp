@@ -22,9 +22,6 @@ $(document).ready(function() {
                 var nodeSize = "10px";
                 var hrefLocation = '';
                 var cy = loadCytoScape('network1', result, null, highlightSize, nodeSize, hrefLocation);
-                $("a[href='#primaryNetwork']").on('shown.bs.tab', function(e) {
-                    cy.resize();
-               });
             }
         },
         error: function() {
@@ -46,9 +43,6 @@ $(document).ready(function() {
                 var nodeSize = "10px";
                 var hrefLocation = '';
                 var cy = loadCytoScape('network2', result, null, highlightSize, nodeSize, hrefLocation);
-                $("a[href='#secondaryNetwork']").on('shown.bs.tab', function(e) {
-                    cy.resize();
-                });
             }
         },
         error: function() {
