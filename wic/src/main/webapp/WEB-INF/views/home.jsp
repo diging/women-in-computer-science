@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%-- <link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet"> --%>
 <link href="<c:url value="/resources/css/multiselect/bootstrap-multiselect.min.css" />" rel="stylesheet"/>
 <style>
 .align-right {
@@ -16,29 +15,26 @@
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
 <script src="<c:url value="/resources/js/multiselect/bootstrap-multiselect.min.js"/>"></script>
 <script src="<c:url value="/resources/js/graphDisplay.js" />"></script>
-<div id="spinner" class="text-center">
-    <div class="fas fa-spinner fa-spin"></div> Loading graph...
-</div>
 <div class="align-right">
 <select id="dropdown" multiple="multiple" hidden>
 </select>
 </div>
-
 <script>
 $(document).ready(function() {
     $.ajax({
         url : "<c:url value='/network' />",
         type : "GET",
         success : function(result) {
-        	apiResult = result;
             if (result == null || result.length == 0) {
                 $("#spinner").hide();
                 $("#network").append("Sorry, no network to display.")
             } else {
                 $("#spinner").hide();
                 data = JSON.stringify(result);
-                stringifiedResult = data;
-                var cy = loadCytoScape(data, result, null);
+                var highlightSize = "50px";
+                var nodeSize = "15px";
+                var hrefLocation = "concept/";
+                var cy = loadCytoScape(data, result, null, highlightSize, nodeSize, hrefLocation);
                 $('#search').on('input', function() {
                 	hideNodes(cy);
                 })
@@ -51,17 +47,6 @@ $(document).ready(function() {
         }
     });
 });
-
-function hideNodes(cy) {
-	var brands = $('#dropdown option:selected');
-	var selected = [];
-	$(brands).each(function(index, brand){
-	    selected.push($(this).val());
-	});
-	data = selected;
-	var searchTerm = $("#search").val()
-	return filterNodes(cy, data, searchTerm);
-}
 
 function addDropDown(cy) {
 	$.ajax({
@@ -118,6 +103,9 @@ function addDropDown(cy) {
 }
 </style>
 <input id="search" type="text" width="200px"> <i class="fas fa-search"></i>
+<div id="spinner" class="text-center">
+    <div class="fas fa-spinner fa-spin"></div> Loading graph...
+</div>
 <div id="network" class="graph" style="min-width: 500px; min-height: 500px;">
 
 </div>

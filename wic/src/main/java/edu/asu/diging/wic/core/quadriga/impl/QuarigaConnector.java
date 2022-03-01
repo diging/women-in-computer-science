@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,7 +49,12 @@ public class QuarigaConnector implements IQuadrigaConnector {
     private RestTemplate restTemplate;
     
     public QuarigaConnector() {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        factory.setHttpClient(httpClient);
+
         restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(factory);
     }
  
     /* (non-Javadoc)
@@ -90,3 +99,4 @@ public class QuarigaConnector implements IQuadrigaConnector {
         return restTemplate.getForObject(response.getResultUrl(), TransformationResponse.class);
     }
 }
+

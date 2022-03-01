@@ -1,5 +1,15 @@
-function highlightPersonInGraph() {
-    var highlightSize = "50px";
+function hideNodes(cy) {
+	var brands = $('#dropdown option:selected');
+	var selected = [];
+	$(brands).each(function(index, brand){
+	    selected.push($(this).val());
+	});
+	data = selected;
+	var searchTerm = $("#search").val()
+	return filterNodes(cy, data, searchTerm);
+}
+
+function highlightPersonInGraph(cy, highlightSize) {
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     cy.animate({
@@ -13,8 +23,7 @@ function highlightPersonInGraph() {
     });     
 }
 
-function removeHighlight() {
-    var nodeSize = "15px";
+function removeHighlight(cy, nodeSize) {
     var id = $(this).data("concept-id");
     var node = cy.getElementById(id);
     node.animate({
@@ -22,8 +31,7 @@ function removeHighlight() {
     });
 }
 
-function loadCytoScape(data, result, removeNodes) {
-	var nodeSize = "15px";
+function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
 	var cy = cytoscape({
         container: $('#network'),
         zoom: 1,
@@ -72,56 +80,49 @@ function loadCytoScape(data, result, removeNodes) {
     });
     
     cy.on('tap', 'node', function(){
-        window.location.href = "concept/" + this.data('id');
+        window.location.href = hrefLocation + this.data('id');
     })
     
     cy.ready(function() {
-        $(".person-entry").hover(highlightPersonInGraph, removeHighlight);
+        $(".person-entry").hover(highlightPersonInGraph(cy, highlightSize), removeHighlight(cy, nodeSize));
     });
 	
-    filterNodes(cy, removeNodes);
+    filterNodes(cy, highlightNodes);
     return cy;
 }
 
-function filterNodes(cy, hideTypes, searchTerm) {
+function filterNodes(cy, highlightTypes, searchTerm) {
 	//Removes any pre-existing filters
 	cy.$('node').removeStyle('opacity');
 	cy.$('edge').removeStyle('line-color');
 	
-	let isHideTypesEmpty = hideTypes == null || hideTypes.length == 0;
+	let isHighlightTypesEmpty = highlightTypes == null || highlightTypes.length == 0;
 	let hideNodes = new Set();
 	let partialHideNodes = new Set();
 	
-	if (!isHideTypesEmpty || searchTerm) {
+	if (!isHighlightTypesEmpty || searchTerm) {
 		searchTerm = searchTerm.toLowerCase();
 		
 		cy.nodes().forEach(function(node) {
-			//Selects nodes which do not meet one of the following selection criteria:
-			//(1) No hide types criteria provided and does not contain search term
-			//(2) No search term provided and belongs to a type which is to be hidden
-			//(3) Belongs to a type to be hidden and does not contain the search term
-			if ((isHideTypesEmpty && !node.data('label').toLowerCase().includes(searchTerm))
-				|| (!searchTerm && hideTypes.includes(node.data('type')))
-				|| (hideTypes.includes(node.data('type')) || !node.data('label').toLowerCase().includes(searchTerm))) {
-					hideNodes.add(node);
-			} else if (searchTerm && node.data('label').toLowerCase().includes(searchTerm)) {
-			//As the current node meets the crtieria, select its neighbors to hide partially
-				node.neighborhood().forEach(function(ele) {
-					if (ele.isNode() && (!ele.data('label').toLowerCase().includes(searchTerm) 
-							|| (!isHideTypesEmpty && hideTypes.includes(ele.data('type'))))) {
-						partialHideNodes.add(ele);
-					}
-				});
+			//Hide nodes which meet the following criteria:
+			//(1) There is a non-emty search term and the node label does not contain the search term
+			//(2) There is no search term and the node type is not part of the list of types to be highlighted
+			//Partially hide nodes which meet the following criteria:
+			//(1) Node contains the search term but does not belong to the types to be highlighted
+			if ((searchTerm && !node.data('label').toLowerCase().includes(searchTerm))
+				|| (!searchTerm && !isHighlightTypesEmpty && !highlightTypes.includes(node.data('type')))) {
+				hideNodes.add(node);
+			} else if (searchTerm && node.data('label').toLowerCase().includes(searchTerm) 
+						&& !isHighlightTypesEmpty && !highlightTypes.includes(node.data('type'))) {
+				partialHideNodes.add(node);
 			}
 		});
 		
-		//Hide elements
 		hideNodes.forEach(function(node) {
 			node.style('opacity', 0.4);
 			node.connectedEdges().forEach(ele => ele.style('line-color', '#e1e6e5'));
 		});
 		
-		//Partially highlight the hidden nodes which are immediate neighbors of selected nodes(Selected only if there is a search term involved)
 		partialHideNodes.forEach(function(node) {
 			node.style('opacity', 0.7);
 			node.connectedEdges().forEach(ele => ele.style('line-color', '#bccfcb'));

@@ -35,9 +35,11 @@ public class ConceptTextServiceTest {
 
     private ConceptText conceptText1;
     private ConceptText conceptText2;
+    private ConceptText conceptText3;
     private Long id;
 
     private static final String SORTBY_ATTR = "title";
+    private static final String CONCEPT_ID = "WC123";
 
     @Before
     public void setUp() {
@@ -48,7 +50,7 @@ public class ConceptTextServiceTest {
         conceptText1 = new ConceptText();
         conceptText1.setId(id);
         conceptText1.setAuthor("Smit");
-        conceptText1.setConceptId("WC123");
+        conceptText1.setConceptId(CONCEPT_ID);
         conceptText1.setText("The great Scientist");
         conceptText1.setTitle("A Title");
 
@@ -57,6 +59,12 @@ public class ConceptTextServiceTest {
         conceptText2.setConceptId("WC124");
         conceptText2.setText("The great Researcher");
         conceptText2.setTitle("B Title");
+        
+        conceptText3 = new ConceptText();
+        conceptText3.setAuthor("Smit");
+        conceptText3.setConceptId(CONCEPT_ID);
+        conceptText3.setText("The great Student");
+        conceptText3.setTitle("C Title");
     }
 
     @Test
@@ -83,6 +91,29 @@ public class ConceptTextServiceTest {
         Assert.assertEquals(2, responseList.size());
         Assert.assertEquals(conceptText1, responseList.get(0));
         Assert.assertEquals(conceptText2, responseList.get(1));
+    }
+    
+    @Test
+    public void test_findByConceptId_success() {
+        List<ConceptText> conceptTexts = new ArrayList<>();
+        conceptTexts.add(conceptText1);
+        conceptTexts.add(conceptText3);
+
+        when(conceptRepository.findByConceptId(CONCEPT_ID)).thenReturn(conceptTexts);
+
+        List<ConceptText> actualTexts = conceptTextService.findByConceptId(CONCEPT_ID);
+        Assert.assertEquals(conceptTexts.size(), actualTexts.size());
+        for (ConceptText text : conceptTexts) {
+            Assert.assertTrue(actualTexts.contains(text));
+        }
+    }
+    
+    @Test
+    public void test_findByConceptId_empty() {
+        when(conceptRepository.findByConceptId(CONCEPT_ID)).thenReturn(new ArrayList<>());
+
+        List<ConceptText> actualTexts = conceptTextService.findByConceptId("1234");
+        Assert.assertEquals(0, actualTexts.size());
     }
 
     @Test
