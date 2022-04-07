@@ -16,5 +16,7 @@ public interface IGraphDBConnection {
     void removeGraphs(String conceptUri);
 
     List<String> getAllPersons();
+    
+    List<String> getAlternativeUris(String conceptUri);
 
 }
