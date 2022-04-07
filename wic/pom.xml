@@ -381,7 +381,7 @@
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
 	    
-	<!- make it work with Java 11 -->
+	<!-- make it work with Java 11 -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
