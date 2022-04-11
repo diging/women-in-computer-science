@@ -14,20 +14,40 @@ $(document).ready(function() {
         type : "GET",
         success : function(result) {
             if (result == null || result.length == 0) {
-                $("#spinner").hide();
-                $("#network").append("Sorry, no network to display.")
+                $("#spinner1").hide();
+                $("#network1").append("Sorry, no network to display.")
             } else {
-                $("#spinner").hide();
-                data = JSON.stringify(result);
+                $("#spinner1").hide();
                 var highlightSize = "20px";
                 var nodeSize = "10px";
                 var hrefLocation = '';
-                var cy = loadCytoScape(data, result, null, highlightSize, nodeSize, hrefLocation);
+                var cy = loadCytoScape('network1', result, null, highlightSize, nodeSize, hrefLocation);
             }
         },
         error: function() {
-            $("#spinner").hide();
-            $("#network").append("Sorry, could not load network.")
+            $("#spinner1").hide();
+            $("#network1").append("Sorry, could not load network.")
+        }
+    });
+    
+    $.ajax({
+        url : '<c:url value="/concept/${concept.id}/secondary-network" />',
+        type : "GET",
+        success : function(result) {
+            if (result == null || result.length == 0) {
+                $("#spinner2").hide();
+                $("#network2").append("Sorry, no network to display.")
+            } else {
+                $("#spinner2").hide();
+                var highlightSize = "20px";
+                var nodeSize = "10px";
+                var hrefLocation = '';
+                var cy = loadCytoScape('network2', result, null, highlightSize, nodeSize, hrefLocation);
+            }
+        },
+        error: function() {
+            $("#spinner2").hide();
+            $("#network2").append("Sorry, could not load network.")
         }
     });
 });
@@ -44,11 +64,11 @@ $(document).ready(function() {
 			type : "GET",
 			success : function(result) {
 				if (result == null || result.trim() == '') {
-					$("#spinner1").hide();
+					$("#spinner3").hide();
 					$("#graphList").append("Sorry, there are no relationships yet.")
 				} else {
 					var list = $.parseHTML(result);
-					$("#spinner1").hide();
+					$("#spinner3").hide();
 					$("#graphList").append(list);
 				}
 			}
@@ -94,19 +114,31 @@ $(document).ready(function() {
 <c:if test="${texts == null or texts.isEmpty()}">
     <h4 id="relationships">Relationships</h4>
     <ul id="graphList" class="list-group">
-        <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
+        <div id="spinner3"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
 </c:if>
 </div>
 
 <div class="col-md-5">
-    <div id="spinner" class="text-center"><div class="fa fa-spinner fa-spin"></div> Loading graph...</div>
-    <div id="network" style="min-width: 200px; min-height: 200px; "></div>
-    
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a data-target="#primaryNetwork" data-toggle="tab">Primary Network</a></li>
+        <li><a data-target="#secondaryNetwork" data-toggle="tab">Secondary Network</a></li>
+      </ul>
+      <div class="tab-content" style="text-align:left;">
+        <div class="tab-pane active" id="primaryNetwork">
+          <div id="spinner1" class="text-center"><div class="fa fa-spinner fa-spin"></div> Loading graph...</div>
+          <div id="network1" style="min-width: 200px; min-height: 200px; "></div>
+        </div>
+        <div class="tab-pane" id="secondaryNetwork">
+          <div id="spinner2" class="text-center"><div class="fa fa-spinner fa-spin"></div> Loading graph...</div>
+          <div id="network2" style="min-width: 200px; min-height: 200px; "></div>
+        </div>
+      </div>
+        
     <c:if test="${texts != null and not texts.isEmpty()}">
     <h4 id="relationships">Relationships</h4>
     <ul id="graphList" class="list-group">
-        <div id="spinner1"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
+        <div id="spinner3"><div class="fa fa-spinner fa-spin"></div> Loading relationships... Hang tight, this might take a few minutes.</div>
     </ul>
     </c:if>
 </div>

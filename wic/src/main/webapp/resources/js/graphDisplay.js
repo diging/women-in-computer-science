@@ -31,9 +31,9 @@ function removeHighlight(cy, nodeSize) {
     });
 }
 
-function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
+function loadCytoScape(containerName, result, highlightNodes, highlightSize, nodeSize, hrefLocation) {
 	var cy = cytoscape({
-        container: $('#network'),
+        container: $('#' + containerName),
         zoom: 1,
         pan: { x: 0, y: 0 },
         elements: result,
@@ -68,7 +68,7 @@ function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hr
                 style: {
                     'width': 2,
                     'line-color': '#b0c7c3',
-                    'curve-style':'haystack'
+                    'curve-style':'haystack',
                 }
             }
         ],
@@ -81,7 +81,17 @@ function loadCytoScape(data, result, highlightNodes, highlightSize, nodeSize, hr
     
     cy.on('tap', 'node', function(){
         window.location.href = hrefLocation + this.data('id');
-    })
+    });
+    
+    cy.on('mouseover', 'edge', function(event) {
+        var edge = event.target;
+        edge.style('label', edge.data('label'));
+    });
+	
+    cy.on('mouseout', 'edge', function(event) {
+        var edge = event.target;
+        edge.removeStyle('label');
+    });
     
     cy.ready(function() {
         $(".person-entry").hover(highlightPersonInGraph(cy, highlightSize), removeHighlight(cy, nodeSize));
