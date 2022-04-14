@@ -6,7 +6,7 @@
 <style>
 .align-right {
     text-align: right;
-    padding-right: 200px;
+    padding-right: 20px;
 }
 </style>
 <script src="https://unpkg.com/layout-base/layout-base.js"></script>
@@ -18,6 +18,7 @@
 <div class="align-right">
 <select id="dropdown" multiple="multiple" hidden>
 </select>
+<span style="padding-left:5px;"><input id="search" type="text" width="200px"> <i class="fas fa-search"></i></span>
 </div>
 <script>
 $(document).ready(function() {
@@ -101,7 +102,6 @@ function addDropDown(cy) {
     border: 0;
 }
 </style>
-<input id="search" type="text" width="200px"> <i class="fas fa-search"></i>
 <div id="spinner" class="text-center">
     <div class="fas fa-spinner fa-spin"></div> Loading graph...
 </div>
