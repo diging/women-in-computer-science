@@ -5,7 +5,8 @@ function hideNodes(cy) {
 	    selected.push($(this).val());
 	});
 	data = selected;
-	return filterNodes(cy, data);
+	var searchTerm = $("#search").val()
+	return filterNodes(cy, data, searchTerm);
 }
 
 function highlightPersonInGraph(cy, highlightSize) {
@@ -100,22 +101,43 @@ function loadCytoScape(containerName, result, highlightNodes, highlightSize, nod
     return cy;
 }
 
-function filterNodes(cy, highlightNodes) {
-	if(highlightNodes !== null && highlightNodes.length != 0) {
-		cy.style().selector('node').style('opacity', 0.4).update();
-		cy.$('edge').style('line-color', '#e1e6e5');
-	    for (i = 0; i < highlightNodes.length; i++) {
-    		var selectorData1 = 'node[type = "';
-    		var selectorData2 = '"]';
-    		var finalSelector = selectorData1.concat(highlightNodes[i],selectorData2);
-			cy.style().selector(finalSelector).style('opacity', 1)
-				.update();
-	    	cy.$(finalSelector).connectedEdges().style('line-color', '#b0c7c3');
-	    }
-    } else {
-		cy.style().selector('node').style('opacity', 1).update();
-		cy.$('edge').removeStyle('line-color');
-    }
+function filterNodes(cy, highlightTypes, searchTerm) {
+	//Removes any pre-existing filters
+	cy.$('node').removeStyle('opacity');
+	cy.$('edge').removeStyle('line-color');
+	
+	let isHighlightTypesEmpty = highlightTypes == null || highlightTypes.length == 0;
+	let hideNodes = new Set();
+	let partialHideNodes = new Set();
+	
+	if (!isHighlightTypesEmpty || searchTerm) {
+		searchTerm = searchTerm.toLowerCase();
+		
+		cy.nodes().forEach(function(node) {
+			//Hide nodes which meet the following criteria:
+			//(1) There is a non-emty search term and the node label does not contain the search term
+			//(2) There is no search term and the node type is not part of the list of types to be highlighted
+			//Partially hide nodes which meet the following criteria:
+			//(1) Node contains the search term but does not belong to the types to be highlighted
+			if ((searchTerm && !node.data('label').toLowerCase().includes(searchTerm))
+				|| (!searchTerm && !isHighlightTypesEmpty && !highlightTypes.includes(node.data('type')))) {
+				hideNodes.add(node);
+			} else if (searchTerm && node.data('label').toLowerCase().includes(searchTerm) 
+						&& !isHighlightTypesEmpty && !highlightTypes.includes(node.data('type'))) {
+				partialHideNodes.add(node);
+			}
+		});
+		
+		hideNodes.forEach(function(node) {
+			node.style('opacity', 0.4);
+			node.connectedEdges().forEach(ele => ele.style('line-color', '#e1e6e5'));
+		});
+		
+		partialHideNodes.forEach(function(node) {
+			node.style('opacity', 0.7);
+			node.connectedEdges().forEach(ele => ele.style('line-color', '#bccfcb'));
+		});
+	}
 	
 	return cy;
 }

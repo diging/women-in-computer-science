@@ -6,7 +6,7 @@
 <style>
 .align-right {
     text-align: right;
-    padding-right: 200px;
+    padding-right: 20px;
 }
 </style>
 <script src="https://unpkg.com/layout-base/layout-base.js"></script>
@@ -14,15 +14,11 @@
 <script src="<c:url value="/resources/js/cytoscape-3.16.3/cytoscape.min.js" />"></script>
 <script src="<c:url value="/resources/js/cytoscape-layouts/cytoscape-cose-bilkent.js" />"></script>
 <script src="<c:url value="/resources/js/multiselect/bootstrap-multiselect.min.js"/>"></script>
-<script type="text/javascript">
-</script>
 <script src="<c:url value="/resources/js/graphDisplay.js" />"></script>
-<div id="spinner" class="text-center">
-    <div class="fas fa-spinner fa-spin"></div> Loading graph...
-</div>
 <div class="align-right">
 <select id="dropdown" multiple="multiple" hidden>
 </select>
+<span style="padding-left:5px;"><input id="search" type="text" width="200px"> <i class="fas fa-search"></i></span>
 </div>
 <script>
 $(document).ready(function() {
@@ -39,6 +35,9 @@ $(document).ready(function() {
                 var nodeSize = "15px";
                 var hrefLocation = "concept/";
                 var cy = loadCytoScape('network', result, null, highlightSize, nodeSize, hrefLocation);
+                $('#search').on('input', function() {
+                	hideNodes(cy);
+                })
                 addDropDown(cy);
             }
         },
@@ -103,7 +102,9 @@ function addDropDown(cy) {
     border: 0;
 }
 </style>
-
+<div id="spinner" class="text-center">
+    <div class="fas fa-spinner fa-spin"></div> Loading graph...
+</div>
 <div id="network" class="graph" style="min-width: 500px; min-height: 500px;">
 
 </div>
