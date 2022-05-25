@@ -50,6 +50,17 @@ $(document).ready(function() {
             $("#network2").append("Sorry, could not load network.")
         }
     });
+    
+    $.ajax({
+        url : '<c:url value="/wiki-summary/concept/${concept.id}" />',
+        type : "GET",
+        success : function(result) {
+            $("#wiki-summary").append(result);
+        },
+        error: function() {
+        	
+        }
+    });
 });
 
 //# sourceURL=getGraph.js
@@ -88,7 +99,14 @@ $(document).ready(function() {
 <div class="clearfix">
 <h2>${concept.word}</h2>
 
-<p>${concept.description}</p>
+<ul class="nav nav-tabs" id="biographyTabs">
+    <li class="active"><a data-target="#biography" data-toggle="tab">Biography</a></li>
+    <li><a data-target="#wiki-summary" data-toggle="tab">Wikipedia Summary</a></li>
+</ul>
+<div class="tab-content" style="text-align:left;">
+    <div class="tab-pane active" id="biography"><p>${concept.description}</p></div>
+    <div class="tab-pane" id="wiki-summary"></div>
+</div>
 
 <div>
     <c:forEach var="listVar" items="${concept.getEqualTo() }"> 
