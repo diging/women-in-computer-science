@@ -47,7 +47,7 @@ public class GetConceptWikiSummaryController {
         }
 
         try {
-            return new ResponseEntity<>(wikiConnector.getSummary(pageTitle);, HttpStatus.OK);
+            return new ResponseEntity<>(wikiConnector.getSummary(pageTitle), HttpStatus.OK);
         } catch (HttpClientErrorException ex) {
             return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
         }

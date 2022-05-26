@@ -1,5 +1,10 @@
 package edu.asu.diging.wic.core.wiki.impl;
 
+/**
+ * Holds the wikipedia summary details for a page title
+ * @author Maulik Limbadiya
+ *
+ */
 public class WikiSummaryResponse {
     
     private String description;
