@@ -25,11 +25,14 @@ public class WikiConnector implements IWikiConnector {
         restTemplate = new RestTemplate();
     }
 
+    /* (non-Javadoc)
+     * @see edu.asu.diging.wic.core.wiki.IWikiConnector#getSummary(java.lang.String)
+     */
     @Override
     public String getSummary(String pageTitle) {
-        wikiSummaryUri = String.format(wikiSummaryUri, pageTitle);
+        String summaryUri = String.format(wikiSummaryUri, pageTitle);
         try {
-            WikiSummaryResponse response = restTemplate.getForObject(wikiSummaryUri, WikiSummaryResponse.class);
+            WikiSummaryResponse response = restTemplate.getForObject(summaryUri, WikiSummaryResponse.class);
             return response.getExtract_html();
         } catch (HttpClientErrorException ex) {
             logger.error("No wikipedia summary found for page " + pageTitle, ex);
