@@ -31,8 +31,8 @@ public class GetConceptWikiSummaryController {
     private IWikiConnector wikiConnector;
 
     @GetMapping("/wiki-summary/concept/{conceptId}")
-    public ResponseEntity<String> getConceptSummary(@PathVariable("conceptId") String personId) {
-        IConcept concept = cache.getConceptById(personId);
+    public ResponseEntity<String> getConceptSummary(@PathVariable("conceptId") String conceptId) {
+        IConcept concept = cache.getConceptById(conceptId);
         if (concept == null) {
             return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
@@ -47,8 +47,7 @@ public class GetConceptWikiSummaryController {
         }
 
         try {
-            String summary = wikiConnector.getSummary(pageTitle);
-            return new ResponseEntity<>(summary, HttpStatus.OK);
+            return new ResponseEntity<>(wikiConnector.getSummary(pageTitle);, HttpStatus.OK);
         } catch (HttpClientErrorException ex) {
             return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
         }
