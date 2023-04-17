@@ -1,8 +1,5 @@
 package edu.asu.diging.wic.web;
 
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -36,16 +33,7 @@ public class GetConceptWikiSummaryController {
         if (concept == null) {
             return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
-        Optional<String> wikiUri = concept.getSimilarTo().stream().filter(uri -> Pattern.matches(wikiRegex, uri))
-                .findFirst();
-        String pageTitle;
-        if (wikiUri.isPresent()) {
-            String[] uriSplit = wikiUri.get().split("/");
-            pageTitle = uriSplit[uriSplit.length - 1];
-        } else {
-            pageTitle = String.join("_", concept.getWord().split(" "));
-        }
-
+        String pageTitle = wikiConnector.getPageTitle(concept);
         try {
             return new ResponseEntity<>(wikiConnector.getSummary(pageTitle), HttpStatus.OK);
         } catch (HttpClientErrorException ex) {

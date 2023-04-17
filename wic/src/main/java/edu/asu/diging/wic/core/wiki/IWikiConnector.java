@@ -1,5 +1,7 @@
 package edu.asu.diging.wic.core.wiki;
 
+import edu.asu.diging.wic.core.model.IConcept;
+
 public interface IWikiConnector {
     
     /**
@@ -8,5 +10,7 @@ public interface IWikiConnector {
      * @return The page summary in html format
      */
     String getSummary(String pageTitle);
+
+    String getPageTitle(IConcept concept);
 
 }
