@@ -33,9 +33,8 @@ public class GetConceptWikiSummaryController {
         if (concept == null) {
             return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
-        String pageTitle = wikiConnector.getPageTitle(concept);
         try {
-            return new ResponseEntity<>(wikiConnector.getSummary(pageTitle), HttpStatus.OK);
+            return new ResponseEntity<>(wikiConnector.getSummary(wikiConnector.getPageTitle(concept)), HttpStatus.OK);
         } catch (HttpClientErrorException ex) {
             return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
         }

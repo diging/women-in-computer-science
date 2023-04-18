@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -36,7 +37,7 @@ public class WikiConnector implements IWikiConnector {
      * @see edu.asu.diging.wic.core.wiki.IWikiConnector#getSummary(java.lang.String)
      */
     @Override
-    //Enable caching for this method
+    @Cacheable(value="wiki_summaries", key="#pageTitle")
     public String getSummary(String pageTitle) {
         String summaryUri = String.format(wikiSummaryUri, pageTitle);
         try {
