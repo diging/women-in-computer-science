@@ -1,6 +1,7 @@
 package edu.asu.diging.wic.core.conceptpower.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import edu.asu.diging.wic.core.conceptpower.IASyncConceptUpdater;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
 import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
+import edu.asu.diging.wic.core.conceptpower.repository.ConceptRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptType;
 
@@ -17,17 +19,20 @@ public class ConceptpowerCache implements IConceptpowerCache {
 	
     @Autowired
     private IConceptDatabaseConnection conceptDB;
+    
+    @Autowired
+    private ConceptRepository conceptRepository;
 	
     @Autowired
     private IConceptpowerConnector connector;
 	
     @Autowired
     private IASyncConceptUpdater conceptUpdater;
-	
+    
     @Override
     public IConcept getConceptById(String id) {
 		
-        IConcept concept = conceptDB.getConcept(id);
+        IConcept concept = conceptRepository.findByUri(id);
         if(concept != null) {
             conceptUpdater.updateConcept(id);
             return concept;
@@ -35,9 +40,9 @@ public class ConceptpowerCache implements IConceptpowerCache {
 		
         concept = connector.getConcept(id);
         if(concept != null) {
-            conceptDB.createOrUpdate(concept);
+            conceptRepository.createOrUpdate(concept);
         }
-        return conceptDB.getConcept(concept.getId());   
+        return conceptRepository.findByUri(concept.getId());  
     }
     
     @Override
