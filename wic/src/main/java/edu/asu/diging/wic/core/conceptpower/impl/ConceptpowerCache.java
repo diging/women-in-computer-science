@@ -27,7 +27,7 @@ public class ConceptpowerCache implements IConceptpowerCache {
     @Override
     public IConcept getConceptById(String id) {
 		
-        IConcept concept = conceptRepository.findByUri(id);
+        IConcept concept = conceptRepository.getConcept(id);
         if(concept != null) {
             conceptUpdater.updateConcept(id);
             return concept;
@@ -37,7 +37,7 @@ public class ConceptpowerCache implements IConceptpowerCache {
         if(concept != null) {
             conceptRepository.save(concept);
         }
-        return conceptRepository.findByUri(concept.getId());  
+        return conceptRepository.getConcept(concept.getId());  
     }
     
     @Override
