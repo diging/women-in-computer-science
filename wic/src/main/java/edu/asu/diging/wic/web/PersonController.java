@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
+import edu.asu.diging.wic.core.graphs.repository.GraphRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.model.impl.Edge;
@@ -39,7 +40,7 @@ public class PersonController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     
     @Autowired
-    private IGraphDBConnection graphDbConnector;
+    private GraphRepository graphRepository;
     
     @Autowired
     private IConceptpowerCache cache;
@@ -126,7 +127,7 @@ public class PersonController {
     @RequestMapping(value = "/concept/{personId}/secondary-network")
     public ResponseEntity<Collection<GraphElement>> getPersonSecondaryNetwork(@PathVariable("personId") String personId) {
         IConcept sourceConcept = cache.getConceptById(personId);
-        HashSet<String> sourceNodeUris = new HashSet<>(graphDbConnector.getAlternativeUris(sourceConcept.getUri()));
+        HashSet<String> sourceNodeUris = new HashSet<>(graphRepository.getAlternativeUris(sourceConcept.getUri()));
         Map<String, GraphElement> elements = new HashMap<>();
         
         List<Edge> primaryEdges = getEdges(sourceConcept.getUri());
@@ -147,7 +148,7 @@ public class PersonController {
                 sourceElem = createElement(sourceNode, concept);
                 elements.put(sourceNode.getConceptId(), sourceElem);
             }
-            HashSet<String> edgeNodeUris = new HashSet<>(graphDbConnector.getAlternativeUris(edgeNode.getUri()));
+            HashSet<String> edgeNodeUris = new HashSet<>(graphRepository.getAlternativeUris(edgeNode.getUri()));
             List<Edge> secondaryEdges = getEdges(edgeNode.getUri());
             for (Edge secondaryEdge : secondaryEdges) {
                 if (edgeNodeUris.contains(secondaryEdge.getSourceNode().getUri())) {
@@ -173,7 +174,7 @@ public class PersonController {
     }
     
     private List<Edge> getEdges(String uri) {
-        List<Edge> edgeList = graphDbConnector.getEdges(uri);
+        List<Edge> edgeList = graphRepository.getEdges(uri);
         List<Edge> uniqueEdges = new ArrayList<Edge>();
         HashSet<String> uniqueEdgeStrings = new HashSet<>();
         

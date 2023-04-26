@@ -19,9 +19,6 @@ import edu.asu.diging.wic.core.service.IStatementService;
 public class StatementsService implements IStatementService {
     
     @Autowired
-    private IGraphDBConnection graphDbConnection;
-    
-    @Autowired
     private IImportedConceptDBConnection importedConceptDbConnection;
     
     @Autowired

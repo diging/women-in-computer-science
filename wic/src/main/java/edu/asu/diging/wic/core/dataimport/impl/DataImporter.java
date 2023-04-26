@@ -19,6 +19,7 @@ import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.graphs.IGraphManager;
+import edu.asu.diging.wic.core.graphs.repository.GraphRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.IImportedConcept;
 import edu.asu.diging.wic.core.model.impl.Graph;
@@ -36,7 +37,7 @@ public class DataImporter implements IDataImporter {
     private IGraphManager graphManager;
     
     @Autowired
-    private IGraphDBConnection graphDbConnector;
+    private GraphRepository graphRepository;
     
     @Autowired
     private IImportedConceptDBConnection importedConceptDb;
@@ -77,10 +78,10 @@ public class DataImporter implements IDataImporter {
         phaseManager.addNewPhase(progressId, phaseTitle, ProgressStatus.STARTED);
         
         // remove previously stored graphs before adding updated one
-        graphDbConnector.removeGraphs(concept.getUri());
+        graphRepository.removeGraphs(concept.getUri());
         if (graph != null) {
             graph.setConceptUri(concept.getUri());
-            graphDbConnector.store(graph);
+            graphRepository.save(graph);
         }
         
         phaseManager.updatePhase(progressId, phaseTitle, ProgressStatus.DONE);
