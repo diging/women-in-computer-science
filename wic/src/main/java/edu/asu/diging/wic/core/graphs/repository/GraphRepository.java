@@ -21,9 +21,9 @@ public interface GraphRepository extends PagingAndSortingRepository<Graph, Strin
     public Graph save(Graph graph);
 
     @Query("SELECT e FROM Edge e WHERE e.sourceNode.uri IN "
-            + "(SELECT alternativeUris FROM tbl_conceptpower_alternativeuris c WHERE c.id = :uri) "
+            + "(SELECT alternativeUris FROM ConceptpowerAlternativeUri c WHERE c.id = :uri) "
             + "OR e.targetNode.uri IN "
-            + "(SELECT alternativeUris FROM tbl_conceptpower_alternativeuris c WHERE c.id = :uri)")
+            + "(SELECT alternativeUris FROM ConceptpowerAlternativeUri c WHERE c.id = :uri)")
     public List<Edge> getEdges(@Param("uri") String uri);
 
     @Query("SELECT g.conceptUri FROM Graph g")
@@ -34,7 +34,7 @@ public interface GraphRepository extends PagingAndSortingRepository<Graph, Strin
     @Query("DELETE FROM Graph g WHERE g.conceptUri = :uri")
     public void removeGraphs(@Param("uri") String uri);
 
-    @Query("SELECT a.alternativeUris FROM tbl_conceptpower_alternativeuris a WHERE a.id = :conceptUri")
+    @Query("SELECT a.alternativeUris FROM ConceptpowerAlternativeUri a WHERE a.id = :conceptUri")
     public List<String> getAlternativeUris(@Param("conceptUri") String conceptUri);
 
 }
