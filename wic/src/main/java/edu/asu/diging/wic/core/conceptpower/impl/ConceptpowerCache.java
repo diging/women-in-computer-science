@@ -8,15 +8,19 @@ import org.springframework.stereotype.Service;
 import edu.asu.diging.wic.core.conceptpower.IASyncConceptUpdater;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
-import edu.asu.diging.wic.core.conceptpower.repository.ConceptRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptType;
+import edu.asu.diging.wic.core.repository.ConceptRepository;
+import edu.asu.diging.wic.core.repository.ConceptTypeRepository;
 
 @Service
 public class ConceptpowerCache implements IConceptpowerCache {
 	
     @Autowired
     private ConceptRepository conceptRepository;
+    
+    @Autowired
+    private ConceptTypeRepository conceptTypeRepository;
 	
     @Autowired
     private IConceptpowerConnector connector;
@@ -57,6 +61,6 @@ public class ConceptpowerCache implements IConceptpowerCache {
 
     @Override
     public List<ConceptType> getAllConceptTypes() {
-        return conceptRepository.getAllConceptTypes();
+        return conceptTypeRepository.findAll();
     }
 }

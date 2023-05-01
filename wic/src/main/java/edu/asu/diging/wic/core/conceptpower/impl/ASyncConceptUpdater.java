@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import edu.asu.diging.wic.core.conceptpower.IASyncConceptUpdater;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
-import edu.asu.diging.wic.core.conceptpower.repository.ConceptRepository;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.repository.ConceptRepository;
 
 @Service
 @PropertySource("classpath:config.properties")

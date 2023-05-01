@@ -19,11 +19,11 @@ import edu.asu.diging.wic.core.dataimport.ITransactionalImportManager;
 import edu.asu.diging.wic.core.dataimport.model.ProgressStatus;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.graphs.IGraphManager;
-import edu.asu.diging.wic.core.graphs.repository.GraphRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.IImportedConcept;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.ImportedConcept;
+import edu.asu.diging.wic.core.repository.GraphRepository;
 
 @Service
 public class DataImporter implements IDataImporter {

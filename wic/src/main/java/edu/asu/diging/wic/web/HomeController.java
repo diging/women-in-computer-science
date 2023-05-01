@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
-import edu.asu.diging.wic.core.graphs.repository.GraphRepository;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptType;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.Node;
+import edu.asu.diging.wic.core.repository.GraphRepository;
 import edu.asu.diging.wic.core.service.IStatementService;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;

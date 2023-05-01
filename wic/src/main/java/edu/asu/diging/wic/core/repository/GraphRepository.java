@@ -1,4 +1,4 @@
-package edu.asu.diging.wic.core.graphs.repository;
+package edu.asu.diging.wic.core.repository;
 
 import java.util.List;
 

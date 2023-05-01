@@ -25,7 +25,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @PropertySource("classpath:config.properties")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"edu.asu.diging.wic.core.repository","edu.asu.diging.wic.core.conceptpower.repository","edu.asu.diging.wic.core.graphs.repository"})
+@EnableJpaRepositories(basePackages = "edu.asu.diging.wic.core.repository")
 public class PersistentContext {
     
     @Autowired
