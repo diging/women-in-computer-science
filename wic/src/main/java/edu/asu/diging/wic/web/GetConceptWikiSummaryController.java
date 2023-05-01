@@ -1,7 +1,6 @@
 package edu.asu.diging.wic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +17,13 @@ import edu.asu.diging.wic.core.wiki.IWikiConnector;
 @PropertySource(value = "classpath:/config.properties")
 public class GetConceptWikiSummaryController {
 
-    @Value("${wikipedia.url.pattern}")
-    private String wikiRegex;
-
     @Autowired
     private IConceptpowerCache cache;
 
     @Autowired
     private IWikiConnector wikiConnector;
 
-    @GetMapping("/wiki-summary/concept/{conceptId}")
+    @GetMapping("/concept/{conceptId}/wiki-summary")
     public ResponseEntity<String> getConceptSummary(@PathVariable("conceptId") String conceptId) {
         IConcept concept = cache.getConceptById(conceptId);
         if (concept == null) {

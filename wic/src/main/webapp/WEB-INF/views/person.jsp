@@ -52,7 +52,7 @@ $(document).ready(function() {
     });
     
     $.ajax({
-        url : '<c:url value="/wiki-summary/concept/${concept.id}"/>',
+        url : '<c:url value="/concept/${concept.id}/wiki-summary"/>',
         type : "GET",
         success : function(result) {
         	var wikiTab = $('<li><a id="wiki-tab" data-target="#wiki-summary" data-toggle="tab">Wiki</a></li>');
