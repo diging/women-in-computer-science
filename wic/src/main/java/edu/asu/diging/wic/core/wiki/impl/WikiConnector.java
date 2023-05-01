@@ -44,7 +44,6 @@ public class WikiConnector implements IWikiConnector {
             WikiSummaryResponse response = restTemplate.getForObject(summaryUri, WikiSummaryResponse.class);
             return response.getExtract_html();
         } catch (HttpClientErrorException ex) {
-            logger.error("No wikipedia summary found for page " + pageTitle, ex.getResponseBodyAsString());
             throw ex;
         }
     }
