@@ -26,6 +26,7 @@ import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Node;
+import edu.asu.diging.wic.core.repository.ConceptRepository;
 import edu.asu.diging.wic.core.repository.GraphRepository;
 import edu.asu.diging.wic.core.service.IConceptTextService;
 import edu.asu.diging.wic.web.cytoscape.Data;
@@ -40,6 +41,9 @@ public class PersonController {
     
     @Autowired
     private GraphRepository graphRepository;
+    
+    @Autowired
+    private ConceptRepository conceptRepository;
     
     @Autowired
     private IConceptpowerCache cache;
@@ -126,7 +130,7 @@ public class PersonController {
     @RequestMapping(value = "/concept/{personId}/secondary-network")
     public ResponseEntity<Collection<GraphElement>> getPersonSecondaryNetwork(@PathVariable("personId") String personId) {
         IConcept sourceConcept = cache.getConceptById(personId);
-        HashSet<String> sourceNodeUris = new HashSet<>(graphRepository.getAlternativeUris(sourceConcept.getUri()));
+        HashSet<String> sourceNodeUris = new HashSet<>(conceptRepository.getAlternativeUris(sourceConcept.getUri()));
         Map<String, GraphElement> elements = new HashMap<>();
         
         List<Edge> primaryEdges = getEdges(sourceConcept.getUri());
@@ -147,7 +151,7 @@ public class PersonController {
                 sourceElem = createElement(sourceNode, concept);
                 elements.put(sourceNode.getConceptId(), sourceElem);
             }
-            HashSet<String> edgeNodeUris = new HashSet<>(graphRepository.getAlternativeUris(edgeNode.getUri()));
+            HashSet<String> edgeNodeUris = new HashSet<>(conceptRepository.getAlternativeUris(edgeNode.getUri()));
             List<Edge> secondaryEdges = getEdges(edgeNode.getUri());
             for (Edge secondaryEdge : secondaryEdges) {
                 if (edgeNodeUris.contains(secondaryEdge.getSourceNode().getUri())) {

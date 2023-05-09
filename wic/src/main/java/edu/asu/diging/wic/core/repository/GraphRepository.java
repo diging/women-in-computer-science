@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
+import edu.asu.diging.wic.core.model.impl.Concept;
 
 @Repository
 public interface GraphRepository extends PagingAndSortingRepository<Graph, String> {
@@ -21,9 +22,9 @@ public interface GraphRepository extends PagingAndSortingRepository<Graph, Strin
     public Graph save(Graph graph);
 
     @Query("SELECT e FROM Edge e WHERE e.sourceNode.uri IN "
-            + "(SELECT alternativeUris FROM ConceptpowerAlternativeUri c WHERE c.id = :uri) "
+            + "(SELECT c.alternativeUris FROM Concept c WHERE c.id = :uri) "
             + "OR e.targetNode.uri IN "
-            + "(SELECT alternativeUris FROM ConceptpowerAlternativeUri c WHERE c.id = :uri)")
+            + "(SELECT c.alternativeUris FROM Concept c WHERE c.id = :uri)")
     public List<Edge> getEdges(@Param("uri") String uri);
 
     @Query("SELECT g.conceptUri FROM Graph g")
@@ -33,8 +34,5 @@ public interface GraphRepository extends PagingAndSortingRepository<Graph, Strin
     @Modifying
     @Query("DELETE FROM Graph g WHERE g.conceptUri = :uri")
     public void removeGraphs(@Param("uri") String uri);
-
-    @Query("SELECT a.alternativeUris FROM ConceptpowerAlternativeUri a WHERE a.id = :conceptUri")
-    public List<String> getAlternativeUris(@Param("conceptUri") String conceptUri);
 
 }

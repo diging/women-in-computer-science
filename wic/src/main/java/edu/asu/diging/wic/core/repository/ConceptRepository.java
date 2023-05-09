@@ -1,5 +1,7 @@
 package edu.asu.diging.wic.core.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -56,4 +58,7 @@ public interface ConceptRepository extends PagingAndSortingRepository<Concept, S
      * @return a Page of Concept objects that belong to the specified type
      */
     public Page<IConcept> findByTypeId(String typeId, Pageable pageable);
+    
+    @Query(value = "SELECT c.alternativeUris FROM tbl_conceptpower_concept c WHERE c.uri = :conceptUri", nativeQuery=false)
+    public List<String> getAlternativeUris(@Param("conceptUri") String conceptUri);
 }

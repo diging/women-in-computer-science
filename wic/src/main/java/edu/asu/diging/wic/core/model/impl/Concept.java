@@ -67,6 +67,8 @@ public class Concept implements IConcept{
     @JsonDeserialize(as=ConceptType.class)
     @Transient private IConceptType type;
     
+    public Concept() {}
+    
     /* (non-Javadoc)
      * @see edu.asu.spring.quadriga.conceptpower.db.impl.IConcept#getId()
      */
