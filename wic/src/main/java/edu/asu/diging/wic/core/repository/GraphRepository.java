@@ -9,30 +9,47 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
-import edu.asu.diging.wic.core.model.impl.Concept;
 
+/**
+ * Repository interface for managing Graph Entities
+ */
 @Repository
 public interface GraphRepository extends PagingAndSortingRepository<Graph, String> {
 
-    @Query("SELECT g from Graph g WHERE g.conceptUri = :uri")
-    public List<Graph> getGraphs(@Param("uri") String uri);
+	/**
+	 * Retrieves a list of Graph objects based on a given concept URI.
+	 * 
+	 * @param uri the concept URI to search for
+	 * @return a list of Graph objects that match the given concept URI
+	 */
+	@Query("SELECT g from Graph g WHERE g.conceptUri = :uri")
+	public List<Graph> getGraphs(@Param("uri") String uri);
 
-    public Graph save(Graph graph);
+	/**
+	 * Saves a Graph object to the database.
+	 * 
+	 * @param graph the Graph object to save
+	 * @return the saved Graph object
+	 */
+	public Graph save(Graph graph);
 
-    @Query("SELECT e FROM Edge e WHERE e.sourceNode.uri IN "
-            + "(SELECT c.alternativeUris FROM Concept c WHERE c.id = :uri) "
-            + "OR e.targetNode.uri IN "
-            + "(SELECT c.alternativeUris FROM Concept c WHERE c.id = :uri)")
-    public List<Edge> getEdges(@Param("uri") String uri);
+	/**
+	 * Retrieves a list of all concept URIs from Graph objects.
+	 * 
+	 * @return a list of all concept URIs from Graph objects
+	 */
+	@Query("SELECT g.conceptUri FROM Graph g")
+	public List<String> getAllPersons();
 
-    @Query("SELECT g.conceptUri FROM Graph g")
-    public List<String> getAllPersons();
-
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Graph g WHERE g.conceptUri = :uri")
-    public void removeGraphs(@Param("uri") String uri);
+	/**
+	 * Deletes Graph objects based on a given concept URI.
+	 * 
+	 * @param uri the concept URI to search for and delete
+	 */
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM Graph g WHERE g.conceptUri = :uri")
+	public void removeGraphs(@Param("uri") String uri);
 
 }

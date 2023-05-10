@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -26,8 +24,7 @@ import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptText;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Node;
-import edu.asu.diging.wic.core.repository.ConceptRepository;
-import edu.asu.diging.wic.core.repository.GraphRepository;
+import edu.asu.diging.wic.core.repository.EdgeRepository;
 import edu.asu.diging.wic.core.service.IConceptTextService;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;
@@ -37,13 +34,8 @@ import edu.asu.diging.wic.web.cytoscape.GraphElement;
 @PropertySource(value="classpath:/config.properties")
 public class PersonController {
     
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    
     @Autowired
-    private GraphRepository graphRepository;
-    
-    @Autowired
-    private ConceptRepository conceptRepository;
+    private EdgeRepository edgeRepository;
     
     @Autowired
     private IConceptpowerCache cache;
@@ -90,7 +82,7 @@ public class PersonController {
     public String getConceptStatements(@PathVariable("conceptId") String conceptId, Model model) {
         
         IConcept concept = cache.getConceptById(conceptId);
-        List<Edge> uniqueEdges = getEdges(concept.getUri());
+        List<Edge> uniqueEdges = getEdges(concept.getAlternativeUris());
         
         model.addAttribute("edges", uniqueEdges);
         
@@ -105,7 +97,7 @@ public class PersonController {
         IConcept sourceConcept = cache.getConceptById(personId);
         Map<String, GraphElement> elements = new HashMap<>();
         
-        List<Edge> uniqueEdges = getEdges(sourceConcept.getUri());
+        List<Edge> uniqueEdges = getEdges(sourceConcept.getAlternativeUris());
         
         for (Edge edge : uniqueEdges) {
             Node sourceNode = edge.getSourceNode();
@@ -130,10 +122,11 @@ public class PersonController {
     @RequestMapping(value = "/concept/{personId}/secondary-network")
     public ResponseEntity<Collection<GraphElement>> getPersonSecondaryNetwork(@PathVariable("personId") String personId) {
         IConcept sourceConcept = cache.getConceptById(personId);
-        HashSet<String> sourceNodeUris = new HashSet<>(conceptRepository.getAlternativeUris(sourceConcept.getUri()));
+        List<String> sourceAlternativeUris = sourceConcept.getAlternativeUris();
+        HashSet<String> sourceNodeUris = new HashSet<>(sourceAlternativeUris);
         Map<String, GraphElement> elements = new HashMap<>();
         
-        List<Edge> primaryEdges = getEdges(sourceConcept.getUri());
+        List<Edge> primaryEdges = getEdges(sourceAlternativeUris);
         for (Edge primaryEdge : primaryEdges) {
             Node sourceNode;
             Node edgeNode;
@@ -151,8 +144,10 @@ public class PersonController {
                 sourceElem = createElement(sourceNode, concept);
                 elements.put(sourceNode.getConceptId(), sourceElem);
             }
-            HashSet<String> edgeNodeUris = new HashSet<>(conceptRepository.getAlternativeUris(edgeNode.getUri()));
-            List<Edge> secondaryEdges = getEdges(edgeNode.getUri());
+            IConcept edgeConcept = cache.getConceptById(edgeNode.getUri());
+            List<String> edgeAlternativeUris = edgeConcept.getAlternativeUris();
+            HashSet<String> edgeNodeUris = new HashSet<>(edgeAlternativeUris);
+            List<Edge> secondaryEdges = getEdges(edgeAlternativeUris);
             for (Edge secondaryEdge : secondaryEdges) {
                 if (edgeNodeUris.contains(secondaryEdge.getSourceNode().getUri())) {
                     targetNode = secondaryEdge.getTargetNode();
@@ -176,8 +171,8 @@ public class PersonController {
         return new ResponseEntity<Collection<GraphElement>>(elements.values(), HttpStatus.OK);
     }
     
-    private List<Edge> getEdges(String uri) {
-        List<Edge> edgeList = graphRepository.getEdges(uri);
+    private List<Edge> getEdges(List<String> alternativeUris) {
+        List<Edge> edgeList = edgeRepository.findBySourceNodeUriIn(alternativeUris);
         List<Edge> uniqueEdges = new ArrayList<Edge>();
         HashSet<String> uniqueEdgeStrings = new HashSet<>();
         
