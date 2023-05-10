@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.client.HttpClientErrorException;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.wiki.IWikiConnector;
+import edu.asu.diging.wic.core.wiki.exceptions.WikipediaSummaryException;
 
 @Controller
 @PropertySource(value = "classpath:/config.properties")
@@ -31,8 +31,8 @@ public class GetConceptWikiSummaryController {
         }
         try {
             return new ResponseEntity<>(wikiConnector.getSummary(wikiConnector.getPageTitle(concept)), HttpStatus.OK);
-        } catch (HttpClientErrorException ex) {
-            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+        } catch (WikipediaSummaryException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
