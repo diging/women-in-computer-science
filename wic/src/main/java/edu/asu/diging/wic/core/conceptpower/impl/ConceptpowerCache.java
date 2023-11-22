@@ -8,26 +8,30 @@ import org.springframework.stereotype.Service;
 import edu.asu.diging.wic.core.conceptpower.IASyncConceptUpdater;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
-import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptType;
+import edu.asu.diging.wic.core.repository.ConceptRepository;
+import edu.asu.diging.wic.core.repository.ConceptTypeRepository;
 
 @Service
 public class ConceptpowerCache implements IConceptpowerCache {
 	
     @Autowired
-    private IConceptDatabaseConnection conceptDB;
+    private ConceptRepository conceptRepository;
+    
+    @Autowired
+    private ConceptTypeRepository conceptTypeRepository;
 	
     @Autowired
     private IConceptpowerConnector connector;
 	
     @Autowired
     private IASyncConceptUpdater conceptUpdater;
-	
+    
     @Override
     public IConcept getConceptById(String id) {
 		
-        IConcept concept = conceptDB.getConcept(id);
+        IConcept concept = conceptRepository.getConcept(id);
         if(concept != null) {
             conceptUpdater.updateConcept(id);
             return concept;
@@ -35,14 +39,14 @@ public class ConceptpowerCache implements IConceptpowerCache {
 		
         concept = connector.getConcept(id);
         if(concept != null) {
-            conceptDB.createOrUpdate(concept);
+            conceptRepository.save(concept);
         }
-        return conceptDB.getConcept(concept.getId());   
+        return conceptRepository.getConcept(concept.getId());  
     }
     
     @Override
     public IConcept getConceptByUri(String uri) {
-        IConcept concept = conceptDB.getConceptByUri(uri);
+        IConcept concept = conceptRepository.findByUri(uri);
         if(concept != null) {
             conceptUpdater.updateConcept(concept.getId());
             return concept;
@@ -50,14 +54,13 @@ public class ConceptpowerCache implements IConceptpowerCache {
         
         concept = connector.getConcept(uri);
         if(concept != null) {
-            conceptDB.createOrUpdate(concept);
+            conceptRepository.save(concept);
         }
         return concept; 
     }
 
     @Override
     public List<ConceptType> getAllConceptTypes() {
-        
-        return conceptDB.getAllConceptTypes();
+        return conceptTypeRepository.findAll();
     }
 }

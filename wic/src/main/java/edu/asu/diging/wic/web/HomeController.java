@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerCache;
-import edu.asu.diging.wic.core.graphs.IGraphDBConnection;
 import edu.asu.diging.wic.core.model.IConcept;
 import edu.asu.diging.wic.core.model.impl.ConceptType;
 import edu.asu.diging.wic.core.model.impl.Edge;
 import edu.asu.diging.wic.core.model.impl.Graph;
 import edu.asu.diging.wic.core.model.impl.Node;
+import edu.asu.diging.wic.core.repository.GraphRepository;
 import edu.asu.diging.wic.core.service.IStatementService;
 import edu.asu.diging.wic.web.cytoscape.Data;
 import edu.asu.diging.wic.web.cytoscape.EdgeData;
@@ -35,7 +35,7 @@ public class HomeController {
     private IStatementService statementService;
 
     @Autowired
-    private IGraphDBConnection graphDbConnection;
+    private GraphRepository graphRepository;
 
     @Autowired
     private IConceptpowerCache conceptCache;
@@ -71,10 +71,10 @@ public class HomeController {
 
     @RequestMapping(value = "/network")
     public ResponseEntity<Collection<GraphElement>> getPersonNetwork() {
-        List<String> uris = graphDbConnection.getAllPersons();
+        List<String> uris = graphRepository.getAllPersons();
         Map<String, GraphElement> elements = new HashMap<>();
         for (String uri : uris) {
-            List<Graph> graphs = graphDbConnection.getGraphs(uri);
+            List<Graph> graphs = graphRepository.getGraphs(uri);
             for (Graph graph : graphs) {
                 for (Edge edge : graph.getEdges()) {
                     Node sourceNode = edge.getSourceNode();

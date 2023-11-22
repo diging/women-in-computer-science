@@ -2,9 +2,7 @@ package edu.asu.diging.wic.core.conceptpower.impl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +13,15 @@ import org.springframework.stereotype.Service;
 
 import edu.asu.diging.wic.core.conceptpower.IASyncConceptUpdater;
 import edu.asu.diging.wic.core.conceptpower.IConceptpowerConnector;
-import edu.asu.diging.wic.core.conceptpower.db.IConceptDatabaseConnection;
 import edu.asu.diging.wic.core.model.IConcept;
+import edu.asu.diging.wic.core.repository.ConceptRepository;
 
 @Service
 @PropertySource("classpath:config.properties")
 public class ASyncConceptUpdater implements IASyncConceptUpdater {
 	
     @Autowired
-    private IConceptDatabaseConnection conceptDB;
+    private ConceptRepository conceptRepository;
 	
     @Autowired
     private IConceptpowerConnector connector;
@@ -34,7 +32,7 @@ public class ASyncConceptUpdater implements IASyncConceptUpdater {
     @Override
     @Async
     public void updateConcept(String id) {
-        IConcept storedConcept = conceptDB.getConcept(id);
+        IConcept storedConcept = conceptRepository.getConcept(id);
         if (storedConcept.getLastUpdated() != null && storedConcept.getLastUpdated().plus(Duration.parse(updateDuration)).isAfter(OffsetDateTime.now())) {
             // only update a concept every 2 days
             return;
@@ -42,7 +40,7 @@ public class ASyncConceptUpdater implements IASyncConceptUpdater {
         
         IConcept concept = connector.getConcept(id);
         if(concept != null) {
-            conceptDB.createOrUpdate(concept);
+            conceptRepository.save(concept);
             updateAlternativeIdConcepts(concept);
         }
     }
@@ -62,7 +60,7 @@ public class ASyncConceptUpdater implements IASyncConceptUpdater {
                 concept.setEqualTo(new ArrayList<>(concept.getEqualTo()));
                 concept.setSimilarTo(new ArrayList<>(concept.getSimilarTo()));
                 concept.setWordnetIds(new ArrayList<>(concept.getWordnetIds()));
-                conceptDB.createOrUpdate(concept);
+                conceptRepository.save(concept);
             }
         });
     }
