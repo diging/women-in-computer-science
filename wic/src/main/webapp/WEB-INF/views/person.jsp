@@ -50,6 +50,27 @@ $(document).ready(function() {
             $("#network2").append("Sorry, could not load network.")
         }
     });
+    
+    $.ajax({
+        url : '<c:url value="/concept/${concept.id}/wiki-summary"/>',
+        type : "GET",
+        success : function(result) {
+        	var wikiTab = $('<li><a id="wiki-tab" data-target="#wiki-summary" data-toggle="tab">Wiki</a></li>');
+        	$("#bio-tabs").append(wikiTab);
+        	
+        	var wikiSummary = $('<div class="tab-pane" id="wiki-summary"><br>'+result+'</div>');
+        	$('#bio-content').append(wikiSummary);
+        	
+        	if (!$("#bio-tab").length) {
+        		$("#wiki-tab").tab('show');
+        	}
+        },
+        error : function() {
+		if (!$("#bio-tab").length) {
+			$("#bio-tabs").remove();
+		}
+	}
+    });
 });
 
 //# sourceURL=getGraph.js
@@ -88,7 +109,16 @@ $(document).ready(function() {
 <div class="clearfix">
 <h2>${concept.word}</h2>
 
-<p>${concept.description}</p>
+<ul class="nav nav-tabs" id="bio-tabs" style="display: flex; justify-content: center;">
+    <c:if test="${concept.description != null and not concept.description.isEmpty()}">
+        <li id="bio-tab" class="active"><a data-target="#biography" data-toggle="tab">Bio</a></li>
+    </c:if>
+</ul>
+<div class="tab-content" id="bio-content">
+    <c:if test="${concept.description != null and not concept.description.isEmpty()}">
+        <div class="tab-pane active" id="biography"><br><p>${concept.description}</p></div>
+    </c:if>
+</div>
 
 <div>
     <c:forEach var="listVar" items="${concept.getEqualTo() }"> 
